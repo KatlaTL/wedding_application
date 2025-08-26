@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@theme {
+    --color-primary: #F28C6B;
+    --color-secondary: #F4D06F;
+    --color-tertiary: #A8D5BA;
+    --color-background: #FFF7E6;
+    --color-color-text: #2F4F4F;
+    --border: rgba(242, 140, 107, 0.2);
+}
+
+.border-primary {
+    border: 1px solid var(--color-primary)
+}
+
+.border-tertiary {
+    border: 1px solid var(--color-tertiary)
+}
