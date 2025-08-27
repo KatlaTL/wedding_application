@@ -7,6 +7,7 @@
     --color-background: #FFF7E6;
     --color-color-text: #2F4F4F;
     --border: rgba(242, 140, 107, 0.2);
+    --color-muted-foreground: #6B7280;
 }
 
 .border-primary {
@@ -15,4 +16,8 @@
 
 .border-tertiary {
     border: 1px solid var(--color-tertiary)
+}
+
+.gradient {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 50%, var(--color-tertiary) 100%);
 }
