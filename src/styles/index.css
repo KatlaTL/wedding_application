@@ -9,6 +9,7 @@
     --border: rgba(242, 140, 107, 0.2);
     --color-muted-foreground: #6B7280;
     --color-muted: #F9F2E7;
+    --color-background-muted: #ffffffcc;
 }
 
 .border-primary {

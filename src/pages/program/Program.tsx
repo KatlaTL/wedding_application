@@ -5,15 +5,16 @@ import { Clock, MapPin, Camera, Users, Utensils, Martini, Music } from "lucide-r
 const Program = () => {
 
     return (
-        <Section title="Program">
-            <p className="text-sm text-muted-foreground m-3">Her er hvordan dagen kommer til at udfolde sig!</p>
+        <Section title="Program" description="Her er hvordan dagen kommer til at udfolde sig!">
             <div className="flex relative">
+                {/* Gradient line */}
                 <div className="absolute -left-18 top-0 bottom-0 w-0.5 gradient hidden md:block" />
 
                 <div className="flex flex-col gap-3 relative">
                     {/* TODO dynamic create the program */}
 
                     <div className="space-y-8">
+                        {/* Gradient line dot */}
                         <div className="absolute -left-[78.4px] w-4 h-4 bg-primary rounded-full border-4 border-background hidden md:block" />
 
                         <ProgramTile

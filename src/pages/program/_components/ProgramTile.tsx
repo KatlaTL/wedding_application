@@ -17,7 +17,7 @@ const ProgramTile: React.FC<ProgramTileProps> = ({
     icon: Icon
 }) => {
     return (
-        <div className="h-25 w-120 bg-white rounded-lg border-primary/30 border-l-4 border-1">
+        <div className="h-25 w-120 bg-background-muted rounded-lg border-primary/30 border-l-4 border-1">
             <div className="flex flex-row p-2 items-start h-full">
                 <div className="flex rounded-full w-8 h-8 bg-muted justify-center items-center">
                     {Icon && <Icon color="#F28C6B" />}
@@ -25,7 +25,7 @@ const ProgramTile: React.FC<ProgramTileProps> = ({
 
                 <div className="flex flex-col items-start justify-between ml-5 text-muted-foreground flex-1 h-full">
                     <div className="text-left">
-                        <h3 className=" text-sm text-color-text">{title}</h3>
+                        <h3 className="text-sm text-color-text">{title}</h3>
                         <p className="text-xs">{description}</p>
                     </div>
 
@@ -38,7 +38,7 @@ const ProgramTile: React.FC<ProgramTileProps> = ({
                     </div>
                 </div>
 
-                <div className="flex items-start gap-2 text-sm text-primary ml-auto">
+                <div className="flex items-start gap-1.5 text-sm text-primary ml-auto">
                     <span>
                         <Clock className="h-3.5 w-3.5 mt-1" />
                     </span>
