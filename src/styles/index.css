@@ -12,6 +12,16 @@
     --color-background-muted: #ffffffcc;
 }
 
+@layer {
+    h3 {
+        @apply text-xs text-primary;
+    }
+
+    p {
+        @apply text-xs text-muted-foreground;
+    }
+}
+
 .border-primary {
     border: 1px solid var(--color-primary)
 }

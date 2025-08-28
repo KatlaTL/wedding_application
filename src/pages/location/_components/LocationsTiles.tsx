@@ -32,6 +32,7 @@ const LocationTiles = () => {
                     Se på kortet
                 </Button>
             </div>
+
         </div>
     )
 }
