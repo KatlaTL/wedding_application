@@ -15,7 +15,7 @@ const Location = () => {
 
             </div>
 
-            <div className="flex gap-2 w-full h-fit border-primary/30 border my-5 text-left p-5 rounded-lg">
+            <div className="flex gap-2 w-full h-fit border-primary border my-5 text-left p-5 rounded-lg">
                 <Car className="h-4 w-4 text-primary"/>
                 <div>
                     <h3 className="pb-2">Transport</h3>

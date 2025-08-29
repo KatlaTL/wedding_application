@@ -4,7 +4,7 @@ import Button from "../../../components/Button"
 
 const LocationTiles = () => {
     return (
-        <div className="bg-background-muted rounded-lg border-primary/30 border hover:shadow-lg h-fit">
+        <div className="bg-background-muted rounded-lg border-primary border hover:shadow-lg h-fit">
             <div className="min-h-20 h-[40%] bg-gradient-to-br from-white/20 to-primary/20 flex justify-center items-center">
                 {/* Placeholder for image */}
                 <MapPin className="text-primary/70 h-8 w-8" />
@@ -25,12 +25,7 @@ const LocationTiles = () => {
 
                 <p className="pb-3">Bodebjergvej 2, 5620 Glamsbjerg</p>
 
-                <Button size="small" className="flex justify-center items-center gap-2">
-                    <span>
-                        <MapPin className="text-color-text h-[11px] w-[11px] mt-[1px]" />
-                    </span>
-                    Se på kortet
-                </Button>
+                <Button size="small" icon={MapPin}>Se på kortet</Button>
             </div>
 
         </div>

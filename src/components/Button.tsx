@@ -1,8 +1,10 @@
+import type { LucideProps } from "lucide-react";
 import type { ButtonHTMLAttributes } from "react";
 
 interface ButtoneProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: "primary" | "secondary";
     size?: "small" | "medium" | "large";
+    icon?: React.ForwardRefExoticComponent<Omit<LucideProps, "ref">>;
 }
 
 const Button: React.FC<ButtoneProps> = ({
@@ -10,14 +12,15 @@ const Button: React.FC<ButtoneProps> = ({
     variant = "primary",
     size = "medium",
     className = "",
+    icon: Icon,
     ...props
 }) => {
 
-    const baseStyle = "w-full rounded-lg pb-0.5 bg-background border border-[var(--color-primary)] hover:cursor-pointer";
+    const baseStyle = "w-full rounded-lg bg-background border border-[var(--color-primary)] hover:cursor-pointer";
 
     const variantStyle = variant === "primary"
         ? "text-color-text hover:bg-tertiary/90 hover:border-[var(--color-tertiary)]"
-        : "text-[var(--color-primary)] hover:bg-primary/90 hover:text-[var(--color-background)]";
+        : "text-primary hover:bg-primary/90 hover:text-background";
 
     let sizeStyle = "";
 
@@ -29,15 +32,25 @@ const Button: React.FC<ButtoneProps> = ({
             sizeStyle = "h-8 text-sm";
             break;
         case "large":
-            sizeStyle = "mh-10 text-lg";
+            sizeStyle = "h-10 text-lg";
             break;
     }
 
+    const buttonIconStyle = Icon ? "flex items-center justify-center gap-3" : "";
+
+    const iconStyle = variant === "primary"
+        ? "text-color-text h-[11px] w-[11px] mb-[0.5px]"
+        : "text-primary h-[11px] w-[11px] mb-[0.5px]";
+
     return (
         <button
-            className={`${baseStyle} ${variantStyle} ${sizeStyle} ${className}`}
+            className={`${baseStyle} ${variantStyle} ${sizeStyle} ${buttonIconStyle} ${className}`}
             {...props}
         >
+            {Icon &&
+                <span>
+                    <Icon className={iconStyle} />
+                </span>}
             {children}
         </button>
     )

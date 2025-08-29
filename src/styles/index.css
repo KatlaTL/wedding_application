@@ -10,6 +10,7 @@
     --color-muted-foreground: #6B7280;
     --color-muted: #F9F2E7;
     --color-background-muted: #ffffffcc;
+    --color-primary-30: #F28C6B4D;
 }
 
 @layer {
@@ -35,7 +36,11 @@
 }
 
 .border-primary {
-    border: 1px solid var(--color-primary)
+    border: 1px solid var(--color-primary-30)
+}
+
+.border-secondary {
+    border: 1px solid var(--color-secondary)
 }
 
 .border-tertiary {
