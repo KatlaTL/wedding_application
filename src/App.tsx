@@ -1,5 +1,6 @@
 import Details from "./pages/Details"
 import Hero from "./pages/home/Hero"
+import Invitation from "./pages/Invitation/Invitation"
 import Location from "./pages/location/Location"
 import Program from "./pages/program/Program"
 
@@ -22,6 +23,10 @@ const App = () => {
 
         <section id="location">
           <Location />
+        </section>
+
+        <section id="invitation">
+          <Invitation />
         </section>
       </main>
     </div>

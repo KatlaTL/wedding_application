@@ -1,10 +1,11 @@
+import type { PropsWithChildren } from "react";
 
-type SectionType = React.PropsWithChildren<{
+type SectionType = {
     title: string;
     description?: string;
-}>
+}
 
-const Section: React.FC<SectionType> = ({ title, description, children }) => {
+const Section = ({ title, description, children }: PropsWithChildren<SectionType>) => {
     return (
         <section className="relative min-h-screen flex flex-col py-20 overflow-hidden">
             <div className="max-w-4xl mx-auto text-center">
