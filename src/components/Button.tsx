@@ -20,7 +20,7 @@ const Button: React.FC<ButtoneProps> = ({
 
     const variantStyle = variant === "primary"
         ? "text-color-text hover:bg-tertiary/90 hover:border-[var(--color-tertiary)]"
-        : "text-primary hover:bg-primary/90 hover:text-background";
+        : "bg-primary hover:text-primary/90 hover:bg-background text-background hover:shadow-lg active:shadow-none";
 
     let sizeStyle = "";
 
@@ -50,7 +50,9 @@ const Button: React.FC<ButtoneProps> = ({
             {Icon &&
                 <span>
                     <Icon className={iconStyle} />
-                </span>}
+                </span>
+            }
+
             {children}
         </button>
     )
