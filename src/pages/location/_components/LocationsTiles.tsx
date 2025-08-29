@@ -4,8 +4,8 @@ import Button from "../../../components/Button"
 
 const LocationTiles = () => {
     return (
-        <div className="w-100 h-65 bg-background-muted rounded-lg border-primary/30 border hover:shadow-lg">
-            <div className="h-[35%] bg-gradient-to-br from-white/20 to-primary/20 flex justify-center items-center">
+        <div className="bg-background-muted rounded-lg border-primary/30 border hover:shadow-lg h-fit">
+            <div className="min-h-20 h-[40%] bg-gradient-to-br from-white/20 to-primary/20 flex justify-center items-center">
                 {/* Placeholder for image */}
                 <MapPin className="text-primary/70 h-8 w-8" />
             </div>
@@ -18,7 +18,7 @@ const LocationTiles = () => {
                         <span>
                             <Clock className="h-[11px] w-[11px] mt-[3px]" />
                         </span>
-                        <p>Kl. 12:30</p>
+                        <p className="!text-primary">Kl. 12:30</p>
                     </div>
                 </div>
                 <p className="pb-3">Køng kirke er der hvor Rikke er konfirmeret og ligger ved siden af Rikkes barndomshjem</p>
@@ -27,7 +27,7 @@ const LocationTiles = () => {
 
                 <Button size="small" className="flex justify-center items-center gap-2">
                     <span>
-                        <MapPin className="text-color-text h-[11px] w-[11px]" />
+                        <MapPin className="text-color-text h-[11px] w-[11px] mt-[1px]" />
                     </span>
                     Se på kortet
                 </Button>

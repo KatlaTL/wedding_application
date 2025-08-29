@@ -18,7 +18,7 @@ const Location = () => {
             <div className="flex gap-2 w-full h-fit border-primary/30 border my-5 text-left p-5 rounded-lg">
                 <Car className="h-4 w-4 text-primary"/>
                 <div>
-                    <h3 className="pb-3">Transport</h3>
+                    <h3 className="pb-2">Transport</h3>
                     <p>Alle steder har rigelig parkering. Hvis du har brug for et lift eller kan tilbyde et til andre gæster, bedes du give os besked i din tilmelding! Vi hjælper gerne med at koordinere samkørsel.</p>
                 </div>
             </div>

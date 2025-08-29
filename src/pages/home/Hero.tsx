@@ -9,8 +9,8 @@ const Hero = () => {
         <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
 
             <div className="relative text-center max-w-4xl mx-auto">
-                <h1 className="text-primary text-4xl font-serif tracking-wide">Asger &amp; Rikke</h1>
-                <p className="text-xl text-muted-foreground m-3">Vi skal giftes!</p>
+                <h1>Asger &amp; Rikke</h1>
+                <p className="!text-xl m-3">Vi skal giftes!</p>
 
                 <div className="flex items-center justify-center gap-6 mb-8 mt-6">
                     <InfoTiles text="22 August, 2026" icon={Calendar}/>
@@ -21,7 +21,7 @@ const Hero = () => {
 
             <div className="relative text-center max-w-4xl mx-auto">
                 <div className="w-70 flex-col items-center justify-center">
-                    <p className="text-sm text-muted-foreground mb-2">Vi glæder os til at se dig! <br/> Klik nedenfor for at bekræfte din deltagelse.</p>
+                    <p className="!text-sm  mb-2">Vi glæder os til at se dig! <br/> Klik nedenfor for at bekræfte din deltagelse.</p>
 
                     <Button
                         size="medium"

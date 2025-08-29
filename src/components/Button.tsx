@@ -13,7 +13,7 @@ const Button: React.FC<ButtoneProps> = ({
     ...props
 }) => {
 
-    const baseStyle = "w-full rounded-lg pb-0.5 bg-background border-1 border-[var(--color-primary)] hover:cursor-pointer";
+    const baseStyle = "w-full rounded-lg pb-0.5 bg-background border border-[var(--color-primary)] hover:cursor-pointer";
 
     const variantStyle = variant === "primary"
         ? "text-color-text hover:bg-tertiary/90 hover:border-[var(--color-tertiary)]"
@@ -29,7 +29,7 @@ const Button: React.FC<ButtoneProps> = ({
             sizeStyle = "h-8 text-sm";
             break;
         case "large":
-            sizeStyle = "h-10 text-lg";
+            sizeStyle = "mh-10 text-lg";
             break;
     }
 
