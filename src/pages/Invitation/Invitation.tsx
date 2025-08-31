@@ -2,11 +2,12 @@ import { Car, CheckCircle, Users, XCircle } from "lucide-react";
 import Section from "../../components/Section"
 import { Select, SelectContent, SelectIcon, SelectItem, SelectPortal, SelectScrollDownButton, SelectScrollUpButton, SelectValue, SelectViewport } from "../../components/Select";
 import { SelectTrigger } from "@radix-ui/react-select";
-import { ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons";
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons";
 import Button from "../../components/Button";
 import HeadingWithIcon from "../../components/HeadingWithIcon";
 import ButtonGroup from "./_components/ButtonGroup";
 import Wrapper from "./_components/Wrapper";
+import { Checkbox, CheckboxIndicator } from "../../components/Checkbox";
 
 const Invitation = () => {
 
@@ -73,15 +74,26 @@ const Invitation = () => {
                     </Wrapper>
 
                     <Wrapper className="bg-muted rounded-lg p-2 !flex-row text-xs text-color-text">
-                        {dietaryOptions.map(value => (
-                            <label key="value" >
-                                <input
-                                    className=""
-                                    type="checkbox"
-                                />
-                                {value}
-                            </label>
-                        ))}
+                        <form>
+                            <div className="flex gap-5">
+
+                                {dietaryOptions.map(value => 
+                                    <div className="flex gap-1">
+                                        <Checkbox
+                                            className="flex size-4 items-center justify-center bg-background rounded border-primary outline-none"
+                                            id={value}
+                                        >
+                                            <CheckboxIndicator>
+                                                <CheckIcon className="bg-primary text-background-muted rounded"/>
+                                            </CheckboxIndicator>
+                                        </Checkbox>
+                                        <label>
+                                            {value}
+                                        </label>
+                                    </div>
+                                )}
+                            </div>
+                        </form>
                     </Wrapper>
 
                     <Wrapper>
