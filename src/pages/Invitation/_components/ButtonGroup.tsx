@@ -6,7 +6,7 @@ type ButtonGroupType = {
 const ButtonGroup = ({ title, className = "", children }: React.PropsWithChildren<ButtonGroupType>) => {
     return (
         <div className={className}>
-            <p className="!text-color-text">{title}</p>
+            <p className="!text-color-text pb-1">{title}</p>
             <div className="flex gap-2">
                 {children}
             </div>

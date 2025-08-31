@@ -6,7 +6,7 @@ type WrapperType = {
 const Wrapper = ({ className = "", children }: React.PropsWithChildren<WrapperType>) => {
 
     return (
-        <div className={`flex flex-col gap-2 w-full ${className}`}>
+        <div className={`flex flex-col gap-1 w-full ${className}`}>
             {children}
         </div>
     )
