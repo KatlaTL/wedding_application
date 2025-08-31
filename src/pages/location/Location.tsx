@@ -16,7 +16,7 @@ const Location = () => {
 
             </div>
 
-            <div className="flex flex-col gap-2 w-full h-fit border-primary border my-5 text-left p-5 rounded-lg">
+            <div className="flex flex-col gap-2 w-full h-fit border-primary-30 border my-5 text-left p-5 rounded-lg">
                 <HeadingWithIcon icon={Car} text="Transport" />
 
                 <p className="px-5">Alle steder har rigelig parkering. Hvis du har brug for et lift eller kan tilbyde et til andre gæster, bedes du give os besked i din tilmelding! Vi hjælper gerne med at koordinere samkørsel.</p>

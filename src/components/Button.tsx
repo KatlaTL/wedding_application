@@ -16,7 +16,7 @@ const Button: React.FC<ButtoneProps> = ({
     ...props
 }) => {
 
-    const baseStyle = "w-full rounded-lg bg-background border border-[var(--color-primary)] hover:cursor-pointer";
+    const baseStyle = "w-full rounded-lg bg-background border border-primary hover:cursor-pointer";
 
     const variantStyle = variant === "primary"
         ? "text-color-text hover:bg-tertiary/90 hover:border-[var(--color-tertiary)]"

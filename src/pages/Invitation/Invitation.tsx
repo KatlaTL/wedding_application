@@ -16,7 +16,7 @@ const Invitation = () => {
     return (
         <Section title="Bekræft deltagelse" description="Lad os vide, om du kommer!">
 
-            <div className="bg-background-muted rounded-lg border-primary border p-5 w-120">
+            <div className="bg-background-muted rounded-lg border-primary-30 border p-5 w-120">
                 <div className="flex flex-col items-start text-left gap-3">
                     <HeadingWithIcon icon={Users} text="Tilmelding" />
 
@@ -24,7 +24,7 @@ const Invitation = () => {
                         <p className="!text-color-text">Find dit navn</p>
 
                         <Select>
-                            <SelectTrigger className="SelectTrigger rounded-lg cursor-pointer flex w-full border-[var(--color-primary)] border outline-none text-left text-xs px-1.5 py-1 text-muted-foreground justify-between focus:outline-none" aria-label="Name">
+                            <SelectTrigger className="SelectTrigger rounded-lg cursor-pointer flex w-full border-primary border outline-none text-left text-xs px-1.5 py-1 text-muted-foreground justify-between focus:outline-none" aria-label="Name">
                                 <SelectValue placeholder="Vælg dit navn på listen" />
                                 <SelectIcon className="SelectIcon">
                                     <ChevronDownIcon />
@@ -32,7 +32,7 @@ const Invitation = () => {
                             </SelectTrigger>
 
                             <SelectPortal>
-                                <SelectContent className="w-full rounded-lg text-muted-foreground bg-white border border-primary text-xs overflow-hidden rounder-lg">
+                                <SelectContent className="w-full rounded-lg text-muted-foreground bg-white border border-primary-30 text-xs overflow-hidden rounder-lg">
                                     <SelectScrollUpButton className="flex h-[25px] cursor-default items-center justify-center bg-white text-muted-foreground">
                                         <ChevronUpIcon />
                                     </SelectScrollUpButton>
@@ -84,7 +84,7 @@ const Invitation = () => {
                                             id={value}
                                         >
                                             <CheckboxIndicator>
-                                                <CheckIcon className="bg-primary text-background-muted rounded"/>
+                                                <CheckIcon className="size-4 bg-primary text-background-muted rounded"/>
                                             </CheckboxIndicator>
                                         </Checkbox>
                                         <label>
@@ -103,7 +103,7 @@ const Invitation = () => {
                             name="dietary"
                             placeholder="Fortæl os gerne, hvis du har allergier eller særlige kostbehov"
                             rows={3}
-                            className="rounded-lg px-2 pt-1 resize-none text-xs text-color-text placeholder-muted-foreground placeholder:text-xs border border-primary focus:outline-primary"
+                            className="rounded-lg px-2 pt-1 resize-none text-xs text-color-text placeholder-muted-foreground placeholder:text-xs border border-primary-30 focus:outline-primary"
                         />
                     </Wrapper>
 

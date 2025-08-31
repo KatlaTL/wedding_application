@@ -17,7 +17,7 @@ const ProgramTile: React.FC<ProgramTileProps> = ({
     icon: Icon
 }) => {
     return (
-        <div className="h-32 w-120 bg-background-muted rounded-lg border-primary border-l-4 border-1">
+        <div className="h-32 w-120 bg-background-muted rounded-lg border-primary-30 border-l-4 border-1">
             <div className="flex flex-row p-5 items-start h-full">
                 <div className="flex rounded-full w-8 h-8 bg-muted justify-center items-center">
                     {Icon && <Icon color="#F28C6B" />}
