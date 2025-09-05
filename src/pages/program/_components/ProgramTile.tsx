@@ -1,15 +1,9 @@
-import { MapPin, Clock, type LucideProps } from "lucide-react";
+import { MapPin, Clock } from "lucide-react";
 import type React from "react";
+import type { ProgramType } from "../../../types/program.type";
 
-type ProgramTileProps = {
-    title: string;
-    description: string;
-    location: string;
-    time: string;
-    icon?: React.ForwardRefExoticComponent<Omit<LucideProps, "ref">>;
-}
 
-const ProgramTile: React.FC<ProgramTileProps> = ({
+const ProgramTile: React.FC<ProgramType> = ({
     title,
     description,
     location,
