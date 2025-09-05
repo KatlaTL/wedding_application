@@ -36,6 +36,10 @@
     }
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 .border-primary {
     border: 1px solid var(--color-primary)
 }
