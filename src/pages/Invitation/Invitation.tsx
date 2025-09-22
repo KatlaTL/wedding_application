@@ -1,8 +1,6 @@
 import { Car, CheckCircle, Users, XCircle } from "lucide-react";
 import Section from "../../components/Section"
-import { Select, SelectContent, SelectIcon, SelectItem, SelectPortal, SelectScrollDownButton, SelectScrollUpButton, SelectValue, SelectViewport } from "../../components/Select";
-import { SelectTrigger } from "@radix-ui/react-select";
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons";
+import { CheckIcon } from "@radix-ui/react-icons";
 import Button from "../../components/Button";
 import HeadingWithIcon from "../../components/HeadingWithIcon";
 import ButtonGroup from "./_components/ButtonGroup";
@@ -13,6 +11,7 @@ import type { CheckedState } from "@radix-ui/react-checkbox";
 import InvitationCodeEntry from "./_components/InvitationCodeEntry";
 import { useParams } from "react-router-dom";
 import useInvitation from "../../hooks/useInvitation";
+import RSVPSubmitted from "./_components/RSVPSubmitted";
 
 const Invitation = () => {
     const [isAttending, setIsAttending] = useState<boolean>();
@@ -20,9 +19,10 @@ const Invitation = () => {
     const [canOfferLift, setCanOfferLift] = useState<boolean>();
     const [dietary, setDietary] = useState<string>();
     const [allergies, setAllergies] = useState<string>();
+    const [error, setError] = useState<string>("");
 
     const { code } = useParams();
-    const { validCodes } = useInvitation();
+    const { validCodes, saveRSVP, isSubmitted } = useInvitation();
 
     const dietaryOptions: string[] = ["Veganer", "Vegetar", "Altspisende"];
 
@@ -42,6 +42,16 @@ const Invitation = () => {
         }
 
         return false;
+    }
+
+    const handleSubmit = () => {
+        setError("");
+
+        saveRSVP();
+    }
+
+    if (isSubmitted) {
+        return <RSVPSubmitted />
     }
 
     if (!code) {
@@ -117,7 +127,7 @@ const Invitation = () => {
                             </>
                         )}
 
-                        <Button variant="secondary" className="mt-4" disabled={disableButton()}>Bekræft deltagelse</Button>
+                        <Button variant="secondary" className="mt-4" disabled={disableButton()} onClick={handleSubmit}>Bekræft deltagelse</Button>
                     </div>
                 </div>
             </form>

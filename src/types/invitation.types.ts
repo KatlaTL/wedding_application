@@ -3,6 +3,8 @@ export type validCodeEntry = {
     name: string
 }
 
-
-
 export type ValidCode = Record<string, validCodeEntry>;
+
+export type InvitationStateType = {
+    isSubmitted: boolean;
+};

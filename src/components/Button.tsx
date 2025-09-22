@@ -16,13 +16,13 @@ const Button: React.FC<ButtoneProps> = ({
     ...props
 }) => {
 
-    const baseStyle = "w-full rounded-lg bg-background border border-primary hover:cursor-pointer outline-none disabled:pointer-events-none disabled:opacity-50";
+    const baseStyle = "w-full rounded-lg bg-background border border-primary hover:cursor-pointer outline-none disabled:pointer-events-none disabled:opacity-50 ";
 
     let variantStyle = "";
 
     switch (variant) {
         case "primary":
-            variantStyle = "text-color-text hover:bg-tertiary/90 hover:border-[var(--color-tertiary)]";
+            variantStyle = "text-color-text hover:bg-tertiary/90 hover:border-[var(--color-tertiary)]!";
             break;
         case "secondary":
             variantStyle = "bg-primary hover:text-primary/90 hover:bg-background text-background hover:shadow-lg active:shadow-none";
