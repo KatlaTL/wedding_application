@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom"
 import Invitation from "./pages/Invitation/Invitation"
 import Location from "./pages/location/Location"
 import Program from "./pages/program/Program"
@@ -14,10 +14,12 @@ const App = () => {
 
       <main>
         <Routes>
-          <Route path="/" Component={Home} />
-          <Route path="/program" Component={Program} />
-          <Route path="/location" Component={Location} />
-          <Route path="/invitation" Component={Invitation} />
+          <Route path="/" element={<Home />} />
+          <Route path="/program" element={<Program />} />
+          <Route path="/location" element={<Location />} />
+          <Route path="/invitation" element={<Invitation />} />
+
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
     </div>
