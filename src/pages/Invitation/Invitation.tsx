@@ -10,16 +10,19 @@ import Wrapper from "./_components/Wrapper";
 import { Checkbox, CheckboxIndicator } from "../../components/Checkbox";
 import { useState } from "react";
 import type { CheckedState } from "@radix-ui/react-checkbox";
+import InvitationCodeEntry from "./_components/InvitationCodeEntry";
+import { useParams } from "react-router-dom";
+import useInvitation from "../../hooks/useInvitation";
 
 const Invitation = () => {
-    const [attendee, setAttendee] = useState<string>();
     const [isAttending, setIsAttending] = useState<boolean>();
     const [needLift, setNeedLift] = useState<boolean>();
     const [canOfferLift, setCanOfferLift] = useState<boolean>();
     const [dietary, setDietary] = useState<string>();
     const [allergies, setAllergies] = useState<string>();
 
-    const invitations: string[] = ["Asger", "Rikke", "Jakob", "Morten", "Frederik"];
+    const { code } = useParams();
+    const { validCodes } = useInvitation();
 
     const dietaryOptions: string[] = ["Veganer", "Vegetar", "Altspisende"];
 
@@ -29,49 +32,24 @@ const Invitation = () => {
         }
     }
 
+    if (!code) {
+        return <InvitationCodeEntry />
+    }
+
     return (
-        <Section title="Bekræft deltagelse" description="Lad os vide, om du kommer!">
+        <Section title="Bekræft deltagelse" description={`${validCodes[code].name} lad os vide, om du kommer!`}>
             <form onSubmit={(e) => e.preventDefault()}>
                 <div className="bg-background-muted rounded-lg border-primary-30 border p-5 w-120">
                     <div className="flex flex-col items-start text-left gap-3">
                         <HeadingWithIcon icon={Users} text="Tilmelding" />
 
-                        <Wrapper className="mb-2">
-                            <p className="!text-color-text">Find dit navn</p>
-
-                            <Select onValueChange={(v) => setAttendee(v)}>
-                                <SelectTrigger className="SelectTrigger rounded-lg cursor-pointer flex w-full border-primary border outline-none text-left text-xs px-1.5 py-1 text-muted-foreground justify-between focus:outline-none" aria-label="Name">
-                                    <SelectValue placeholder="Vælg dit navn på listen" />
-                                    <SelectIcon className="SelectIcon">
-                                        <ChevronDownIcon />
-                                    </SelectIcon>
-                                </SelectTrigger>
-
-                                <SelectPortal>
-                                    <SelectContent className="w-full rounded-lg text-muted-foreground bg-white border border-primary-30 text-xs overflow-hidden rounder-lg">
-                                        <SelectScrollUpButton className="flex h-[25px] cursor-default items-center justify-center bg-white text-muted-foreground">
-                                            <ChevronUpIcon />
-                                        </SelectScrollUpButton>
-
-                                        <SelectViewport>
-                                            {invitations.map(value => <SelectItem value={value}>{value}</SelectItem>)}
-                                        </SelectViewport>
-
-                                        <SelectScrollDownButton className="flex h-[25px] cursor-default items-center justify-center bg-white text-muted-foreground">
-                                            <ChevronDownIcon />
-                                        </SelectScrollDownButton>
-                                    </SelectContent>
-                                </SelectPortal>
-                            </Select>
+                        <Wrapper>
+                            <ButtonGroup title="Deltager du?">
+                                <Button size="small" icon={CheckCircle} variant={isAttending ? "secondary-no-hover" : "primary"} onClick={() => setIsAttending(true)}>Ja, jeg kommer</Button>
+                                <Button size="small" icon={XCircle} variant={isAttending === false ? "destructive" : "primary"} onClick={() => setIsAttending(false)}>Nej, desværre ikke</Button>
+                            </ButtonGroup>
                         </Wrapper>
-                        {attendee && (
-                            <Wrapper>
-                                <ButtonGroup title="Deltager du?">
-                                    <Button size="small" icon={CheckCircle} variant={isAttending ? "secondary-no-hover" : "primary"} onClick={() => setIsAttending(true)}>Ja, jeg kommer</Button>
-                                    <Button size="small" icon={XCircle} variant={isAttending === false ? "destructive" : "primary"} onClick={() => setIsAttending(false)}>Nej, desværre ikke</Button>
-                                </ButtonGroup>
-                            </Wrapper>
-                        )}
+
 
                         {isAttending && (
                             <>

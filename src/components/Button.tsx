@@ -16,7 +16,7 @@ const Button: React.FC<ButtoneProps> = ({
     ...props
 }) => {
 
-    const baseStyle = "w-full rounded-lg bg-background border border-primary hover:cursor-pointer outline-none";
+    const baseStyle = "w-full rounded-lg bg-background border border-primary hover:cursor-pointer outline-none disabled:pointer-events-none disabled:opacity-50";
 
     let variantStyle = "";
 

@@ -18,6 +18,7 @@ const App = () => {
           <Route path="/program" element={<Program />} />
           <Route path="/location" element={<Location />} />
           <Route path="/invitation" element={<Invitation />} />
+          <Route path="/invitation/:code?" element={<Invitation />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
