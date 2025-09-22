@@ -32,6 +32,18 @@ const Invitation = () => {
         }
     }
 
+    const disableButton = (): boolean => {
+        if (isAttending === undefined) {
+            return true;
+        }
+
+        if (isAttending) {
+            return needLift === undefined || canOfferLift === undefined || dietary === undefined;
+        }
+
+        return false;
+    }
+
     if (!code) {
         return <InvitationCodeEntry />
     }
@@ -105,7 +117,7 @@ const Invitation = () => {
                             </>
                         )}
 
-                        <Button variant="secondary" className="mt-4">Bekræft deltagelse</Button>
+                        <Button variant="secondary" className="mt-4" disabled={disableButton()}>Bekræft deltagelse</Button>
                     </div>
                 </div>
             </form>
