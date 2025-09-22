@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@theme {
+:root {
     --color-primary: #F28C6B;
     --color-secondary: #F4D06F;
     --color-tertiary: #A8D5BA;
@@ -12,10 +12,11 @@
     --color-background-muted: #ffffffcc;
     --color-primary-30: #F28C6B4D;
     --color-destructive: #EF4444;
+    --color-sage-green: #A8D5BA;
 }
 
-@layer {
-    :root {
+@layer base {
+    body {
         @apply font-serif tracking-wide;
     }
     
