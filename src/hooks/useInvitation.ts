@@ -3,27 +3,28 @@ import { useInvitationContext } from "../context/InvitationContext";
 
 
 const useInvitation = () => {
-    const { isSubmitted, setIsSubmitted } = useInvitationContext();
+    const { actionDispatch, ...rest } = useInvitationContext();
 
-    //TO-DO add validCodes to the invitationContext
+    //TO-DO check if validcode is stored in the DB
     const validCodes: ValidCode = {
         "123abc": { id: 1, name: "Asger" },
         "abc123": { id: 1, name: "Rikke" },
     }
 
     const saveRSVP = () => {
-        setIsSubmitted(true);
+        actionDispatch?.setIsSubmittedState(true);
     }
 
     const updatedRSVP = () => {
-        setIsSubmitted(false);
+        actionDispatch?.setIsSubmittedState(false);
     }
 
     return {
         validCodes,
         saveRSVP,
         updatedRSVP,
-        isSubmitted
+        actionDispatch,
+        ...rest
     };
 }
 

@@ -1,22 +1,70 @@
-import { createContext, useContext, useState, type PropsWithChildren } from "react";
-import type { InvitationContextI, InvitationStateType } from "../types/invitation.types";
+import { createContext, useContext, useReducer, type PropsWithChildren } from "react";
+import type { InvitationContextI, InvitationStateType, ReducerActionType } from "../types/invitation.types";
 
-const initialState: InvitationStateType = {
+const reducerInitialState: InvitationStateType = {
     isSubmitted: false,
+    code: null,
+    guest: null
 };
 
-const InvitationContext = createContext<InvitationContextI>({
-    ...initialState,
-    setIsSubmitted: () => { }
-});
+const contextInitialState: InvitationContextI = {
+    isSubmitted: reducerInitialState.isSubmitted,
+    code: reducerInitialState.code,
+    guest: reducerInitialState.guest,
+    actionDispatch: null
+}
+
+const InvitationContext = createContext<InvitationContextI>(contextInitialState);
+
+
+const invitationProducer = (state: InvitationStateType, action: ReducerActionType): InvitationStateType => {
+    switch (action.type) {
+        case "SET_CODE":
+            return {
+                ...state,
+                code: action.payload.code
+            }
+        case "SET_GUEST":
+            return {
+                ...state,
+                guest: action.payload.guest
+            }
+        case "SET_IS_SUBMITTED":
+            return {
+                ...state,
+                isSubmitted: action.payload.isSubmitted
+            }
+    }
+}
 
 export const InvitationProvider = ({ children }: PropsWithChildren) => {
-    const [isSubmitted, setIsSubmitted] = useState<boolean>(initialState.isSubmitted);
+    const [state, dispatch] = useReducer(invitationProducer, reducerInitialState);
+
+    const actionDispatch = {
+        setIsSubmittedState: (isSubmitted: boolean) => {
+            dispatch({
+                type: "SET_IS_SUBMITTED",
+                payload: {
+                    isSubmitted
+                }
+            })
+        },
+        setCodeState: (code: string) => {
+            dispatch({
+                type: "SET_CODE",
+                payload: {
+                    code
+                }
+            })
+        }
+    } as InvitationContextI["actionDispatch"]
 
     return (
         <InvitationContext.Provider value={{
-            isSubmitted,
-            setIsSubmitted
+            actionDispatch: actionDispatch,
+            isSubmitted: state.isSubmitted,
+            code: state.code,
+            guest: state.guest
         }}>
             {children}
         </InvitationContext.Provider>

@@ -2,7 +2,7 @@ import { AlertCircle, Lock } from "lucide-react";
 import HeadingWithIcon from "../../../components/HeadingWithIcon";
 import Section from "../../../components/Section"
 import Wrapper from "./Wrapper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../../components/Button";
 import useInvitation from "../../../hooks/useInvitation";
 import { useNavigate } from "react-router-dom";
@@ -12,17 +12,25 @@ const InvitationCodeEntry = () => {
     const [invitationCode, setInvitationCode] = useState<string>("");
     const [error, setError] = useState<string>("");
 
-    const { validCodes } = useInvitation();
+    const { validCodes, actionDispatch, code } = useInvitation();
     const navigate = useNavigate();
-    
+
+    useEffect(() => {
+        if (code) {
+            navigate(`/invitation/${code}`);
+        }
+    }, [])
+
 
     const handleSubmit = () => {
         setError("");
 
-        const code = invitationCode.trim();
+        const trimedCode = invitationCode.trim();
 
-        if (validCodes[code]) {
-            navigate(`/invitation/${code}`);
+        if (validCodes[trimedCode]) {
+            actionDispatch?.setCodeState(trimedCode);
+
+            navigate(`/invitation/${trimedCode}`);
         } else {
             setError("Ugyldig invitationskode. Tjek venligst din invitation, og prøv igen.");
         }

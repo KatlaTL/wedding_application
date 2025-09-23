@@ -12,21 +12,23 @@ import InvitationCodeEntry from "./_components/InvitationCodeEntry";
 import { useParams } from "react-router-dom";
 import useInvitation from "../../hooks/useInvitation";
 import RSVPSubmitted from "./_components/RSVPSubmitted";
+import type { DietaryType } from "../../types/invitation.types";
+import { DietaryLabels } from "../../constants/dietaryLabels";
 
 const Invitation = () => {
     const [isAttending, setIsAttending] = useState<boolean>();
     const [needLift, setNeedLift] = useState<boolean>();
     const [canOfferLift, setCanOfferLift] = useState<boolean>();
-    const [dietary, setDietary] = useState<string>();
+    const [dietary, setDietary] = useState<DietaryType>();
     const [allergies, setAllergies] = useState<string>();
     const [error, setError] = useState<string>("");
 
     const { code } = useParams();
     const { validCodes, saveRSVP, isSubmitted } = useInvitation();
 
-    const dietaryOptions: string[] = ["Veganer", "Vegetar", "Altspisende"];
+    const dietaryOptions: DietaryType[] = ["Vegetarian", "Vegan", "Omnivore"];
 
-    const handleCheckedChange = (checked: CheckedState, value: string) => {
+    const handleCheckedChange = (checked: CheckedState, value: DietaryType) => {
         if (checked) {
             setDietary(value);
         }
@@ -105,7 +107,7 @@ const Invitation = () => {
                                                     </CheckboxIndicator>
                                                 </Checkbox>
                                                 <label htmlFor={value}>
-                                                    {value}
+                                                    {DietaryLabels[value]}
                                                 </label>
                                             </div>
                                         )}
