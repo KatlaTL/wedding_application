@@ -19,10 +19,20 @@ const useInvitation = () => {
         actionDispatch?.setIsSubmittedState(false);
     }
 
+    const saveCode = (code: string) => {
+        localStorage.setItem("invitationCode", code);
+    }
+
+    const removeCode = () => {
+        localStorage.removeItem("invitationCode");
+    }
+
     return {
         validCodes,
         saveRSVP,
         updatedRSVP,
+        saveCode,
+        removeCode,
         actionDispatch,
         ...rest
     };

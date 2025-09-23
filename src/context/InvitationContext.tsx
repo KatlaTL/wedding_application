@@ -3,7 +3,7 @@ import type { InvitationContextI, InvitationStateType, ReducerActionType } from 
 
 const reducerInitialState: InvitationStateType = {
     isSubmitted: false,
-    code: null,
+    code: localStorage.getItem("invitationCode"),
     guest: null
 };
 

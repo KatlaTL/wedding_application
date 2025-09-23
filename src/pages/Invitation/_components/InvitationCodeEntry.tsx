@@ -12,7 +12,7 @@ const InvitationCodeEntry = () => {
     const [invitationCode, setInvitationCode] = useState<string>("");
     const [error, setError] = useState<string>("");
 
-    const { validCodes, actionDispatch, code } = useInvitation();
+    const { validCodes, actionDispatch, code, saveCode } = useInvitation();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -29,6 +29,7 @@ const InvitationCodeEntry = () => {
 
         if (validCodes[trimedCode]) {
             actionDispatch?.setCodeState(trimedCode);
+            saveCode(trimedCode);
 
             navigate(`/invitation/${trimedCode}`);
         } else {
