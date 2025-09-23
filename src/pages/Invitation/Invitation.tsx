@@ -15,6 +15,7 @@ import RSVPSubmitted from "./_components/RSVPSubmitted";
 import type { DietaryType } from "../../types/invitation.types";
 import { DietaryLabels } from "../../constants/dietaryLabels";
 import Error from "./_components/Error";
+import Modal from "../../components/Modal";
 
 const Invitation = () => {
     const [isAttending, setIsAttending] = useState<boolean>();
@@ -23,6 +24,8 @@ const Invitation = () => {
     const [dietary, setDietary] = useState<DietaryType>();
     const [allergies, setAllergies] = useState<string>();
     const [error, setError] = useState<string>("");
+
+    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
     const navigate = useNavigate();
     const { code } = useParams();
@@ -81,7 +84,7 @@ const Invitation = () => {
             <div className="bg-background-muted rounded-lg border-primary-30 border p-5 w-120 mt-7 mb-5">
                 <Wrapper>
                     <ButtonGroup className="mx-auto">
-                        <Button size="small" icon={Mail} className="w-45!">Se din invitation</Button>
+                        <Button size="small" icon={Mail} className="w-45!" onClick={() => setModalIsOpen(true)}>Se din invitation</Button>
                         <Button size="small" icon={RotateCcw} className="w-45!" onClick={handleNewCodeClick}>Indtast en anden kode</Button>
                     </ButtonGroup>
                 </Wrapper>
@@ -160,6 +163,10 @@ const Invitation = () => {
                     </div>
                 </div>
             </form>
+
+            <Modal isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)}>
+                
+            </Modal>
         </Section>
     )
 }
