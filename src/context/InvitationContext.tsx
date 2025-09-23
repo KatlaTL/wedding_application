@@ -24,6 +24,11 @@ const invitationProducer = (state: InvitationStateType, action: ReducerActionTyp
                 ...state,
                 code: action.payload.code
             }
+        case "REMOVE_CODE":
+            return {
+                ...state,
+                code: null
+            }
         case "SET_GUEST":
             return {
                 ...state,
@@ -55,6 +60,11 @@ export const InvitationProvider = ({ children }: PropsWithChildren) => {
                 payload: {
                     code
                 }
+            })
+        },
+        removeCodeState: () => {
+            dispatch({
+                type: "REMOVE_CODE"
             })
         }
     } as InvitationContextI["actionDispatch"]

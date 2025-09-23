@@ -25,6 +25,7 @@ const useInvitation = () => {
 
     const removeCode = () => {
         localStorage.removeItem("invitationCode");
+        actionDispatch?.removeCodeState();
     }
 
     return {

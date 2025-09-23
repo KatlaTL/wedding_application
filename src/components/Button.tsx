@@ -1,8 +1,9 @@
 import type { LucideProps } from "lucide-react";
 import type { ButtonHTMLAttributes } from "react";
 
+export type ButtonVariant = "primary" | "secondary" | "secondary-no-hover" | "destructive";
 interface ButtoneProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: "primary" | "secondary" | "secondary-no-hover" | "destructive";
+    variant?: ButtonVariant;
     size?: "small" | "medium" | "large";
     icon?: React.ForwardRefExoticComponent<Omit<LucideProps, "ref">>;
 }
