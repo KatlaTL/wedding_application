@@ -1,4 +1,4 @@
-import { AlertCircle, Lock } from "lucide-react";
+import { Lock } from "lucide-react";
 import HeadingWithIcon from "../../../components/HeadingWithIcon";
 import Section from "../../../components/Section"
 import Wrapper from "./Wrapper";
@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Button from "../../../components/Button";
 import useInvitation from "../../../hooks/useInvitation";
 import { useNavigate } from "react-router-dom";
+import Error from "./Error";
 
 
 const InvitationCodeEntry = () => {
@@ -58,12 +59,7 @@ const InvitationCodeEntry = () => {
                             />
                         </Wrapper>
 
-                        {error && (
-                            <div className="flex items-center gap-2 p-3 bg-destructive/10 text-destructive rounded-lg">
-                                <AlertCircle className="h-3.5 w-3.5" />
-                                <p className="text-sm text-destructive!">{error}</p>
-                            </div>
-                        )}
+                        {error && <Error errorText={error} />}
 
                         <Button variant="secondary" disabled={!invitationCode} onClick={handleSubmit}>Tilgå min invitation</Button>
                     </div>

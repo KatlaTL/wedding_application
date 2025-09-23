@@ -14,6 +14,7 @@ import useInvitation from "../../hooks/useInvitation";
 import RSVPSubmitted from "./_components/RSVPSubmitted";
 import type { DietaryType } from "../../types/invitation.types";
 import { DietaryLabels } from "../../constants/dietaryLabels";
+import Error from "./_components/Error";
 
 const Invitation = () => {
     const [isAttending, setIsAttending] = useState<boolean>();
@@ -138,7 +139,7 @@ const Invitation = () => {
                                     </div>
                                 </Wrapper>
 
-                                <Wrapper>
+                                <Wrapper className="mb-2">
                                     <p className="!text-color-text">Har du kostrestriktioner eller allergier?</p>
 
                                     <textarea
@@ -153,7 +154,9 @@ const Invitation = () => {
                             </>
                         )}
 
-                        <Button variant="secondary" className="mt-4" disabled={disableButton()} onClick={handleRSVPSubmit}>Bekræft deltagelse</Button>
+                        {error && <Error errorText={error} />}
+
+                        <Button variant="secondary" className="" disabled={disableButton()} onClick={handleRSVPSubmit}>Bekræft deltagelse</Button>
                     </div>
                 </div>
             </form>
