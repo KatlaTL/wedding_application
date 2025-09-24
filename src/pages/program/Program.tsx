@@ -1,3 +1,4 @@
+import React from "react";
 import PageTransition from "../../components/PageTransition";
 import Section from "../../components/Section";
 import useProgram from "../../hooks/useProgram";
@@ -16,9 +17,9 @@ const Program = () => {
                     <GradientLine />
 
                     <div className="flex flex-col gap-3 relative">
-                        {program.map((item) => {
+                        {program.map((item, index) => {
                             return (
-                                <>
+                                <React.Fragment key={item.title + index}>
                                     <GradientLineDot />
                                     <ProgramTile
                                         icon={item.icon}
@@ -27,7 +28,7 @@ const Program = () => {
                                         location={item.location}
                                         time={item.time}
                                     />
-                                </>
+                                </React.Fragment>
                             )
                         })}
                     </div>

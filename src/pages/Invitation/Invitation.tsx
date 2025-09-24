@@ -138,8 +138,8 @@ const Invitation = () => {
 
                                     <Wrapper className="bg-muted rounded-lg p-2 !flex-row text-xs text-color-text">
                                         <div className="flex gap-5">
-                                            {dietaryOptions.map(value =>
-                                                <div className="flex gap-1 text-xs">
+                                            {dietaryOptions.map((value, index) =>
+                                                <div className="flex gap-1 text-xs" key={value + index}>
                                                     <Checkbox
                                                         className="flex size-4 items-center justify-center bg-background rounded border-primary outline-none"
                                                         onCheckedChange={(checked) => handleCheckedChange(checked, value)}

@@ -15,8 +15,9 @@ const Location = () => {
 
                 <div className="grid grid-cols-2 gap-3">
 
-                    {Locations.map(location =>
+                    {Locations.map((location, index) =>
                         <LocationTiles
+                            key={location.title + index}
                             title={location.title}
                             address={location.address}
                             description={location.description}
