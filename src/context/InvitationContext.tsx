@@ -1,10 +1,12 @@
 import { createContext, useContext, useReducer, type PropsWithChildren } from "react";
-import type { InvitationContextI, InvitationStateType, ReducerActionType } from "../types/invitation.types";
+import type { Guest, InvitationContextI, InvitationStateType, ReducerActionType } from "../types/invitation.types";
+
+const guestFromStorage = localStorage.getItem("guest");
 
 const reducerInitialState: InvitationStateType = {
     isSubmitted: false,
     code: localStorage.getItem("invitationCode"),
-    guest: null
+    guest: guestFromStorage ? JSON.parse(guestFromStorage) : null
 };
 
 const contextInitialState: InvitationContextI = {
@@ -15,7 +17,6 @@ const contextInitialState: InvitationContextI = {
 }
 
 const InvitationContext = createContext<InvitationContextI>(contextInitialState);
-
 
 const invitationProducer = (state: InvitationStateType, action: ReducerActionType): InvitationStateType => {
     switch (action.type) {
@@ -65,6 +66,14 @@ export const InvitationProvider = ({ children }: PropsWithChildren) => {
         removeCodeState: () => {
             dispatch({
                 type: "REMOVE_CODE"
+            })
+        },
+        setGuestInfo: (guest: Guest) => {
+            dispatch({
+                type: "SET_GUEST",
+                payload: {
+                    guest
+                }
             })
         }
     } as InvitationContextI["actionDispatch"]

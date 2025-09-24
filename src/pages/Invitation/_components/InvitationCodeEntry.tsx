@@ -13,7 +13,7 @@ const InvitationCodeEntry = () => {
     const [invitationCode, setInvitationCode] = useState<string>("");
     const [error, setError] = useState<string>("");
 
-    const { validCodes, actionDispatch, code, saveCode } = useInvitation();
+    const { validCodes, actionDispatch, code, saveCode, saveGuest } = useInvitation();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -29,8 +29,15 @@ const InvitationCodeEntry = () => {
         const trimedCode = invitationCode.trim();
 
         if (validCodes[trimedCode]) {
+            const guestNames = {
+                firstName: validCodes[trimedCode].firstName,
+                lastName: validCodes[trimedCode].lastName
+            }
+
             actionDispatch?.setCodeState(trimedCode);
+            actionDispatch?.setGuestInfo(guestNames);
             saveCode(trimedCode);
+            saveGuest(guestNames);
 
             navigate(`/invitation/${trimedCode}`);
         } else {

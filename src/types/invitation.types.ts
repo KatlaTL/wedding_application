@@ -1,8 +1,7 @@
-import type { Dispatch } from "react";
-
 export type validCodeEntry = {
     id: number;
-    name: string
+    firstName: string;
+    lastName: string;
 }
 
 export type ValidCode = Record<string, validCodeEntry>;
@@ -12,11 +11,11 @@ export type DietaryType = "Vegan" | "Vegetarian" | "Omnivore";
 export type Guest = {
     firstName: string;
     lastName: string;
-    isAttending: boolean | undefined;
-    needLift: boolean | undefined;
-    canOfferLift: boolean | undefined;
-    dietary: DietaryType | undefined;
-    allergies: string | undefined;
+    isAttending?: boolean;
+    needLift?: boolean;
+    canOfferLift?: boolean;
+    dietary?: DietaryType;
+    allergies?: string;
 }
 
 export type InvitationStateType = {
@@ -29,6 +28,7 @@ export interface InvitationContextI extends InvitationStateType {
         setIsSubmittedState: (isSubmitted: boolean) => void;
         setCodeState: (code: string) => void;
         removeCodeState: () => void;
+        setGuestInfo: (guest: Guest) => void;
     } | null;
 }
 

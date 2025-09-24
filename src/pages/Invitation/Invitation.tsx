@@ -30,7 +30,7 @@ const Invitation = () => {
 
     const navigate = useNavigate();
     const { code } = useParams();
-    const { validCodes, saveRSVP, isSubmitted, removeCode } = useInvitation();
+    const { validCodes, saveRSVP, isSubmitted, clearGuest } = useInvitation();
 
     const dietaryOptions: DietaryType[] = ["Vegetarian", "Vegan", "Omnivore"];
 
@@ -41,14 +41,19 @@ const Invitation = () => {
     }
 
     const handleNewCodeClick = () => {
-        removeCode();
+        clearGuest();
         navigate("/invitation");
     }
 
     const handleRSVPSubmit = () => {
         setError("");
-
-        saveRSVP();
+        saveRSVP({
+            isAttending,
+            needLift,
+            canOfferLift,
+            dietary,
+            allergies
+        });
     }
 
     const disableButton = (): boolean => {
@@ -81,7 +86,7 @@ const Invitation = () => {
     }
 
     return (
-        <Section title="Bekræft deltagelse" description={`${validCodes[code].name} lad os vide, om du kommer!`}>
+        <Section title="Bekræft deltagelse" description={`${validCodes[code]?.firstName} ${validCodes[code]?.lastName} lad os vide, om du kommer!`}>
             <div className="bg-background-muted rounded-lg border-primary-30 border p-5 w-120 mt-7 mb-5">
                 <Wrapper>
                     <ButtonGroup className="mx-auto">
