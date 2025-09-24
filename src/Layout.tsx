@@ -9,7 +9,7 @@ const Layout = () => {
         <div className="bg-background w-full h-full">
             <TopNav />
             <main>
-                <Outlet key={location.key} />
+                <Outlet key={location.pathname} />
             </main>
             <Footer />
         </div>
