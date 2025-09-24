@@ -5,6 +5,7 @@ import Program from "./pages/program/Program"
 import Home from "./pages/home/Home"
 import TopNav from "./components/TopNav"
 import { invitationLoader } from "./loaders/invitationLoader"
+import Footer from "./components/Footer"
 
 export const router = createBrowserRouter([
     {
@@ -14,6 +15,7 @@ export const router = createBrowserRouter([
                 <main>
                     <Outlet />
                 </main>
+                <Footer />
             </div>
         ),
         children: [
