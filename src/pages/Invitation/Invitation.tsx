@@ -17,6 +17,7 @@ import { DietaryLabels } from "../../constants/dietaryLabels";
 import Error from "../../components/Error";
 import Modal from "../../components/Modal";
 import invitationImage from "../../assets/images/invitation.jpeg";
+import PageTransition from "../../components/PageTransition";
 
 const Invitation = () => {
     const [isAttending, setIsAttending] = useState<boolean>();
@@ -78,102 +79,112 @@ const Invitation = () => {
     }
 
     if (isSubmitted) {
-        return <RSVPSubmitted />
+        return (
+            <PageTransition>
+                <RSVPSubmitted />
+            </PageTransition>
+        )
     }
 
     if (!code) {
-        return <InvitationCodeEntry />
+        return (
+            <PageTransition>
+                <InvitationCodeEntry />
+            </PageTransition>
+        )
     }
 
     return (
-        <Section title="Bekræft deltagelse" description={`${validCodes[code]?.firstName} ${validCodes[code]?.lastName} lad os vide, om du kommer!`}>
-            <div className="bg-background-muted rounded-lg border-primary-30 border p-5 w-120 mt-7 mb-5">
-                <Wrapper>
-                    <ButtonGroup className="mx-auto">
-                        <Button size="small" icon={Mail} className="w-45!" onClick={() => setModalIsOpen(true)}>Se din invitation</Button>
-                        <Button size="small" icon={RotateCcw} className="w-45!" onClick={handleNewCodeClick}>Indtast en anden kode</Button>
-                    </ButtonGroup>
-                </Wrapper>
-            </div>
-
-            <form onSubmit={(e) => e.preventDefault()}>
-                <div className="bg-background-muted rounded-lg border-primary-30 border p-5 w-120">
-                    <div className="flex flex-col items-start text-left gap-3">
-                        <HeadingWithIcon icon={Users} text="Tilmelding" />
-
-                        <Wrapper>
-                            <ButtonGroup title="Deltager du?">
-                                <Button size="small" icon={CheckCircle} variant={setButtonVariant(isAttending, "secondary")} onClick={() => setIsAttending(true)}>Ja, jeg kommer</Button>
-                                <Button size="small" icon={XCircle} variant={setButtonVariant(isAttending, "destructive")} onClick={() => setIsAttending(false)}>Nej, desværre ikke</Button>
-                            </ButtonGroup>
-                        </Wrapper>
-
-
-                        {isAttending && (
-                            <>
-                                <Wrapper className="bg-muted rounded-lg p-2">
-                                    <HeadingWithIcon icon={Car} text="Transport" className="mb-2" />
-
-                                    <ButtonGroup title="Har du brug for et lift fra Odense?" className="mb-2">
-                                        <Button size="small" className="!w-auto px-3" variant={setButtonVariant(needLift, "secondary")} onClick={() => setNeedLift(true)}>Ja, jeg har behov for et lift</Button>
-                                        <Button size="small" className="!w-auto px-3" variant={setButtonVariant(needLift, "destructive")} onClick={() => setNeedLift(false)}>Nej, jeg klare den</Button>
-                                    </ButtonGroup>
-
-                                    <ButtonGroup title="Kan du tilbyde et lift til andre gæster?">
-                                        <Button size="small" className="!w-auto px-3" variant={setButtonVariant(canOfferLift, "secondary")} onClick={() => setCanOfferLift(true)}>Ja, jeg kan tilbyde et lift</Button>
-                                        <Button size="small" className="!w-auto px-3" variant={setButtonVariant(canOfferLift, "destructive")} onClick={() => setCanOfferLift(false)}>Nej, desværre ikke</Button>
-                                    </ButtonGroup>
-                                </Wrapper>
-
-
-                                <Wrapper className="bg-muted rounded-lg p-2 !flex-row text-xs text-color-text">
-                                    <div className="flex gap-5">
-                                        {dietaryOptions.map(value =>
-                                            <div className="flex gap-1 text-xs">
-                                                <Checkbox
-                                                    className="flex size-4 items-center justify-center bg-background rounded border-primary outline-none"
-                                                    onCheckedChange={(checked) => handleCheckedChange(checked, value)}
-                                                    checked={dietary === value}
-                                                    id={value}
-                                                >
-                                                    <CheckboxIndicator>
-                                                        <CheckIcon className="size-4 bg-primary text-background-muted rounded" />
-                                                    </CheckboxIndicator>
-                                                </Checkbox>
-                                                <label htmlFor={value}>
-                                                    {DietaryLabels[value]}
-                                                </label>
-                                            </div>
-                                        )}
-                                    </div>
-                                </Wrapper>
-
-                                <Wrapper className="mb-2">
-                                    <p className="!text-color-text">Har du kostrestriktioner eller allergier?</p>
-
-                                    <textarea
-                                        name="dietary"
-                                        value={allergies}
-                                        onChange={e => setAllergies(e.target.value)}
-                                        placeholder="Fortæl os gerne, hvis du har allergier eller særlige kostbehov"
-                                        rows={3}
-                                        className="rounded-lg px-2 pt-1 resize-none text-xs text-color-text placeholder-muted-foreground placeholder:text-xs border border-primary-30 focus:outline-primary"
-                                    />
-                                </Wrapper>
-                            </>
-                        )}
-
-                        {error && <Error errorText={error} />}
-
-                        <Button variant="secondary" className="" disabled={disableButton()} onClick={handleRSVPSubmit}>Bekræft deltagelse</Button>
-                    </div>
+        <PageTransition>
+            <Section title="Bekræft deltagelse" description={`${validCodes[code]?.firstName} ${validCodes[code]?.lastName} lad os vide, om du kommer!`}>
+                <div className="bg-background-muted rounded-lg border-primary-30 border p-5 w-120 mt-7 mb-5">
+                    <Wrapper>
+                        <ButtonGroup className="mx-auto">
+                            <Button size="small" icon={Mail} className="w-45!" onClick={() => setModalIsOpen(true)}>Se din invitation</Button>
+                            <Button size="small" icon={RotateCcw} className="w-45!" onClick={handleNewCodeClick}>Indtast en anden kode</Button>
+                        </ButtonGroup>
+                    </Wrapper>
                 </div>
-            </form>
 
-            <Modal isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)}>
-                <img src={invitationImage} alt="Invitation" className="h-full" />
-            </Modal>
-        </Section>
+                <form onSubmit={(e) => e.preventDefault()}>
+                    <div className="bg-background-muted rounded-lg border-primary-30 border p-5 w-120">
+                        <div className="flex flex-col items-start text-left gap-3">
+                            <HeadingWithIcon icon={Users} text="Tilmelding" />
+
+                            <Wrapper>
+                                <ButtonGroup title="Deltager du?">
+                                    <Button size="small" icon={CheckCircle} variant={setButtonVariant(isAttending, "secondary")} onClick={() => setIsAttending(true)}>Ja, jeg kommer</Button>
+                                    <Button size="small" icon={XCircle} variant={setButtonVariant(isAttending, "destructive")} onClick={() => setIsAttending(false)}>Nej, desværre ikke</Button>
+                                </ButtonGroup>
+                            </Wrapper>
+
+
+                            {isAttending && (
+                                <>
+                                    <Wrapper className="bg-muted rounded-lg p-2">
+                                        <HeadingWithIcon icon={Car} text="Transport" className="mb-2" />
+
+                                        <ButtonGroup title="Har du brug for et lift fra Odense?" className="mb-2">
+                                            <Button size="small" className="!w-auto px-3" variant={setButtonVariant(needLift, "secondary")} onClick={() => setNeedLift(true)}>Ja, jeg har behov for et lift</Button>
+                                            <Button size="small" className="!w-auto px-3" variant={setButtonVariant(needLift, "destructive")} onClick={() => setNeedLift(false)}>Nej, jeg klare den</Button>
+                                        </ButtonGroup>
+
+                                        <ButtonGroup title="Kan du tilbyde et lift til andre gæster?">
+                                            <Button size="small" className="!w-auto px-3" variant={setButtonVariant(canOfferLift, "secondary")} onClick={() => setCanOfferLift(true)}>Ja, jeg kan tilbyde et lift</Button>
+                                            <Button size="small" className="!w-auto px-3" variant={setButtonVariant(canOfferLift, "destructive")} onClick={() => setCanOfferLift(false)}>Nej, desværre ikke</Button>
+                                        </ButtonGroup>
+                                    </Wrapper>
+
+
+                                    <Wrapper className="bg-muted rounded-lg p-2 !flex-row text-xs text-color-text">
+                                        <div className="flex gap-5">
+                                            {dietaryOptions.map(value =>
+                                                <div className="flex gap-1 text-xs">
+                                                    <Checkbox
+                                                        className="flex size-4 items-center justify-center bg-background rounded border-primary outline-none"
+                                                        onCheckedChange={(checked) => handleCheckedChange(checked, value)}
+                                                        checked={dietary === value}
+                                                        id={value}
+                                                    >
+                                                        <CheckboxIndicator>
+                                                            <CheckIcon className="size-4 bg-primary text-background-muted rounded" />
+                                                        </CheckboxIndicator>
+                                                    </Checkbox>
+                                                    <label htmlFor={value}>
+                                                        {DietaryLabels[value]}
+                                                    </label>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </Wrapper>
+
+                                    <Wrapper className="mb-2">
+                                        <p className="!text-color-text">Har du kostrestriktioner eller allergier?</p>
+
+                                        <textarea
+                                            name="dietary"
+                                            value={allergies}
+                                            onChange={e => setAllergies(e.target.value)}
+                                            placeholder="Fortæl os gerne, hvis du har allergier eller særlige kostbehov"
+                                            rows={3}
+                                            className="rounded-lg px-2 pt-1 resize-none text-xs text-color-text placeholder-muted-foreground placeholder:text-xs border border-primary-30 focus:outline-primary"
+                                        />
+                                    </Wrapper>
+                                </>
+                            )}
+
+                            {error && <Error errorText={error} />}
+
+                            <Button variant="secondary" className="" disabled={disableButton()} onClick={handleRSVPSubmit}>Bekræft deltagelse</Button>
+                        </div>
+                    </div>
+                </form>
+
+                <Modal isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)}>
+                    <img src={invitationImage} alt="Invitation" className="h-full" />
+                </Modal>
+            </Section>
+        </PageTransition>
     )
 }
 
