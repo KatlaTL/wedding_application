@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import Button from "../../../components/Button";
 import useInvitation from "../../../hooks/useInvitation";
 import { useNavigate } from "react-router-dom";
-import Error from "./Error";
+import Error from "../../../components/Error";
 
 
 const InvitationCodeEntry = () => {
