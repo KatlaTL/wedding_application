@@ -1,6 +1,22 @@
+import { useEffect, useState } from "react";
 import { Link, NavLink, type NavLinkRenderProps } from "react-router-dom"
 
 const TopNav = () => {
+    const [atTop, setAtTop] = useState<boolean>(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setAtTop(window.scrollY <= 50)
+        }
+
+        window.addEventListener("scroll", handleScroll);
+
+        handleScroll();
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        }
+    }, [])
 
     const linkClassNames: ((props: NavLinkRenderProps) => string | undefined) | undefined = ({ isActive }) => {
         if (isActive) {
@@ -10,7 +26,7 @@ const TopNav = () => {
     }
 
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 text-xs bg-background backdrop-blur-sm shadow-sm py-3">
+        <nav className={`fixed top-0 left-0 right-0 z-50 text-xs bg-background py-3 ${!atTop ? "backdrop-blur-sm shadow-sm" : ""}`}>
             <div className="w-[65%] mx-auto px-4">
                 <div className="flex justify-between gap-5">
                     <div className="text-primary">
