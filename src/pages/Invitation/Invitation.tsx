@@ -16,6 +16,7 @@ import type { DietaryType } from "../../types/invitation.types";
 import { DietaryLabels } from "../../constants/dietaryLabels";
 import Error from "./_components/Error";
 import Modal from "../../components/Modal";
+import invitationImage from "../../assets/images/invitation.jpeg";
 
 const Invitation = () => {
     const [isAttending, setIsAttending] = useState<boolean>();
@@ -165,7 +166,7 @@ const Invitation = () => {
             </form>
 
             <Modal isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)}>
-                
+                <img src={invitationImage} alt="Invitation" className="h-full" />
             </Modal>
         </Section>
     )
