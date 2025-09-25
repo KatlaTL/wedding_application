@@ -12,7 +12,7 @@ import InvitationCodeEntry from "./_components/InvitationCodeEntry";
 import { useNavigate, useParams } from "react-router-dom";
 import useInvitation from "../../hooks/useInvitation";
 import RSVPSubmitted from "./_components/RSVPSubmitted";
-import type { DietaryType } from "../../types/invitation.types";
+import type { DietaryType } from "../../types/invitationTypes";
 import { DietaryLabels } from "../../constants/dietaryLabels";
 import Error from "../../components/Error";
 import Modal from "../../components/Modal";

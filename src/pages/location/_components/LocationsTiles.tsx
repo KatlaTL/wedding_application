@@ -1,6 +1,6 @@
 import { Clock, MapPin } from "lucide-react"
 import Button from "../../../components/ui/Button"
-import type { LocationType } from "../../../types/location.type";
+import type { LocationType } from "../../../types/locationTypes";
 
 
 const LocationTiles: React.FC<LocationType> = ({

@@ -3,7 +3,7 @@ import Section from "../../components/Section"
 import LocationTiles from "./_components/LocationsTiles";
 import HeadingWithIcon from "../../components/HeadingWithIcon";
 import useLocation from "../../hooks/useLocation";
-import type { LocationType } from "../../types/location.type";
+import type { LocationType } from "../../types/locationTypes";
 import PageTransition from "../../components/PageTransition";
 import StaggeredContent from "../../components/StaggeredContent";
 import StaggeredItem from "../../components/StaggeredItem";

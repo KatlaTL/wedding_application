@@ -1,4 +1,4 @@
-import type { LocationType } from "../types/location.type";
+import type { LocationType } from "../types/locationTypes";
 
 
 const useLocation = () => {

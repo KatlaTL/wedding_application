@@ -1,4 +1,4 @@
-import type { DietaryType } from "../types/invitation.types";
+import type { DietaryType } from "../types/invitationTypes";
 
 export const DietaryLabels: Record<DietaryType, string> = {
     Omnivore: "Altædende",

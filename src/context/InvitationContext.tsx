@@ -1,20 +1,29 @@
 import { createContext, useContext, useReducer, type PropsWithChildren } from "react";
-import type { Guest, InvitationContextI, InvitationStateType, ReducerActionType } from "../types/invitation.types";
+import type { Guest, InvitationContextI, InvitationStateType, ReducerActionType } from "../types/invitationTypes";
+import { GuestSchema, InvitationStateSchema } from "../schemas/invitationSchema";
+import { safeParser } from "../utils/parser";
+import * as z from "zod";
 
-const guestFromStorage = localStorage.getItem("guest");
-
-const reducerInitialState: InvitationStateType = {
-    isSubmitted: false,
+const reducerInitialState: InvitationStateType = InvitationStateSchema.parse({
+    isSubmitted: safeParser(
+        localStorage.getItem("RSVPIsSubmitted"),
+        z.object({ isSubmitted: z.boolean() }),
+        { isSubmitted: false }
+    ).isSubmitted,
     code: localStorage.getItem("invitationCode"),
-    guest: guestFromStorage ? JSON.parse(guestFromStorage) : null
-};
+    guest: safeParser(
+        localStorage.getItem("guest"),
+        GuestSchema,
+        null
+    )
+});
 
 const contextInitialState: InvitationContextI = {
     isSubmitted: reducerInitialState.isSubmitted,
     code: reducerInitialState.code,
     guest: reducerInitialState.guest,
     actionDispatch: null
-}
+};
 
 const InvitationContext = createContext<InvitationContextI>(contextInitialState);
 

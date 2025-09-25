@@ -1,4 +1,4 @@
-import type { Guest, ValidCode } from "../types/invitation.types";
+import type { Guest, ValidCode } from "../types/invitationTypes";
 import { useInvitationContext } from "../context/InvitationContext";
 import { useNavigate } from "react-router-dom";
 
@@ -20,7 +20,9 @@ const useInvitation = () => {
                 lastName: rest.guest.lastName,
                 ...guest
             });
+
             actionDispatch?.setIsSubmittedState(true);
+            localStorage.setItem("RSVPIsSubmitted", JSON.stringify({ isSubmitted: true }));
         } else {
             navigate("/invitation");
         }
@@ -28,19 +30,21 @@ const useInvitation = () => {
 
     const updatedRSVP = () => {
         actionDispatch?.setIsSubmittedState(false);
+        localStorage.removeItem("RSVPIsSubmitted");
     }
 
-    const saveCode = (code: string) => {
-        localStorage.setItem("invitationCode", code);
-    }
-
-    const saveGuest = (guest: Pick<Guest, "firstName" | "lastName">) => {
+    const saveGuestInfo = (guest: Pick<Guest, "firstName" | "lastName">, code: string) => {
         localStorage.setItem("guest", JSON.stringify(guest));
+        localStorage.setItem("invitationCode", code);
+
+        actionDispatch?.setGuestInfo(guest);
+        actionDispatch?.setCodeState(code);
     }
 
     const clearGuest = () => {
         localStorage.removeItem("invitationCode");
         localStorage.removeItem("guest");
+        localStorage.removeItem("RSVPIsSubmitted");
         actionDispatch?.removeCodeState();
     }
 
@@ -48,8 +52,7 @@ const useInvitation = () => {
         validCodes,
         saveRSVP,
         updatedRSVP,
-        saveCode,
-        saveGuest,
+        saveGuestInfo,
         clearGuest,
         actionDispatch,
         ...rest

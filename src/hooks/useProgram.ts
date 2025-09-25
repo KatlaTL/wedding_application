@@ -1,5 +1,5 @@
 import { Martini, Users, Utensils } from "lucide-react"
-import type { ProgramType } from "../types/program.type"
+import type { ProgramType } from "../types/programTypes"
 
 
 const useProgram = () => {

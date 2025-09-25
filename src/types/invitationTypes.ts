@@ -1,3 +1,6 @@
+import * as z from "zod";
+import type { DietarySchema, GuestSchema, InvitationStateSchema } from "../schemas/invitationSchema";
+
 export type validCodeEntry = {
     id: number;
     firstName: string;
@@ -6,9 +9,12 @@ export type validCodeEntry = {
 
 export type ValidCode = Record<string, validCodeEntry>;
 
-export type DietaryType = "Vegan" | "Vegetarian" | "Omnivore";
+export type DietaryType = z.infer<typeof DietarySchema>
+/* "Vegan" | "Vegetarian" | "Omnivore"; */
 
-export type Guest = {
+export type Guest = z.infer<typeof GuestSchema>;
+
+/* {
     firstName: string;
     lastName: string;
     isAttending?: boolean;
@@ -16,13 +22,15 @@ export type Guest = {
     canOfferLift?: boolean;
     dietary?: DietaryType;
     allergies?: string;
-}
+} */
 
-export type InvitationStateType = {
+export type InvitationStateType = z.infer<typeof InvitationStateSchema>;
+
+/* {
     isSubmitted: boolean;
     code: string | null;
     guest: Guest | null
-};
+}; */
 export interface InvitationContextI extends InvitationStateType {
     actionDispatch: {
         setIsSubmittedState: (isSubmitted: boolean) => void;
