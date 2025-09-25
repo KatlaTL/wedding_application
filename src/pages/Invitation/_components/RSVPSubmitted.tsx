@@ -1,6 +1,6 @@
 import { CheckCircle } from "lucide-react";
 import Section from "../../../components/Section";
-import Button from "../../../components/Button";
+import Button from "../../../components/ui/Button";
 import Wrapper from "./Wrapper";
 import useInvitation from "../../../hooks/useInvitation";
 

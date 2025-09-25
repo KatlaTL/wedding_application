@@ -1,6 +1,6 @@
 import { Calendar, MapPin } from "lucide-react";
 import InfoTiles from "./InfoTiles";
-import Button from "../../../components/Button";
+import Button from "../../../components/ui/Button";
 
 
 const Hero = () => {

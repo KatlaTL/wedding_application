@@ -1,5 +1,5 @@
 import { Clock, MapPin } from "lucide-react"
-import Button from "../../../components/Button"
+import Button from "../../../components/ui/Button"
 import type { LocationType } from "../../../types/location.type";
 
 

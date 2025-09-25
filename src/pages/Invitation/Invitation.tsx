@@ -1,7 +1,7 @@
 import { Car, CheckCircle, Mail, RotateCcw, Users, XCircle } from "lucide-react";
 import Section from "../../components/Section"
 import { CheckIcon } from "@radix-ui/react-icons";
-import Button, { type ButtonVariant } from "../../components/Button";
+import Button, { type ButtonVariant } from "../../components/ui/Button";
 import HeadingWithIcon from "../../components/HeadingWithIcon";
 import ButtonGroup from "./_components/ButtonGroup";
 import Wrapper from "./_components/Wrapper";

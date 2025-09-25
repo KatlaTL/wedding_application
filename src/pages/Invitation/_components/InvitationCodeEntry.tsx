@@ -3,7 +3,7 @@ import HeadingWithIcon from "../../../components/HeadingWithIcon";
 import Section from "../../../components/Section"
 import Wrapper from "./Wrapper";
 import { useEffect, useState } from "react";
-import Button from "../../../components/Button";
+import Button from "../../../components/ui/Button";
 import useInvitation from "../../../hooks/useInvitation";
 import { useNavigate } from "react-router-dom";
 import Error from "../../../components/Error";
