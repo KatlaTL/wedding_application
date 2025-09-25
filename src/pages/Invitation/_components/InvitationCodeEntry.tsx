@@ -7,6 +7,8 @@ import Button from "../../../components/ui/Button";
 import useInvitation from "../../../hooks/useInvitation";
 import { useNavigate } from "react-router-dom";
 import Error from "../../../components/Error";
+import StaggeredContent from "../../../components/StaggeredContent";
+import StaggeredItem from "../../../components/StaggeredItem";
 
 
 const InvitationCodeEntry = () => {
@@ -46,33 +48,36 @@ const InvitationCodeEntry = () => {
     }
 
     return (
-        <Section title="Invitation" description="Indtast din kode for at se din personlige bryllupsinvitation">
-            <form onSubmit={(e) => e.preventDefault()}>
+        <StaggeredContent>
+            <Section title="Invitation" description="Indtast din kode for at se din personlige bryllupsinvitation">
+                <StaggeredItem>
+                    <form onSubmit={(e) => e.preventDefault()}>
+                        <div className="bg-background-muted rounded-lg border-primary-30 w-120 border p-5">
+                            <div className="flex flex-col items-start text-left gap-3">
+                                <HeadingWithIcon icon={Lock} text="Få adgang til din invitation" />
 
-                <div className="bg-background-muted rounded-lg border-primary-30 w-120 border p-5">
-                    <div className="flex flex-col items-start text-left gap-3">
-                        <HeadingWithIcon icon={Lock} text="Få adgang til din invitation" />
+                                <Wrapper className="mb-2">
+                                    <p className="!text-color-text">Invitations kode</p>
 
-                        <Wrapper className="mb-2">
-                            <p className="!text-color-text">Invitations kode</p>
+                                    <input
+                                        name="inviationCode"
+                                        value={invitationCode}
+                                        onChange={e => setInvitationCode(e.target.value)}
+                                        placeholder="Skriv din personlig invitations kode her"
+                                        required
+                                        className="rounded-md h-7 px-2 text-xs text-color-text placeholder-muted-foreground placeholder:text-xs border border-primary-30 focus:outline-primary"
+                                    />
+                                </Wrapper>
 
-                            <input
-                                name="inviationCode"
-                                value={invitationCode}
-                                onChange={e => setInvitationCode(e.target.value)}
-                                placeholder="Skriv din personlig invitations kode her"
-                                required
-                                className="rounded-md h-7 px-2 text-xs text-color-text placeholder-muted-foreground placeholder:text-xs border border-primary-30 focus:outline-primary"
-                            />
-                        </Wrapper>
+                                {error && <Error errorText={error} />}
 
-                        {error && <Error errorText={error} />}
-
-                        <Button variant="secondary" disabled={!invitationCode} onClick={handleSubmit}>Tilgå min invitation</Button>
-                    </div>
-                </div>
-            </form>
-        </Section>
+                                <Button variant="secondary" disabled={!invitationCode} onClick={handleSubmit}>Tilgå min invitation</Button>
+                            </div>
+                        </div>
+                    </form>
+                </StaggeredItem>
+            </Section>
+        </StaggeredContent>
     )
 }
 

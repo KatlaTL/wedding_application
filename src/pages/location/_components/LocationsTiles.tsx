@@ -34,7 +34,6 @@ const LocationTiles: React.FC<LocationType> = ({
                 {/* Add onclick */}
                 <Button size="small" icon={MapPin}>Se på kortet</Button>
             </div>
-
         </div>
     )
 }

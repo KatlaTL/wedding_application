@@ -3,23 +3,29 @@ import Section from "../../../components/Section";
 import Button from "../../../components/ui/Button";
 import Wrapper from "./Wrapper";
 import useInvitation from "../../../hooks/useInvitation";
+import StaggeredContent from "../../../components/StaggeredContent";
+import StaggeredItem from "../../../components/StaggeredItem";
 
 
 const RSVPSubmitted = () => {
     const { updatedRSVP } = useInvitation();
 
     return (
-        <Section>
-            <div className="bg-background-muted rounded-lg border-primary-30 w-120 border p-5">
-                <CheckCircle className="h-12 w-12 text-sage-green mx-auto mb-4" />
-                <Wrapper>
-                    <h2>Tak! Invitation besvaret</h2>
-                    <p className="text-sm! mt-1">We've received your RSVP and can't wait to celebrate with you!</p>
-                </Wrapper>
+        <StaggeredContent>
+            <Section>
+                <StaggeredItem>
+                    <div className="bg-background-muted rounded-lg border-primary-30 w-120 border p-5">
+                        <CheckCircle className="h-12 w-12 text-sage-green mx-auto mb-4" />
+                        <Wrapper>
+                            <h2>Tak! Invitation besvaret</h2>
+                            <p className="text-sm! mt-1">We've received your RSVP and can't wait to celebrate with you!</p>
+                        </Wrapper>
 
-                <Button className="mt-6 w-40!" onClick={updatedRSVP}>Ændre besvarelse</Button>
-            </div>
-        </Section>
+                        <Button className="mt-6 w-40!" onClick={updatedRSVP}>Ændre besvarelse</Button>
+                    </div>
+                </StaggeredItem>
+            </Section>
+        </StaggeredContent>
     )
 }
 

@@ -1,4 +1,5 @@
 import type { PropsWithChildren } from "react";
+import StaggeredItem from "./StaggeredItem";
 
 type SectionType = {
     title?: string;
@@ -8,9 +9,13 @@ type SectionType = {
 const Section = ({ title, description, children }: PropsWithChildren<SectionType>) => {
     return (
         <section className="relative min-h-screen flex flex-col py-30 overflow-hidden">
+
             <div className="max-w-4xl mx-auto text-center">
-                {title && <h2 className="mb-3">{title}</h2>}
-                {description && <p className="!text-sm mb-3">{description}</p>}
+                {/* Animate the title and description if the Section component is wrapped in a StaggeredContent component */}
+                <StaggeredItem>
+                    {title && <h2 className="mb-3">{title}</h2>}
+                    {description && <p className="!text-sm mb-3">{description}</p>}
+                </StaggeredItem>
 
                 {children}
             </div>
