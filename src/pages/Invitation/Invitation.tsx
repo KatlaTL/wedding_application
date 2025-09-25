@@ -15,7 +15,7 @@ import RSVPSubmitted from "./_components/RSVPSubmitted";
 import type { DietaryType } from "../../types/invitation.types";
 import { DietaryLabels } from "../../constants/dietaryLabels";
 import Error from "../../components/Error";
-import Modal from "../../components/ui/Modal";
+import Modal from "../../components/Modal";
 import invitationImage from "../../assets/images/invitation.jpeg";
 import PageTransition from "../../components/PageTransition";
 import StaggeredContent from "../../components/StaggeredContent";
