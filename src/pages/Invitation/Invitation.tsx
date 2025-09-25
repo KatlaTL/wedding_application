@@ -5,7 +5,7 @@ import Button, { type ButtonVariant } from "../../components/ui/Button";
 import HeadingWithIcon from "../../components/HeadingWithIcon";
 import ButtonGroup from "./_components/ButtonGroup";
 import Wrapper from "./_components/Wrapper";
-import { Checkbox, CheckboxIndicator } from "../../components/Checkbox";
+import { Checkbox, CheckboxIndicator } from "../../components/ui/Checkbox";
 import { useState } from "react";
 import type { CheckedState } from "@radix-ui/react-checkbox";
 import InvitationCodeEntry from "./_components/InvitationCodeEntry";
@@ -15,7 +15,7 @@ import RSVPSubmitted from "./_components/RSVPSubmitted";
 import type { DietaryType } from "../../types/invitation.types";
 import { DietaryLabels } from "../../constants/dietaryLabels";
 import Error from "../../components/Error";
-import Modal from "../../components/Modal";
+import Modal from "../../components/ui/Modal";
 import invitationImage from "../../assets/images/invitation.jpeg";
 import PageTransition from "../../components/PageTransition";
 
