@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, type NavLinkRenderProps } from "react-router-dom"
+import { Link, NavLink, type NavLinkRenderProps } from "react-router-dom";
+import { router } from "../router";
 
 /**
  * The top navigation component
  */
 const TopNav = () => {
     const [atTop, setAtTop] = useState<boolean>(false);
+    const routes = router.routes;
 
     useEffect(() => {
         const handleScroll = () => {
@@ -36,10 +38,12 @@ const TopNav = () => {
                         <Link to="/">A &amp; R</Link>
                     </div>
                     <div className="flex gap-5 text-muted-foreground">
-                        <NavLink className={linkClassNames} to="/">Home</NavLink>
-                        <NavLink className={linkClassNames} to="/program">Program</NavLink>
-                        <NavLink className={linkClassNames} to="/location">Lokation</NavLink>
-                        <NavLink className={linkClassNames} to="/invitation">Invitation</NavLink>
+                        {routes[0].children!
+                            .filter(r => r.path)
+                            .filter(r => r.handle?.label)
+                            .map(({ path, handle }) => (
+                                <NavLink className={linkClassNames} key={path} to={path!}>{handle.label}</NavLink>
+                            ))}
                     </div>
                 </div>
             </div>
