@@ -2,11 +2,18 @@ import { Calendar, MapPin } from "lucide-react";
 import InfoTiles from "./InfoTiles";
 import Button from "../../../components/ui/Button";
 import StaggeredItem from "../../../components/StaggeredItem";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Hero component used on the Home page
  */
 const Hero = () => {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate("/invitation");
+    }
+
     return (
         <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
             <StaggeredItem>
@@ -30,6 +37,7 @@ const Hero = () => {
                         <Button
                             size="medium"
                             variant="secondary"
+                            onClick={handleClick}
                         >
                             Bekræft deltagelse
                         </Button>
