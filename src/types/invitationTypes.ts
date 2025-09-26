@@ -18,22 +18,25 @@ export interface InvitationContextI extends InvitationStateType {
     actionDispatch: {
         setIsSubmittedState: (isSubmitted: boolean) => void;
         setCodeState: (code: string) => void;
-        removeCodeState: () => void;
+        resetCodeState: () => void;
         setGuestInfo: (guest: Guest) => void;
+        resetGuestInfoState: () => void;
     } | null;
 }
 
 export const ActionTypes = {
   SET_CODE: "SET_CODE",
-  REMOVE_CODE: "REMOVE_CODE",
+  RESET_CODE: "RESET_CODE",
   SET_IS_SUBMITTED: "SET_IS_SUBMITTED",
   SET_GUEST: "SET_GUEST",
+  RESET_GUEST: "RESET_GUEST",
 } as const;
 
 export type ActionTypes = typeof ActionTypes[keyof typeof ActionTypes];
 
 export type ReducerActionType =
     { type: typeof ActionTypes.SET_CODE, payload: { code: string } } |
-    { type: typeof ActionTypes.REMOVE_CODE } |
+    { type: typeof ActionTypes.RESET_CODE } |
     { type: typeof ActionTypes.SET_IS_SUBMITTED, payload: { isSubmitted: boolean } } |
-    { type: typeof ActionTypes.SET_GUEST, payload: { guest: Guest } } 
+    { type: typeof ActionTypes.SET_GUEST, payload: { guest: Guest } } |
+    { type: typeof ActionTypes.RESET_GUEST } 

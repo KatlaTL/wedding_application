@@ -37,7 +37,7 @@ const invitationProducer = (state: InvitationStateType, action: ReducerActionTyp
                 ...state,
                 code: action.payload.code
             }
-        case "REMOVE_CODE":
+        case "RESET_CODE":
             return {
                 ...state,
                 code: null
@@ -46,6 +46,11 @@ const invitationProducer = (state: InvitationStateType, action: ReducerActionTyp
             return {
                 ...state,
                 guest: action.payload.guest
+            }
+        case "RESET_GUEST":
+            return {
+                ...state,
+                guest: null
             }
         case "SET_IS_SUBMITTED":
             return {
@@ -82,9 +87,9 @@ export const InvitationProvider = ({ children }: PropsWithChildren) => {
                 }
             })
         },
-        removeCodeState: () => {
+        resetCodeState: () => {
             dispatch({
-                type: "REMOVE_CODE"
+                type: "RESET_CODE"
             })
         },
         setGuestInfo: (guest: Guest) => {
@@ -93,6 +98,11 @@ export const InvitationProvider = ({ children }: PropsWithChildren) => {
                 payload: {
                     guest
                 }
+            })
+        },
+        resetGuestInfoState: () => {
+             dispatch({
+                type: "RESET_GUEST"
             })
         }
     } as InvitationContextI["actionDispatch"]
