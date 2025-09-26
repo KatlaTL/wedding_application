@@ -1,7 +1,7 @@
 import type { LucideProps } from "lucide-react";
 import type { ButtonHTMLAttributes } from "react";
 
-export type ButtonVariant = "primary" | "secondary" | "secondary-no-hover" | "destructive";
+export type ButtonVariant = "primary" | "secondary" | "secondary-no-hover" | "destructive" | "tertiary";
 interface ButtoneProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: ButtonVariant;
     size?: "small" | "medium" | "large";
@@ -10,8 +10,8 @@ interface ButtoneProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 /**
  * Button component to ensure consistent style
- * @param variant - Takes 4 different variants as plain text: "primary" | "secondary" | "secondary-no-hover" | "destructive"
- * @param size - Take 3 different sizes as plain text: "small" | "medium" | "large"
+ * @param variant - Takes 4 different variants as plain text: "primary" | "secondary" | "secondary-no-hover" | "destructive" | "tertiary". Default variant is primary
+ * @param size - Taks 3 different sizes as plain text: "small" | "medium" | "large". Default size is medium
  * @param icon - Accepts only a lucide-react icon
  */
 const Button: React.FC<ButtoneProps> = ({
@@ -23,7 +23,7 @@ const Button: React.FC<ButtoneProps> = ({
     ...props
 }) => {
 
-    const baseStyle = "w-full rounded-lg bg-background border border-primary hover:cursor-pointer outline-none disabled:pointer-events-none disabled:opacity-50 ";
+    const baseStyle = "w-full rounded-lg bg-background border border-primary hover:cursor-pointer outline-none disabled:pointer-events-none disabled:opacity-50 transition-colors";
 
     let variantStyle = "";
 
@@ -39,6 +39,9 @@ const Button: React.FC<ButtoneProps> = ({
             break;
         case "destructive":
             variantStyle = "bg-destructive  text-white"
+            break;
+        case "tertiary":
+            variantStyle = "text-primary bg-primary/10 hover:bg-primary/20 !border-primary-30";
             break;
     }
 

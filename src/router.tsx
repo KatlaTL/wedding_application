@@ -5,7 +5,7 @@ import Program from "./pages/program/Program"
 import Home from "./pages/home/Home"
 import { invitationLoader } from "./loaders/invitationLoader"
 import Layout from "./Layout"
-import WishList from "./pages/WishList"
+import WishList from "./pages/wishlist/WishList"
 
 export const router = createBrowserRouter([
     {

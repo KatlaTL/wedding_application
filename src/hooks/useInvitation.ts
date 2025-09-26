@@ -64,7 +64,6 @@ const useInvitation = () => {
         actionDispatch?.resetCodeState();
         actionDispatch?.resetGuestInfoState();
         actionDispatch?.setIsSubmittedState(false);
-
     }
 
     return {
