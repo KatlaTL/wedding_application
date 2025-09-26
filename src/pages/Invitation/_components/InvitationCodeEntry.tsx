@@ -20,6 +20,7 @@ const InvitationCodeEntry = () => {
     const { validCodes, code, saveGuestInfo } = useInvitation();
     const navigate = useNavigate();
 
+    // If a code is found in memory then redirect to the guest invitation page
     useEffect(() => {
         if (code) {
             navigate(`/invitation/${code}`);

@@ -17,7 +17,7 @@ const useInvitation = () => {
 
     /**
      * Save the response from the RSVP. \
-     * Stores it in the reducer in InvitationContext. \
+     * Stores it in the InvitationContext reducer. \
      * TO-DO save it in DB
      */
     const saveRSVP = (guest: Omit<Guest, "firstName" | "lastName">) => {
@@ -43,6 +43,9 @@ const useInvitation = () => {
         localStorage.removeItem("RSVPIsSubmitted");
     }
 
+    /**
+     * Saves the guest info in the InvitationContext reducer and localstorage
+     */
     const saveGuestInfo = (guest: Pick<Guest, "firstName" | "lastName">, code: string) => {
         localStorage.setItem("guest", JSON.stringify(guest));
         localStorage.setItem("invitationCode", code);
@@ -51,6 +54,9 @@ const useInvitation = () => {
         actionDispatch?.setCodeState(code);
     }
 
+    /**
+     * Clears the guest data
+     */
     const clearGuest = () => {
         localStorage.removeItem("invitationCode");
         localStorage.removeItem("guest");
