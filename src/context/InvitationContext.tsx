@@ -62,6 +62,9 @@ const invitationProducer = (state: InvitationStateType, action: ReducerActionTyp
 export const InvitationProvider = ({ children }: PropsWithChildren) => {
     const [state, dispatch] = useReducer(invitationProducer, reducerInitialState);
 
+    /**
+     * Contains all dispatch functions to update the reducer state
+     */
     const actionDispatch = {
         setIsSubmittedState: (isSubmitted: boolean) => {
             dispatch({

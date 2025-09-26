@@ -15,6 +15,11 @@ const useInvitation = () => {
         "abc123": { id: 1, firstName: "Rikke", lastName: "Samsing Bendixen" },
     }
 
+    /**
+     * Save the response from the RSVP. \
+     * Stores it in the reducer in InvitationContext. \
+     * TO-DO save it in DB
+     */
     const saveRSVP = (guest: Omit<Guest, "firstName" | "lastName">) => {
         if (rest.guest) {
             actionDispatch?.setGuestInfo({
@@ -30,6 +35,9 @@ const useInvitation = () => {
         }
     }
 
+    /**
+     * Allows the RSVP to be updated
+     */
     const updatedRSVP = () => {
         actionDispatch?.setIsSubmittedState(false);
         localStorage.removeItem("RSVPIsSubmitted");

@@ -1,6 +1,6 @@
 import { Car } from "lucide-react";
 import Section from "../../components/Section"
-import LocationTile from "./_components/LocationsTile";
+import LocationTile from "./_components/LocationTile";
 import HeadingWithIcon from "../../components/HeadingWithIcon";
 import useLocation from "../../hooks/useLocation";
 import type { LocationType } from "../../types/locationTypes";
