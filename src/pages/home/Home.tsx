@@ -3,6 +3,9 @@ import StaggeredContent from "../../components/StaggeredContent";
 import Details from "./_components/Details";
 import Hero from "./_components/Hero";
 
+/**
+ * Home page component
+ */
 const Home = () => {
     return (
         <PageTransition>

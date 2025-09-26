@@ -6,6 +6,11 @@ type HeadingWithIconType = {
     className?: string;
 }
 
+/**
+ * Component to display a h3 title with an icon next to it
+ * @param text - Title text
+ * @param icon - Accepts only a lucide-react icon
+ */
 const HeadingWithIcon = ({ icon: Icon, text, className = "" }: HeadingWithIconType) => {
     return (
         <div className={`flex gap-1.5 ${className}`}>

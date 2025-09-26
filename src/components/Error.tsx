@@ -4,6 +4,10 @@ type ErrorType = {
     errorText: string
 }
 
+/**
+ * Error component
+ * @param errorText - The error message
+ */
 const Error = ({ errorText }: ErrorType) => {
     return (
         <div className="flex items-center gap-2 p-3 bg-destructive/10 text-destructive rounded-lg">

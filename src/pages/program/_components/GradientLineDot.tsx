@@ -1,4 +1,6 @@
-
+/**
+ * GradientLineDot used to show the gradient dots next to the program tiles
+ */
 const GradientLineDot = () => {
     return (
         <div className="space-y-8">

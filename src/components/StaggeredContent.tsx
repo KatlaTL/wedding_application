@@ -7,6 +7,12 @@ type StaggeredContentType = {
     className?: string;
 }
 
+/**
+ * Handles staggered animation by controlling the timing of its childrens animation. \
+ * Should be used as a wrapper while StaggeredItem handles the actually animation of its children  
+ * @param staggeredDelay - The delay between each of its childrens animation in seconds. Default value is 0.2
+ * @param initialDelay - The inital delay before the first animation starts in seconds. Default value is 0.1
+ */
 const StaggeredContent = ({ className = "", initialDelay = 0.1, staggeredDelay = 0.2, children }: PropsWithChildren<StaggeredContentType>) => {
     return (
         <motion.div

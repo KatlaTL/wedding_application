@@ -1,6 +1,8 @@
 import type { LocationType } from "../types/locationTypes";
 
-
+/**
+ * Hook to handle location data logic
+ */
 const useLocation = () => {
     const Locations: LocationType[] = [
         {

@@ -6,7 +6,9 @@ import useInvitation from "../../../hooks/useInvitation";
 import StaggeredContent from "../../../components/StaggeredContent";
 import StaggeredItem from "../../../components/StaggeredItem";
 
-
+/**
+ * RSVP submitted component
+ */
 const RSVPSubmitted = () => {
     const { updatedRSVP } = useInvitation();
 

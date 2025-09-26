@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, type NavLinkRenderProps } from "react-router-dom"
 
+/**
+ * The top navigation component
+ */
 const TopNav = () => {
     const [atTop, setAtTop] = useState<boolean>(false);
 

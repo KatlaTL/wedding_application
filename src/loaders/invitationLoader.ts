@@ -1,6 +1,9 @@
 import { redirect, type LoaderFunctionArgs } from "react-router-dom";
 import type { ValidCode } from "../types/invitationTypes";
 
+/**
+ * Invitation loader. Used as a guard before entering the invitation route
+ */
 export const invitationLoader = ({ params }: LoaderFunctionArgs) => {
     const { code } = params;
 

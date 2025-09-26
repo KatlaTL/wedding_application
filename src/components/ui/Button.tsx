@@ -8,6 +8,12 @@ interface ButtoneProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     icon?: React.ForwardRefExoticComponent<Omit<LucideProps, "ref">>;
 }
 
+/**
+ * Button component to ensure consistent style
+ * @param variant - Takes 4 different variants as plain text: "primary" | "secondary" | "secondary-no-hover" | "destructive"
+ * @param size - Take 3 different sizes as plain text: "small" | "medium" | "large"
+ * @param icon - Accepts only a lucide-react icon
+ */
 const Button: React.FC<ButtoneProps> = ({
     children,
     variant = "primary",

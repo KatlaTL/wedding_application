@@ -1,6 +1,7 @@
-
+/**
+ * Footer component
+ */
 const Footer = () => {
-
     return (
         <footer className="py-8 px-4 bg-primary/10 border-t border-primary-30  ">
             <div className="flex flex-col mx-auto text-center gap-2">

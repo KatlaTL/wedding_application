@@ -2,7 +2,9 @@ import type { Guest, ValidCode } from "../types/invitationTypes";
 import { useInvitationContext } from "../context/InvitationContext";
 import { useNavigate } from "react-router-dom";
 
-
+/**
+ * Hook to handle invitation data logic
+ */
 const useInvitation = () => {
     const { actionDispatch, ...rest } = useInvitationContext();
     const navigate = useNavigate();

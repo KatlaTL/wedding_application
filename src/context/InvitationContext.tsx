@@ -27,6 +27,9 @@ const contextInitialState: InvitationContextI = {
 
 const InvitationContext = createContext<InvitationContextI>(contextInitialState);
 
+/**
+ * The producer used to handle the state logic for the invitation useReducer
+ */
 const invitationProducer = (state: InvitationStateType, action: ReducerActionType): InvitationStateType => {
     switch (action.type) {
         case "SET_CODE":
@@ -52,6 +55,10 @@ const invitationProducer = (state: InvitationStateType, action: ReducerActionTyp
     }
 }
 
+/**
+ * Invitation context provider
+ * @returns Context provider
+ */
 export const InvitationProvider = ({ children }: PropsWithChildren) => {
     const [state, dispatch] = useReducer(invitationProducer, reducerInitialState);
 
@@ -99,6 +106,10 @@ export const InvitationProvider = ({ children }: PropsWithChildren) => {
     )
 }
 
+/**
+ * Hook which checks if the invitation context is defined
+ * @returns Invitation context
+ */
 export const useInvitationContext = () => {
     const context = useContext(InvitationContext);
     if (context === undefined) {

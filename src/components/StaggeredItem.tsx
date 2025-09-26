@@ -7,6 +7,13 @@ type StaggeredItemType = {
     duration?: number;
 }
 
+/**
+ * Handles the staggered animation of a component or a group of components. Used as a wrapper. \
+ * StaggeredItem most be inside a StaggeredContent component to work.
+ * @param delay - Delays the animation in seconds. Default value is 0
+ * @param duration - The duration of the transition in seconds. Default value is 0.6
+ * @returns 
+ */
 const StaggeredItem = ({ className = "", delay = 0, duration = 0.6, children }: PropsWithChildren<StaggeredItemType>) => {
     return (
         <motion.div

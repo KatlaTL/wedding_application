@@ -2,7 +2,9 @@ import { MapPin, Clock } from "lucide-react";
 import type React from "react";
 import type { ProgramType } from "../../../types/programTypes";
 
-
+/**
+ * ProgramTiles used in the Program component
+ */
 const ProgramTile: React.FC<ProgramType> = ({
     title,
     description,

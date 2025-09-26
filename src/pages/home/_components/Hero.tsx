@@ -3,6 +3,9 @@ import InfoTiles from "./InfoTiles";
 import Button from "../../../components/ui/Button";
 import StaggeredItem from "../../../components/StaggeredItem";
 
+/**
+ * Hero component used on the Home page
+ */
 const Hero = () => {
     return (
         <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">

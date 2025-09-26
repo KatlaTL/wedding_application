@@ -6,6 +6,12 @@ type ModalType = {
     onClose: () => void;
 }
 
+/**
+ * Modal component with transition animation
+ * @param isOpen - Boolean to determine if the modal is open
+ * @param onClose - Function to close the modal. Usually by setting isOpen to false
+ * @returns 
+ */
 const Modal = ({ isOpen, onClose, children }: React.PropsWithChildren<ModalType>) => {
     if (!isOpen) return null;
 

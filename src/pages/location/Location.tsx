@@ -1,6 +1,6 @@
 import { Car } from "lucide-react";
 import Section from "../../components/Section"
-import LocationTiles from "./_components/LocationsTiles";
+import LocationTile from "./_components/LocationsTile";
 import HeadingWithIcon from "../../components/HeadingWithIcon";
 import useLocation from "../../hooks/useLocation";
 import type { LocationType } from "../../types/locationTypes";
@@ -8,6 +8,9 @@ import PageTransition from "../../components/PageTransition";
 import StaggeredContent from "../../components/StaggeredContent";
 import StaggeredItem from "../../components/StaggeredItem";
 
+/**
+ * Location page component
+ */
 const Location = () => {
     const Locations: LocationType[] = useLocation();
 
@@ -19,7 +22,7 @@ const Location = () => {
 
                         {Locations.map((location, index) =>
                             <StaggeredItem>
-                                <LocationTiles
+                                <LocationTile
                                     key={location.title + index}
                                     title={location.title}
                                     address={location.address}

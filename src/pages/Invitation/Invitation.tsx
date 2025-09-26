@@ -21,6 +21,9 @@ import PageTransition from "../../components/PageTransition";
 import StaggeredContent from "../../components/StaggeredContent";
 import StaggeredItem from "../../components/StaggeredItem";
 
+/**
+ * Invitation page component
+ */
 const Invitation = () => {
     const [isAttending, setIsAttending] = useState<boolean>();
     const [needLift, setNeedLift] = useState<boolean>();

@@ -10,7 +10,9 @@ import Error from "../../../components/Error";
 import StaggeredContent from "../../../components/StaggeredContent";
 import StaggeredItem from "../../../components/StaggeredItem";
 
-
+/**
+ * InvitationCodeEntry component.
+ */
 const InvitationCodeEntry = () => {
     const [invitationCode, setInvitationCode] = useState<string>("");
     const [error, setError] = useState<string>("");

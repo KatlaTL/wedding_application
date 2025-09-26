@@ -1,7 +1,9 @@
 import { Martini, Users, Utensils } from "lucide-react"
 import type { ProgramType } from "../types/programTypes"
 
-
+/**
+ * Hook to handle program data logic
+ */
 const useProgram = () => {
     const program: ProgramType[] = [
         {

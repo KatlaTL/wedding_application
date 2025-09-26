@@ -3,6 +3,9 @@ type ButtonGroupType = {
     className?: string;
 }
 
+/**
+ * ButtonGroup component to ensure consistent style in the invitation form
+ */
 const ButtonGroup = ({ title, className = "", children }: React.PropsWithChildren<ButtonGroupType>) => {
     return (
         <div className={className}>

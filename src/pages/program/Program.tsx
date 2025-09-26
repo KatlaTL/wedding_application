@@ -9,6 +9,9 @@ import ProgramTile from "./_components/ProgramTile";
 import StaggeredContent from "../../components/StaggeredContent";
 import StaggeredItem from "../../components/StaggeredItem";
 
+/**
+ * Program page component
+ */
 const Program = () => {
     const program: ProgramType[] = useProgram();
 

@@ -2,8 +2,10 @@ import { Clock, MapPin } from "lucide-react"
 import Button from "../../../components/ui/Button"
 import type { LocationType } from "../../../types/locationTypes";
 
-
-const LocationTiles: React.FC<LocationType> = ({
+/**
+ * LocationTiles used in the Location component
+ */
+const LocationTile: React.FC<LocationType> = ({
     title,
     address,
     description,
@@ -38,4 +40,4 @@ const LocationTiles: React.FC<LocationType> = ({
     )
 }
 
-export default LocationTiles;
+export default LocationTile;

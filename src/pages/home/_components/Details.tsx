@@ -1,8 +1,10 @@
 import Section from "../../../components/Section";
 import StaggeredItem from "../../../components/StaggeredItem";
 
+/**
+ * Details component used on the Home page
+ */
 const Details = () => {
-
     return (
         <StaggeredItem>
             <Section title="Information">

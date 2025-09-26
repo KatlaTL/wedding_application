@@ -4,43 +4,72 @@ import React from "react";
 
 type SelectItemProps = React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>;
 
+/**
+ * Simplifies the use of radix-ui/react-select \
+ */
 const Select = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.Root>) => {
     return <SelectPrimitive.Root {...props} />
 }
 
+/**
+ * Simplifies the use of radix-ui/react-select \
+ */
 const SelectTriger = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.Trigger>) => {
     return <SelectPrimitive.Trigger {...props} />
 }
 
+/**
+ * Simplifies the use of radix-ui/react-select \
+ */
 const SelectValue = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.Value>) => {
     return <SelectPrimitive.Value {...props} />
 }
 
+/**
+ * Simplifies the use of radix-ui/react-select \
+ */
 const SelectIcon = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.Icon>) => {
     return <SelectPrimitive.Icon {...props} />
 }
 
+/**
+ * Simplifies the use of radix-ui/react-select \
+ */
 const SelectPortal = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.Portal>) => {
     return <SelectPrimitive.Portal {...props} />
 }
 
+/**
+ * Simplifies the use of radix-ui/react-select \
+ */
 const SelectContent = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.Content>) => {
     return <SelectPrimitive.Content {...props} />
 }
 
+/**
+ * Simplifies the use of radix-ui/react-select \
+ */
 const SelectViewport = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.Viewport>) => {
     return <SelectPrimitive.Viewport {...props} />
 }
 
+/**
+ * Simplifies the use of radix-ui/react-select \
+ */
 const SelectScrollUpButton = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>) => {
     return <SelectPrimitive.ScrollUpButton {...props} />
 }
 
+/**
+ * Simplifies the use of radix-ui/react-select \
+ */
 const SelectScrollDownButton = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.ScrollDownButton>) => {
     return <SelectPrimitive.ScrollDownButton {...props} />
 }
 
-
+/**
+ * Simplifies the use of radix-ui/react-select \
+ */
 const SelectItem = React.forwardRef<
     React.ComponentRef<typeof SelectPrimitive.Item>,
     SelectItemProps

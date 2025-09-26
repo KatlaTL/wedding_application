@@ -10,27 +10,10 @@ export type validCodeEntry = {
 export type ValidCode = Record<string, validCodeEntry>;
 
 export type DietaryType = z.infer<typeof DietarySchema>
-/* "Vegan" | "Vegetarian" | "Omnivore"; */
 
 export type Guest = z.infer<typeof GuestSchema>;
 
-/* {
-    firstName: string;
-    lastName: string;
-    isAttending?: boolean;
-    needLift?: boolean;
-    canOfferLift?: boolean;
-    dietary?: DietaryType;
-    allergies?: string;
-} */
-
 export type InvitationStateType = z.infer<typeof InvitationStateSchema>;
-
-/* {
-    isSubmitted: boolean;
-    code: string | null;
-    guest: Guest | null
-}; */
 export interface InvitationContextI extends InvitationStateType {
     actionDispatch: {
         setIsSubmittedState: (isSubmitted: boolean) => void;

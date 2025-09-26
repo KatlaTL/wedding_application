@@ -6,6 +6,11 @@ type SectionType = {
     description?: string;
 }
 
+/**
+ * Section component to ensure consistent style
+ * @param title - Page title
+ * @param description - Page sub title
+ */
 const Section = ({ title, description, children }: PropsWithChildren<SectionType>) => {
     return (
         <section className="relative min-h-screen flex flex-col py-30 overflow-hidden">
