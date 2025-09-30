@@ -42,7 +42,7 @@ const TopNav = () => {
                             .filter(r => r.path)
                             .filter(r => r.handle?.label)
                             .map(({ path, handle }) => (
-                                <NavLink className={linkClassNames} key={path} to={path!}>{handle.label}</NavLink>
+                                <NavLink className={linkClassNames} key={path} to={handle.navPath ?? path!}>{handle.label}</NavLink>
                             ))}
                     </div>
                 </div>
