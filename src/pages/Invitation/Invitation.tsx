@@ -22,7 +22,8 @@ import StaggeredContent from "../../components/StaggeredContent";
 import StaggeredItem from "../../components/StaggeredItem";
 
 /**
- * Invitation page component
+ * Invitation page component. \
+ * Renders both the RSVP form, the RSVPSubmitted component and the InvitationCodeEntry component.
  */
 const Invitation = () => {
     const [isAttending, setIsAttending] = useState<boolean>();
