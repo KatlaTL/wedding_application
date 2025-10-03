@@ -3,7 +3,6 @@ import { Link, NavLink, type NavLinkRenderProps } from "react-router-dom";
 import { router } from "../router";
 import Button from "./ui/Button";
 import { Menu, X } from "lucide-react";
-import { is } from "zod/locales";
 
 /**
  * The top navigation component
