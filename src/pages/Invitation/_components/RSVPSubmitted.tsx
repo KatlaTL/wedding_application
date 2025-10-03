@@ -17,7 +17,7 @@ const RSVPSubmitted = () => {
             <Section>
                 <StaggeredItem>
                     <div className="bg-background-muted rounded-lg border-primary-30 w-120 border p-5">
-                        <CheckCircle className="h-12 w-12 text-sage-green mx-auto mb-4" />
+                        <CheckCircle className="h-12 w-12 text-tertiary mx-auto mb-4" />
                         <Wrapper>
                             <h2>Tak! Invitation besvaret</h2>
                             <p className="text-sm! mt-1">We've received your RSVP and can't wait to celebrate with you!</p>

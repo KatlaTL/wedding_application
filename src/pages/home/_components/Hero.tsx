@@ -15,7 +15,7 @@ const Hero = () => {
     }
 
     return (
-        <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
+        <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden py-30">
             <StaggeredItem>
                 <div className="relative text-center max-w-4xl mx-auto">
                     <h1>Asger &amp; Rikke</h1>

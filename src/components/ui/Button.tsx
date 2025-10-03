@@ -11,7 +11,7 @@ interface ButtoneProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 /**
  * Button component to ensure consistent style
  * @param variant - Takes 4 different variants as plain text: "primary" | "secondary" | "secondary-no-hover" | "destructive" | "tertiary". Default variant is primary
- * @param size - Taks 3 different sizes as plain text: "small" | "medium" | "large". Default size is medium
+ * @param size - Takes 3 different sizes as plain text: "small" | "medium" | "large". Default size is medium
  * @param icon - Accepts only a lucide-react icon
  */
 const Button: React.FC<ButtoneProps> = ({
