@@ -3,28 +3,22 @@ import { Link, NavLink, type NavLinkRenderProps } from "react-router-dom";
 import { router } from "../router";
 import Button from "./ui/Button";
 import { Menu, X } from "lucide-react";
+import useIsAtTop from "../hooks/utils/useIsAtTop";
+import useClickOutside from "../hooks/utils/useClickOutside";
 
 /**
  * The top navigation component
  */
 const TopNav = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [atTop, setAtTop] = useState<boolean>(false);
+    const isAtTop = useIsAtTop(50);
+
     const menuRef = useRef<HTMLDivElement | null>(null);
     const menuButtonRef = useRef<HTMLDivElement | null>(null);
+    
+    useClickOutside([menuRef, menuButtonRef], () => setIsOpen(false));
+
     const routes = router.routes;
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setAtTop(window.scrollY <= 50)
-        }
-
-        window.addEventListener("scroll", handleScroll);
-
-        handleScroll();
-
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
 
     useEffect(() => {
         /**
@@ -42,22 +36,6 @@ const TopNav = () => {
 
         return () => window.removeEventListener("resize", checkWidth);
     }, []);
-    
-    useEffect(() => {
-        /**
-         * Checks if the user clicks outside of the open menu or the menu button
-         */
-        const handleClickOutside = (e: MouseEvent) => {
-            if ((menuRef.current && !menuRef.current.contains(e?.target as Node)) && (menuButtonRef.current && !menuButtonRef.current.contains(e?.target as Node))) {
-                setIsOpen(false);
-            }
-        }
-
-        window.addEventListener("mousedown", handleClickOutside);
-
-        return () => window.removeEventListener("mousedown", handleClickOutside);
-
-    }, []);
 
     const linkClassNames: ((props: NavLinkRenderProps) => string | undefined) | undefined = ({ isActive }) => {
         if (isActive) {
@@ -74,7 +52,7 @@ const TopNav = () => {
                             ));
 
     return (
-        <nav className={`fixed top-0 left-0 right-0 z-50 text-xs bg-background pt-3 ${!atTop ? "backdrop-blur-sm shadow-sm" : ""} ${!isOpen && !atTop ? "pb-3" : ""}`}>
+        <nav className={`fixed top-0 left-0 right-0 z-50 text-xs bg-background pt-3 ${!isAtTop ? "backdrop-blur-sm shadow-sm" : ""} ${!isOpen && !isAtTop ? "pb-3" : ""}`}>
             <div className="w-full md:w-[65%] mx-auto px-4 transition-all duration-500">
                 <div className="flex justify-between gap-5">
                     <div className="text-primary">
@@ -92,7 +70,7 @@ const TopNav = () => {
 
             </div>
             {isOpen && (
-                <div ref={menuRef} className={`md:hidden px-4 text-muted-foreground bg-background/80 mt-3 ${atTop ? "backdrop-blur-sm shadow-sm" : ""}`}>
+                <div ref={menuRef} className={`md:hidden px-4 text-muted-foreground bg-background/80 mt-3 ${isAtTop ? "backdrop-blur-sm shadow-sm" : ""}`}>
                     <div className="border-t border-primary/30 flex flex-col gap-2 px-2 py-4">
                         {navLinks}
                     </div>
