@@ -19,7 +19,7 @@ const Section = ({ title, description, children }: PropsWithChildren<SectionType
                 {/* Animate the title and description if the Section component is wrapped in a StaggeredContent component */}
                 <StaggeredItem className="flex flex-col">
                     {title && <h2 className="mb-3">{title}</h2>}
-                    {description && <p className="!text-sm mb-3 self-center max-w-130">{description}</p>}
+                    {description && <p className="!text-sm mb-3 self-center max-w-130 mx-5 md:mx-0">{description}</p>}
                 </StaggeredItem>
 
                 {children}

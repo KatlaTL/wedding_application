@@ -13,7 +13,7 @@ const ProgramTile: React.FC<ProgramType> = ({
     icon: Icon
 }) => {
     return (
-        <div className="h-32 w-120 bg-background-muted rounded-lg border-primary-30 border-l-4 border-1">
+        <div className="min-h-32 mx-5 md:mx-0 bg-background-muted rounded-lg border-primary-30 border-l-4 border-1">
             <div className="flex flex-row p-5 items-start h-full">
                 <div className="flex rounded-full w-8 h-8 bg-muted justify-center items-center">
                     {Icon && <Icon color="#F28C6B" />}
@@ -26,7 +26,7 @@ const ProgramTile: React.FC<ProgramType> = ({
                     </div>
 
 
-                    <div className="text-xs flex gap-1">
+                    <div className="text-xs flex gap-1 mt-5 md:mt-0">
                         <span>
                             <MapPin className="h-4 w-4" />
                         </span>
@@ -38,7 +38,7 @@ const ProgramTile: React.FC<ProgramType> = ({
                     <span>
                         <Clock className="h-[11px] w-[11px] mt-[3px]" />
                     </span>
-                    <p className="!text-primary">{time}</p>
+                    <p className="!text-primary text-[11px] md:text-xs">{time}</p>
                 </div>
             </div>
         </div>
