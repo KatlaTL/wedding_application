@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Link, NavLink, type NavLinkRenderProps } from "react-router-dom";
 import { router } from "../router";
 import Button from "./ui/Button";
 import { Menu, X } from "lucide-react";
 import useIsAtTop from "../hooks/utils/useIsAtTop";
 import useClickOutside from "../hooks/utils/useClickOutside";
+import useTailwindMediaQuery from "../hooks/utils/useTailwindMediaQuery";
 
 /**
  * The top navigation component
@@ -18,24 +19,9 @@ const TopNav = () => {
     
     useClickOutside([menuRef, menuButtonRef], () => setIsOpen(false));
 
+    useTailwindMediaQuery("md", () => setIsOpen(false));
+
     const routes = router.routes;
-
-    useEffect(() => {
-        /**
-         * Check if the window screen width is the same as Tailwinds md: size
-         */
-        const checkWidth = () => {
-            if (window.innerWidth >= 768) {
-                setIsOpen(false);
-            }
-        }
-
-        checkWidth();
-
-        window.addEventListener("resize", checkWidth);
-
-        return () => window.removeEventListener("resize", checkWidth);
-    }, []);
 
     const linkClassNames: ((props: NavLinkRenderProps) => string | undefined) | undefined = ({ isActive }) => {
         if (isActive) {
