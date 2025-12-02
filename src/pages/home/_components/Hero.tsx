@@ -19,9 +19,9 @@ const Hero = () => {
             <StaggeredItem>
                 <div className="relative text-center max-w-4xl mx-auto">
                     <h1>Asger &amp; Rikke</h1>
-                    <p className="!text-xl m-3">Vi skal giftes!</p>
+                    <p className="md:!text-xl !text-lg m-3">Vi skal giftes!</p>
 
-                    <div className="flex items-center justify-center gap-6 mb-8 mt-6">
+                    <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-6 mb-8 mt-6">
                         <InfoTiles text="22 August, 2026" icon={Calendar} />
 
                         <InfoTiles text="Køng kirke, Fyn" icon={MapPin} />

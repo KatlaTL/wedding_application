@@ -20,7 +20,7 @@
     }
     
     h1 {
-        @apply text-primary text-4xl;
+        @apply text-primary md:text-4xl text-3xl;
     }
 
     h2 {

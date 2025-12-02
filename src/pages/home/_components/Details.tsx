@@ -8,8 +8,8 @@ const Details = () => {
     return (
         <StaggeredItem>
             <Section title="Information">
-                <div className="grid gab-6 grid-cols-2 justify-center items-center">
-                    <div className="flex flex-col items-center justify-between p-3 ml-20">
+                <div className="flex flex-col md:grid gab-6 md:grid-cols-2 justify-center items-center">
+                    <div className="flex flex-col items-center justify-between p-3 md:ml-20">
                         <p className="pb-5">
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis neque metus, sit amet vehicula nunc pharetra eleifend. Duis posuere vestibulum mi vel pulvinar. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
                         </p>
