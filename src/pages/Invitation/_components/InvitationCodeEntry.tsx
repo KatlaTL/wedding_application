@@ -52,7 +52,7 @@ const InvitationCodeEntry = () => {
             <Section title="Invitation" description="Indtast din kode for at se din personlige bryllupsinvitation">
                 <StaggeredItem>
                     <form onSubmit={(e) => e.preventDefault()}>
-                        <div className="bg-background-muted rounded-lg border-primary-30 w-120 border p-5">
+                        <div className="bg-background-muted rounded-lg border-primary-30 md:w-120 border p-5 mx-5 md:mx-0">
                             <div className="flex flex-col items-start text-left gap-3">
                                 <HeadingWithIcon icon={Lock} text="Få adgang til din invitation" />
 

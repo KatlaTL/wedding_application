@@ -12,6 +12,7 @@
     --color-background-muted: #ffffffcc;
     --color-primary-30: #F28C6B4D;
     --color-destructive: #EF4444;
+    --breakpoint-xs: 500px;
 }
 
 @layer base {

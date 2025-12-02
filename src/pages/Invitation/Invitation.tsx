@@ -105,7 +105,7 @@ const Invitation = () => {
             <StaggeredContent>
                 <Section title="Bekræft deltagelse" description={`${validCodes[code]?.firstName} ${validCodes[code]?.lastName} lad os vide, om du kommer!`}>
                     <StaggeredItem>
-                        <div className="bg-background-muted rounded-lg border-primary-30 border p-5 w-120 mt-7 mb-5">
+                        <div className="bg-background-muted rounded-lg border-primary-30 border p-5 max-w-120 mt-7 mb-5 xs:mx-auto mx-5 md:mx-0">
                             <Wrapper>
                                 <ButtonGroup className="mx-auto">
                                     <Button size="small" icon={Mail} className="w-45!" onClick={() => setModalIsOpen(true)}>Se din invitation</Button>
@@ -117,7 +117,7 @@ const Invitation = () => {
 
                     <StaggeredItem>
                         <form onSubmit={(e) => e.preventDefault()}>
-                            <div className="bg-background-muted rounded-lg border-primary-30 border p-5 w-120">
+                            <div className="bg-background-muted rounded-lg border-primary-30 border p-5 max-w-120 xs:mx-auto mx-5 md:mx-0">
                                 <div className="flex flex-col items-start text-left gap-3">
                                     <HeadingWithIcon icon={Users} text="Tilmelding" />
 

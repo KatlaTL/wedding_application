@@ -18,7 +18,7 @@ const Location = () => {
         <PageTransition>
             <StaggeredContent>
                 <Section title="Find vej" description="Praktisk info om de forskellige lokationer">
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="flex flex-col md:grid grid-cols-2 gap-3 mx-5 md:mx-0">
 
                         {Locations.map((location, index) =>
                             <StaggeredItem>

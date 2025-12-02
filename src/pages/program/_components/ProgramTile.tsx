@@ -19,7 +19,7 @@ const ProgramTile: React.FC<ProgramType> = ({
                     {Icon && <Icon color="#F28C6B" />}
                 </div>
 
-                <div className="flex flex-col items-start justify-between ml-5 text-muted-foreground flex-1 h-full">
+                <div className="flex flex-col items-start justify-between md:ml-5 ml-3 text-muted-foreground flex-1 h-full">
                     <div className="text-left">
                         <h3 className="!text-sm pb-1">{title}</h3>
                         <p>{description}</p>
@@ -38,7 +38,7 @@ const ProgramTile: React.FC<ProgramType> = ({
                     <span>
                         <Clock className="h-[11px] w-[11px] mt-[3px]" />
                     </span>
-                    <p className="!text-primary text-[11px] md:text-xs">{time}</p>
+                    <p className="!text-primary">{time}</p>
                 </div>
             </div>
         </div>

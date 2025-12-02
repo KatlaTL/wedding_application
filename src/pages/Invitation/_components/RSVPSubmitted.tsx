@@ -16,7 +16,7 @@ const RSVPSubmitted = () => {
         <StaggeredContent>
             <Section>
                 <StaggeredItem>
-                    <div className="bg-background-muted rounded-lg border-primary-30 w-120 border p-5">
+                    <div className="bg-background-muted rounded-lg border-primary-30 md:w-120 border p-5 mx-5 md:mx-0">
                         <CheckCircle className="h-12 w-12 text-tertiary mx-auto mb-4" />
                         <Wrapper>
                             <h2>Tak! Invitation besvaret</h2>
