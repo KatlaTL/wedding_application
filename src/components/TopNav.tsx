@@ -1,5 +1,6 @@
-import { useRef, useState } from "react";
-import { Link, NavLink, type NavLinkRenderProps } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from 'framer-motion';
+import { Link, NavLink, useLocation, type NavLinkRenderProps } from "react-router-dom";
 import { router } from "../router";
 import Button from "./ui/Button";
 import { Menu, X } from "lucide-react";
@@ -13,10 +14,11 @@ import useTailwindMediaQuery from "../hooks/utils/useTailwindMediaQuery";
 const TopNav = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const isAtTop = useIsAtTop(50);
+    const location = useLocation();
 
     const menuRef = useRef<HTMLDivElement | null>(null);
     const menuButtonRef = useRef<HTMLDivElement | null>(null);
-    
+
     useClickOutside([menuRef, menuButtonRef], () => setIsOpen(false));
 
     useTailwindMediaQuery("md", () => setIsOpen(false));
@@ -31,11 +33,15 @@ const TopNav = () => {
     }
 
     const navLinks = routes[0].children!
-                            .filter(r => r.path)
-                            .filter(r => r.handle?.label)
-                            .map(({ path, handle }) => (
-                                <NavLink className={linkClassNames} key={path} to={handle.navPath ?? path!}>{handle.label}</NavLink>
-                            ));
+        .filter(r => r.path)
+        .filter(r => r.handle?.label)
+        .map(({ path, handle }) => (
+            <li key={path}><NavLink className={linkClassNames} key={path} to={handle.navPath ?? path!}>{handle.label}</NavLink></li>
+        ));
+
+    useEffect(() => {
+        setIsOpen(false);
+    }, [location.pathname]);
 
     return (
         <nav className={`fixed top-0 left-0 right-0 z-50 text-xs bg-background pt-3 ${!isAtTop ? "backdrop-blur-sm shadow-sm" : ""} ${!isOpen && !isAtTop ? "pb-3" : ""}`}>
@@ -45,9 +51,9 @@ const TopNav = () => {
                         <Link to="/">A &amp; R</Link>
                     </div>
 
-                    <div className="hidden md:flex gap-5 text-muted-foreground">
+                    <ul className="hidden md:flex gap-5 text-muted-foreground">
                         {navLinks}
-                    </div>
+                    </ul>
 
                     <div className="md:hidden" ref={menuButtonRef}>
                         <Button variant="primary" size="small" className="border-none! w-6! h-6!" icon={isOpen ? X : Menu} onClick={() => setIsOpen(prev => !prev)} />
@@ -55,13 +61,23 @@ const TopNav = () => {
                 </div>
 
             </div>
-            {isOpen && (
-                <div ref={menuRef} className={`md:hidden px-4 text-muted-foreground bg-background/80 mt-3 ${isAtTop ? "backdrop-blur-sm shadow-sm" : ""}`}>
-                    <div className="border-t border-primary/30 flex flex-col gap-2 px-2 py-4">
-                        {navLinks}
-                    </div>
-                </div>
-            )}
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0.5 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0.5 }}
+                        style={{ overflow: "hidden" }}
+                        transition={{ duration: 0.2 }}
+                        ref={menuRef}
+                        className={`md:hidden px-4 text-muted-foreground bg-background/80 mt-3 ${isAtTop ? "backdrop-blur-sm shadow-sm" : ""}`}
+                    >
+                        <ul className="border-t border-primary/30 flex flex-col gap-2 px-2 py-4">
+                            {navLinks}
+                        </ul>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </nav>
     )
 }
