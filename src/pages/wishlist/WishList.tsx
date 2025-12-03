@@ -2,13 +2,13 @@ import { Coffee, Gift, Heart, Tag } from "lucide-react";
 import PageTransition from "../../components/PageTransition"
 import Section from "../../components/Section";
 import StaggeredContent from "../../components/StaggeredContent"
-import CategoryTile from "./_components/CategoryTile";
+import CategorySection from "./_components/CategorySection";
 import useWishList from "../../hooks/useWishList";
 import PriorityTile from "./_components/PriorityTile";
 import Button from "../../components/ui/Button";
-import CategoryItem from "./_components/CategoryItem";
 import HidePriorityToggle from "./_components/HidePriorityToggle";
 import StaggeredItem from "../../components/StaggeredItem";
+import CategoryTile from "./_components/CategoryTile";
 
 /**
  * WishList page component
@@ -35,15 +35,15 @@ const WishList = () => {
 
                                     <div className="flex flex-col gap-8 mt-10">
                                         {categories.map(({ icon, items, title, description }) => (
-                                            <CategoryTile
+                                            <CategorySection
                                                 icon={icon}
                                                 title={title}
                                                 description={description}
                                             >
                                                 {items.map(({ title, description, priority }) => (
-                                                    <CategoryItem title={title} description={description} priority={priority} showPriority={hide} />
+                                                    <CategoryTile title={title} description={description} priority={priority} showPriority={hide} />
                                                 ))}
-                                            </CategoryTile>
+                                            </CategorySection>
 
                                         ))}
                                     </div>

@@ -8,7 +8,7 @@ export type PriorityTileType = {
     description: string;
 }
 
-export type CategoryItemType = {
+export type CategoryTileType = {
     title: string;
     description: string;
     priority: PriorityType;
@@ -19,10 +19,10 @@ export type CategoryType = {
     icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref">>;
     title: string;
     description: string;
-    items: CategoryItemType[];
+    items: CategoryTileType[];
 }
 
-export type CategoryTileType = {
+export type CategorySectionType = {
     icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref">>;
     title: string;
     description: string;
