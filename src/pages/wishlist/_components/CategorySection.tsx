@@ -6,7 +6,7 @@ import { type PropsWithChildren } from "react";
  */
 const CategorySection = ({ icon: Icon, title, description, children }: PropsWithChildren<CategorySectionType>) => {
     return (
-        <div className="w-full rounded-lg border border-primary-30 bg-gradient-to-br from-primary/10 to-primary/5 p-5">
+        <div className="rounded-lg border border-primary-30 bg-gradient-to-br from-primary/10 to-primary/5 p-5 mx-5 md:mx-0">
             <div className="flex text-left gap-2">
                 <div className="flex bg-primary/15 w-10 h-10 rounded-lg justify-center items-center">
                     <Icon className="w-6 h-6 text-primary" />
@@ -17,7 +17,7 @@ const CategorySection = ({ icon: Icon, title, description, children }: PropsWith
                 </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-3 mt-5">
+            <div className="grid md:grid-cols-3 xs:grid-cols-2 gap-3 mt-5">
                 {children}
             </div>
         </div>

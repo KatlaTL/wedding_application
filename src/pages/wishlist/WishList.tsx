@@ -49,7 +49,7 @@ const WishList = () => {
                                     </div>
 
                                     {hide && (
-                                        <div className="grid grid-cols-3 gap-3 mt-8">
+                                        <div className="grid xs:grid-cols-3 gap-3 mt-8 mx-5 md:mx-0">
                                             <PriorityTile icon={Gift} title="Essential" description="Ting vi virkelig har brug" />
                                             <PriorityTile icon={Heart} title="Nice to Have" description="Ville gøre vores hverdag mere behagelig" />
                                             <PriorityTile icon={Coffee} title="Dream Gift" description="Små forkælelser, vi ville elske" />
