@@ -1,9 +1,9 @@
-import type { CategoryItemType, PriorityType } from "../../../types/wishListTypes";
+import type { CategoryTileType, PriorityType } from "../../../types/wishListTypes";
 
 /**
  * Component used in CategoryTile
  */
-const CategoryItem = ({ title, description, priority, showPriority }: CategoryItemType) => {
+const CategoryTile = ({ title, description, priority, showPriority }: CategoryTileType) => {
 
     const priorityStyle = (priority: PriorityType): string => {
         switch (priority) {
@@ -33,4 +33,4 @@ const CategoryItem = ({ title, description, priority, showPriority }: CategoryIt
     )
 }
 
-export default CategoryItem;
+export default CategoryTile;

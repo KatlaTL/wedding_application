@@ -13,7 +13,7 @@ type TailwindScreensTypes = keyof typeof tailwindScreens;
 /**
  * TailwindMediaQuery hook to check if the screen width is within one of the default tailwind breakpoints.
  * @param screenKey - The tailwind breakpoint
- * @param listener - Optional listener function to execute with the screen width matches the provide breakpoint
+ * @param listener - Optional listener function to execute if the screen width matches the provide breakpoint
  * @returns returns true if the document currently matches the provided tailwind breakpoint, or false if not
  */
 const useTailwindMediaQuery = (screenKey: TailwindScreensTypes, listener?: () => void) => {
