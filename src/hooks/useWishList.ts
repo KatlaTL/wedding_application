@@ -14,37 +14,32 @@ const useWishList = () => {
                 {
                     title: "Standmixer",
                     description: "Til at bage sammen og lave frisk pasta",
-                    priority: "Essential"
+                    link: "https://mythicspoiler.com/newspoilers.html"
                 },
                 {
                     title: "Standmixer",
                     description: "Til at bage sammen og lave frisk pasta",
-                    priority: "Dream Gift"
                 },
                 {
                     title: "Standmixer",
                     description: "Til at bage sammen og lave frisk pasta",
-                    priority: "Nice to Have"
+                    link: "https://mythicspoiler.com/newspoilers.html"
                 },
                 {
                     title: "Standmixer",
                     description: "Til at bage sammen og lave frisk pasta",
-                    priority: "Essential"
                 },
                 {
                     title: "Standmixer",
                     description: "Til at bage sammen og lave frisk pasta",
-                    priority: "Essential"
                 },
                 {
                     title: "Standmixer",
                     description: "Til at bage sammen og lave frisk pasta",
-                    priority: "Essential"
                 },
                 {
                     title: "Standmixer",
                     description: "Til at bage sammen og lave frisk pasta",
-                    priority: "Nice to Have"
                 },
             ]
         },
@@ -56,37 +51,31 @@ const useWishList = () => {
                 {
                     title: "Standmixer",
                     description: "Til at bage sammen og lave frisk pasta",
-                    priority: "Essential"
                 },
                 {
                     title: "Standmixer",
                     description: "Til at bage sammen og lave frisk pasta",
-                    priority: "Dream Gift"
+                    link: "https://mythicspoiler.com/newspoilers.html"
                 },
                 {
                     title: "Standmixer",
                     description: "Til at bage sammen og lave frisk pasta",
-                    priority: "Nice to Have"
                 },
                 {
                     title: "Standmixer",
                     description: "Til at bage sammen og lave frisk pasta",
-                    priority: "Essential"
                 },
                 {
                     title: "Standmixer",
                     description: "Til at bage sammen og lave frisk pasta",
-                    priority: "Essential"
                 },
                 {
                     title: "Standmixer",
                     description: "Til at bage sammen og lave frisk pasta",
-                    priority: "Essential"
                 },
                 {
                     title: "Standmixer",
                     description: "Til at bage sammen og lave frisk pasta",
-                    priority: "Nice to Have"
                 },
             ]
         },
