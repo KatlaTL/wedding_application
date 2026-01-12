@@ -15,14 +15,16 @@ const reducerInitialState: InvitationStateType = InvitationStateSchema.parse({
         localStorage.getItem("guest"),
         GuestSchema,
         null
-    )
+    ),
+    wishlistCategoriesClaimed: []
 });
 
 const contextInitialState: InvitationContextI = {
     isSubmitted: reducerInitialState.isSubmitted,
     code: reducerInitialState.code,
     guest: reducerInitialState.guest,
-    actionDispatch: null
+    actionDispatch: null,
+    wishlistCategoriesClaimed: reducerInitialState.wishlistCategoriesClaimed
 };
 
 const InvitationContext = createContext<InvitationContextI>(contextInitialState);
@@ -56,6 +58,16 @@ const invitationProducer = (state: InvitationStateType, action: ReducerActionTyp
             return {
                 ...state,
                 isSubmitted: action.payload.isSubmitted
+            }
+        case "SET_WISHLIST_CATEGORIES_CLAIMED":
+            return {
+                ...state,
+                wishlistCategoriesClaimed: [...state.wishlistCategoriesClaimed, action.payload.category]
+            }
+        case "RESET_WISHLIST_CATEGORIES_CLAIMED":
+            return {
+                ...state,
+                wishlistCategoriesClaimed: []
             }
     }
 }
@@ -104,15 +116,43 @@ export const InvitationProvider = ({ children }: PropsWithChildren) => {
              dispatch({
                 type: "RESET_GUEST"
             })
+        },
+        setWishlistCategoriesClamied: (category: string) => {
+            dispatch({
+                type: "SET_WISHLIST_CATEGORIES_CLAIMED",
+                payload: {
+                    category
+                }
+            })
+        },
+        resetWishlistCategoriesClamied: () => {
+            dispatch({
+                type: "RESET_WISHLIST_CATEGORIES_CLAIMED"
+            })
         }
     } as InvitationContextI["actionDispatch"]
 
+    if (actionDispatch) {
+        actionDispatch.resetAll = () => {
+            (Object.keys(actionDispatch) as Array<keyof typeof actionDispatch>).forEach((key) => {
+                if (key.startsWith("reset")) {
+                    const fn = actionDispatch[key];
+                    
+                    if (typeof fn === "function") {
+                        (fn as () => void)() // assert TS fn has no parameters
+                    }
+                }
+            })
+        }
+    }   
+
     return (
         <InvitationContext.Provider value={{
-            actionDispatch: actionDispatch,
+            actionDispatch,
             isSubmitted: state.isSubmitted,
             code: state.code,
-            guest: state.guest
+            guest: state.guest,
+            wishlistCategoriesClaimed: state.wishlistCategoriesClaimed
         }}>
             {children}
         </InvitationContext.Provider>

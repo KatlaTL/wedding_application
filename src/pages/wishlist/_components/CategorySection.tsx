@@ -1,13 +1,23 @@
 import type { CategorySectionType } from "../../../types/wishListTypes";
-import { useState, type PropsWithChildren } from "react";
+import { useEffect, useState, type PropsWithChildren } from "react";
 import Button from "../../../components/ui/Button";
 import { CircleCheckBig, ShoppingBag } from "lucide-react";
+import useInvitation from "../../../hooks/useInvitation";
 
 /**
  * CategorySection component used in the WishList component
  */
 const CategorySection = ({ icon: Icon, title, description, totalClaimed, children }: PropsWithChildren<CategorySectionType>) => {
     const [claimed, setClaimed] = useState<boolean>(false);
+    const { actionDispatch, wishlistCategoriesClaimed } = useInvitation();
+ // TO-DO fix this
+  /*   useEffect(() => {
+        wishlistCategoriesClaimed.forEach(categoryName => {
+            if (categoryName === title) {
+                setClaimed(true);
+            }
+        })
+    }, [wishlistCategoriesClaimed]) */
 
     const getClaimedStatus = (totalClaimed: number): { label: string, style: string } => {
         if (totalClaimed === 0) {
@@ -26,11 +36,17 @@ const CategorySection = ({ icon: Icon, title, description, totalClaimed, childre
 
         return {
             label: `Valgt af ${totalClaimed} gæster`,
-            style: " bg-primary text-background border-primary/70"
+            style: "bg-primary text-background border-primary/70"
         }
     }
 
-    const handleClaimClick = () => {
+    const handleClaimClick = (categoryName: string) => {
+        if (!claimed) {
+            actionDispatch?.setWishlistCategoriesClamied(categoryName);
+        } else {
+            actionDispatch?.resetWishlistCategoriesClamied();
+        }
+
         setClaimed(prev => !prev);
     }
 
@@ -56,7 +72,7 @@ const CategorySection = ({ icon: Icon, title, description, totalClaimed, childre
                 </div>
 
                 <div>
-                    <Button variant={`${claimed ? "secondary" : "tertiary"}`} size="small" className="transition-all duration-300 ease-in-out px-2" icon={claimed ? CircleCheckBig : ShoppingBag} iconGap={1.5} onClick={handleClaimClick}>
+                    <Button variant={`${claimed ? "secondary" : "tertiary"}`} size="small" className="transition-all duration-300 ease-in-out px-2" icon={claimed ? CircleCheckBig : ShoppingBag} iconGap={1.5} onClick={() => handleClaimClick(title)}>
                         {claimed ? "Valgt" : "Vælg kategori"}
                     </Button>
 

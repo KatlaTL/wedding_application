@@ -21,15 +21,20 @@ export interface InvitationContextI extends InvitationStateType {
         resetCodeState: () => void;
         setGuestInfo: (guest: Guest) => void;
         resetGuestInfoState: () => void;
+        setWishlistCategoriesClamied: (category: string) => void;
+        resetWishlistCategoriesClamied: () => void;
+        resetAll: () => void;
     } | null;
 }
 
 export const ActionTypes = {
-  SET_CODE: "SET_CODE",
-  RESET_CODE: "RESET_CODE",
-  SET_IS_SUBMITTED: "SET_IS_SUBMITTED",
-  SET_GUEST: "SET_GUEST",
-  RESET_GUEST: "RESET_GUEST",
+    SET_CODE: "SET_CODE",
+    RESET_CODE: "RESET_CODE",
+    SET_IS_SUBMITTED: "SET_IS_SUBMITTED",
+    SET_GUEST: "SET_GUEST",
+    RESET_GUEST: "RESET_GUEST",
+    SET_WISHLIST_CATEGORIES_CLAIMED: "SET_WISHLIST_CATEGORIES_CLAIMED",
+    RESET_WISHLIST_CATEGORIES_CLAIMED: "RESET_WISHLIST_CATEGORIES_CLAIMED"
 } as const;
 
 export type ActionTypes = typeof ActionTypes[keyof typeof ActionTypes];
@@ -39,4 +44,6 @@ export type ReducerActionType =
     { type: typeof ActionTypes.RESET_CODE } |
     { type: typeof ActionTypes.SET_IS_SUBMITTED, payload: { isSubmitted: boolean } } |
     { type: typeof ActionTypes.SET_GUEST, payload: { guest: Guest } } |
-    { type: typeof ActionTypes.RESET_GUEST } 
+    { type: typeof ActionTypes.RESET_GUEST } |
+    { type: typeof ActionTypes.SET_WISHLIST_CATEGORIES_CLAIMED, payload: { category: string } } |
+    { type: typeof ActionTypes.RESET_WISHLIST_CATEGORIES_CLAIMED } 

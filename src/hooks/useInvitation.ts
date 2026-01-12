@@ -61,8 +61,7 @@ const useInvitation = () => {
         localStorage.removeItem("invitationCode");
         localStorage.removeItem("guest");
         localStorage.removeItem("RSVPIsSubmitted");
-        actionDispatch?.resetCodeState();
-        actionDispatch?.resetGuestInfoState();
+        actionDispatch?.resetAll();
         actionDispatch?.setIsSubmittedState(false);
     }
 
