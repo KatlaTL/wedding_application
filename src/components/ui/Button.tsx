@@ -6,6 +6,7 @@ interface ButtoneProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: ButtonVariant;
     size?: "small" | "medium" | "large";
     icon?: React.ForwardRefExoticComponent<Omit<LucideProps, "ref">>;
+    iconGap?: number;
 }
 
 /**
@@ -13,6 +14,7 @@ interface ButtoneProps extends ButtonHTMLAttributes<HTMLButtonElement> {
  * @param variant - Takes 4 different variants as plain text: "primary" | "secondary" | "secondary-no-hover" | "destructive" | "tertiary". Default variant is primary
  * @param size - Takes 3 different sizes as plain text: "small" | "medium" | "large". Default size is medium
  * @param icon - Accepts only a lucide-react icon
+ * @param iconGap - The distance between the icon and the tekst. Default is tailwind gap-3
  */
 const Button: React.FC<ButtoneProps> = ({
     children,
@@ -20,6 +22,7 @@ const Button: React.FC<ButtoneProps> = ({
     size = "medium",
     className = "",
     icon: Icon,
+    iconGap = 3,
     ...props
 }) => {
 
@@ -38,10 +41,10 @@ const Button: React.FC<ButtoneProps> = ({
             variantStyle = "bg-primary text-background";
             break;
         case "destructive":
-            variantStyle = "bg-destructive  text-white"
+            variantStyle = "bg-destructive text-white"
             break;
         case "tertiary":
-            variantStyle = "text-primary bg-primary/10 hover:bg-primary/20 !border-primary-30";
+            variantStyle = "text-primary bg-background hover:bg-primary hover:text-background !border-primary-30";
             break;
     }
 
@@ -59,7 +62,7 @@ const Button: React.FC<ButtoneProps> = ({
             break;
     }
 
-    const buttonIconStyle = Icon ? "flex items-center justify-center gap-3" : "";
+    const buttonIconStyle = Icon ? `flex items-center justify-center gap-${iconGap}` : "";
 
     const iconStyle = variant === "primary"
         ? "h-[11px] w-[11px] mb-[0.5px]"

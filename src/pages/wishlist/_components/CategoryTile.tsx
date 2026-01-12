@@ -12,13 +12,13 @@ const CategoryTile = ({ title, description, link }: CategoryTileType) => {
                 <h4 className="text-color-text text-xs">{title}</h4>
 
 
-                <div className={`absolute right-0 rounded-lg py-1 px-2 text-[7px] text-current ${link ? "bg-primary text-white hover:bg-primary/90 " : "bg-muted/50 text-muted-foreground border border-muted-foreground/20"}`}>
+                <div className={`absolute right-0 rounded-lg py-1 px-2 text-[7px] text-current ${link ? "bg-primary/90 hover:bg-primary" : "bg-muted/50 text-muted-foreground border border-muted-foreground/20"}`}>
                     {link ? (
                         <a
                             href={link}
                             target="_blank"
                             rel="noopener noreferrer nofollow"
-                            className="flex items-center gap-1.5"
+                            className="flex items-center gap-1.5 text-background"
                         >
                             Eksternt link
                             <ExternalLink className="h-3 w-3"/>

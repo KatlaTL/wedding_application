@@ -10,6 +10,7 @@ const useWishList = () => {
             icon: Utensils,
             title: "Køkken & Spisestue",
             description: "Til madlavning og gæstfrihed",
+            totalClaimed: 4,
             items: [
                 {
                     title: "Standmixer",
@@ -47,6 +48,7 @@ const useWishList = () => {
             icon: Utensils,
             title: "Køkken & Spisestue",
             description: "Til madlavning og gæstfrihed",
+            totalClaimed: 0,
             items: [
                 {
                     title: "Standmixer",
