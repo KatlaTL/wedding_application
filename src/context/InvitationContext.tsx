@@ -1,9 +1,9 @@
 import { createContext, useContext, useReducer, type PropsWithChildren } from "react";
-import type { Guest, InvitationContextI, InvitationStateType, ReducerActionType } from "../types/invitationTypes";
+import type { Guest, InvitationContextI, InvitationReducerActionType, InvitationStateType } from "../types/invitationTypes";
 import { GuestSchema, InvitationStateSchema } from "../schemas/invitationSchema";
 import { safeParser } from "../utils/parser";
 import * as z from "zod";
-import { CLAIMED_CATEGORIES, GUEST, INVITATION_CODE, RSVP_IS_SUBMITTED } from "../constants/localstorageKeys";
+import { GUEST, INVITATION_CODE, RSVP_IS_SUBMITTED } from "../constants/localstorageKeys";
 
 const reducerInitialState: InvitationStateType = InvitationStateSchema.parse({
     isSubmitted: safeParser(
@@ -16,11 +16,6 @@ const reducerInitialState: InvitationStateType = InvitationStateSchema.parse({
         localStorage.getItem(GUEST),
         GuestSchema,
         null
-    ),
-    wishlistClaimedCategories: safeParser(
-        localStorage.getItem(CLAIMED_CATEGORIES),
-        z.array(z.string()),
-        []
     )
 });
 
@@ -29,7 +24,6 @@ const contextInitialState: InvitationContextI = {
     code: reducerInitialState.code,
     guest: reducerInitialState.guest,
     actionDispatch: null,
-    wishlistClaimedCategories: reducerInitialState.wishlistClaimedCategories
 };
 
 const InvitationContext = createContext<InvitationContextI>(contextInitialState);
@@ -37,7 +31,7 @@ const InvitationContext = createContext<InvitationContextI>(contextInitialState)
 /**
  * The producer used to handle the state logic for the invitation useReducer
  */
-const invitationProducer = (state: InvitationStateType, action: ReducerActionType): InvitationStateType => {
+const invitationProducer = (state: InvitationStateType, action: InvitationReducerActionType): InvitationStateType => {
     switch (action.type) {
         case "SET_CODE":
             return {
@@ -63,21 +57,6 @@ const invitationProducer = (state: InvitationStateType, action: ReducerActionTyp
             return {
                 ...state,
                 isSubmitted: action.payload.isSubmitted
-            }
-        case "SET_WISHLIST_CLAIMED_CATEGORY":
-            return {
-                ...state,
-                wishlistClaimedCategories: [...state.wishlistClaimedCategories, action.payload.category]
-            }
-        case "REMOVE_WISHLIST_CLAIMED_CATEGORY":
-            return {
-                ...state,
-                wishlistClaimedCategories: state.wishlistClaimedCategories.filter(item => item !== action.payload.category)
-            }
-        case "RESET_WISHLIST_CLAIMED_CATEGORIES":
-            return {
-                ...state,
-                wishlistClaimedCategories: []
             }
     }
 }
@@ -127,27 +106,6 @@ export const InvitationProvider = ({ children }: PropsWithChildren) => {
                 type: "RESET_GUEST"
             })
         },
-        setWishlistClamiedCategory: (category: string) => {
-            dispatch({
-                type: "SET_WISHLIST_CLAIMED_CATEGORY",
-                payload: {
-                    category
-                }
-            })
-        },
-        removeWishlistClamiedCategory: (category: string) => {
-            dispatch({
-                type: "REMOVE_WISHLIST_CLAIMED_CATEGORY",
-                payload: {
-                    category
-                }
-            })
-        },
-        resetWishlistClamiedCategories: () => {
-            dispatch({
-                type: "RESET_WISHLIST_CLAIMED_CATEGORIES"
-            })
-        }
     } as InvitationContextI["actionDispatch"]
 
     if (actionDispatch) {
@@ -169,8 +127,7 @@ export const InvitationProvider = ({ children }: PropsWithChildren) => {
             actionDispatch,
             isSubmitted: state.isSubmitted,
             code: state.code,
-            guest: state.guest,
-            wishlistClaimedCategories: state.wishlistClaimedCategories
+            guest: state.guest
         }}>
             {children}
         </InvitationContext.Provider>

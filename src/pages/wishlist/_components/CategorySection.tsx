@@ -2,7 +2,6 @@ import type { CategorySectionType } from "../../../types/wishListTypes";
 import { useEffect, useState, type PropsWithChildren } from "react";
 import Button from "../../../components/ui/Button";
 import { CircleCheckBig, ShoppingBag } from "lucide-react";
-import useInvitation from "../../../hooks/useInvitation";
 import useWishList from "../../../hooks/useWishList";
 
 /**
@@ -10,16 +9,15 @@ import useWishList from "../../../hooks/useWishList";
  */
 const CategorySection = ({ icon: Icon, title, description, totalClaimed, children }: PropsWithChildren<CategorySectionType>) => {
     const [claimed, setClaimed] = useState<boolean>(false);
-    const { actionDispatch, wishlistClaimedCategories } = useInvitation();
-    const { saveClaimedCategory, removeClaimedCategory } = useWishList();
+    const { saveClaimedCategory, removeClaimedCategory, claimedCategories, actionDispatch } = useWishList();
 
     useEffect(() => {
-        wishlistClaimedCategories.forEach(categoryName => {
+        claimedCategories.forEach(categoryName => {
             if (categoryName === title) {
                 setClaimed(true);
             }
         })
-    }, [wishlistClaimedCategories])
+    }, [claimedCategories])
 
     const getClaimedStatus = (totalClaimed: number): { label: string, style: string } => {
         if (totalClaimed === 0) {
@@ -45,10 +43,10 @@ const CategorySection = ({ icon: Icon, title, description, totalClaimed, childre
     const handleClaimClick = (categoryName: string) => {
         if (!claimed) {
             saveClaimedCategory(categoryName);
-            actionDispatch?.setWishlistClamiedCategory(categoryName);
+            actionDispatch?.setClamiedCategory(categoryName);
         } else {
             removeClaimedCategory(categoryName);
-            actionDispatch?.removeWishlistClamiedCategory(categoryName);
+            actionDispatch?.removeClamiedCategory(categoryName);
         }
 
         setClaimed(prev => !prev);

@@ -1,11 +1,13 @@
-import { Utensils } from "lucide-react"
-import type { CategoryType } from "../types/wishListTypes";
+import type { CategoryType, DBCategoryType } from "../types/wishListTypes";
 import { CLAIMED_CATEGORIES } from "../constants/localstorageKeys";
+import { useWishlistContext } from "../context/wishlistContext";
+import { mapIcons } from "../utils/iconMapper";
 
 /**
  * Hook to handle wishlist data logic
  */
 const useWishList = () => {
+    const { ...rest } = useWishlistContext();
 
     /**
      * Get the claimedCategories list in localstorage
@@ -33,10 +35,10 @@ const useWishList = () => {
         localStorage.setItem(CLAIMED_CATEGORIES, JSON.stringify(newArray));
     }
 
-
+    //TO-DO move this to DB before continuing
     const wishListCategories: CategoryType[] = [
         {
-            icon: Utensils,
+            icon: mapIcons("Utensils"),
             title: "Køkken & Spisestue",
             description: "Til madlavning og gæstfrihed",
             totalClaimed: 4,
@@ -74,7 +76,7 @@ const useWishList = () => {
             ]
         },
         {
-            icon: Utensils,
+            icon: mapIcons("Utensils"),
             title: "Køkken & Spisestue",
             description: "Til madlavning og gæstfrihed",
             totalClaimed: 0,
@@ -116,7 +118,8 @@ const useWishList = () => {
         wishListCategories,
         getClaimedCategories,
         saveClaimedCategory,
-        removeClaimedCategory
+        removeClaimedCategory,
+        ...rest
     };
 
 }
