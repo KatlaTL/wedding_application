@@ -21,8 +21,9 @@ export interface InvitationContextI extends InvitationStateType {
         resetCodeState: () => void;
         setGuestInfo: (guest: Guest) => void;
         resetGuestInfoState: () => void;
-        setWishlistCategoriesClamied: (category: string) => void;
-        resetWishlistCategoriesClamied: () => void;
+        setWishlistClamiedCategory: (category: string) => void;
+        removeWishlistClamiedCategory: (category: string) => void;
+        resetWishlistClamiedCategories: () => void;
         resetAll: () => void;
     } | null;
 }
@@ -33,8 +34,9 @@ export const ActionTypes = {
     SET_IS_SUBMITTED: "SET_IS_SUBMITTED",
     SET_GUEST: "SET_GUEST",
     RESET_GUEST: "RESET_GUEST",
-    SET_WISHLIST_CATEGORIES_CLAIMED: "SET_WISHLIST_CATEGORIES_CLAIMED",
-    RESET_WISHLIST_CATEGORIES_CLAIMED: "RESET_WISHLIST_CATEGORIES_CLAIMED"
+    SET_WISHLIST_CLAIMED_CATEGORY: "SET_WISHLIST_CLAIMED_CATEGORY",
+    REMOVE_WISHLIST_CLAIMED_CATEGORY: "REMOVE_WISHLIST_CLAIMED_CATEGORY",
+    RESET_WISHLIST_CLAIMED_CATEGORIES: "RESET_WISHLIST_CLAIMED_CATEGORIES"
 } as const;
 
 export type ActionTypes = typeof ActionTypes[keyof typeof ActionTypes];
@@ -45,5 +47,6 @@ export type ReducerActionType =
     { type: typeof ActionTypes.SET_IS_SUBMITTED, payload: { isSubmitted: boolean } } |
     { type: typeof ActionTypes.SET_GUEST, payload: { guest: Guest } } |
     { type: typeof ActionTypes.RESET_GUEST } |
-    { type: typeof ActionTypes.SET_WISHLIST_CATEGORIES_CLAIMED, payload: { category: string } } |
-    { type: typeof ActionTypes.RESET_WISHLIST_CATEGORIES_CLAIMED } 
+    { type: typeof ActionTypes.SET_WISHLIST_CLAIMED_CATEGORY, payload: { category: string } } |
+    { type: typeof ActionTypes.REMOVE_WISHLIST_CLAIMED_CATEGORY, payload: { category: string } } |
+    { type: typeof ActionTypes.RESET_WISHLIST_CLAIMED_CATEGORIES } 

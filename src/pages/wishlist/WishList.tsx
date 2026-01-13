@@ -12,7 +12,7 @@ import CategoryInfo from "./_components/CategoryInfo";
  * WishList page component
  */
 const WishList = () => {
-    const categories = useWishList();
+    const { wishListCategories } = useWishList();
 
     return (
         <PageTransition>
@@ -25,7 +25,7 @@ const WishList = () => {
                 <Section title="Ønskeliste" description="Din tilstedeværelse er den største gave. Men hvis du har lyst til at bidrage til vores nye liv sammen, har vi samlet lidt ønsker her.">
                     <StaggeredItem>
                         <div className="flex flex-col gap-8 mt-10">
-                            {categories.map(({ icon, items, title, description, totalClaimed }, index) => (
+                            {wishListCategories.map(({ icon, items, title, description, totalClaimed }, index) => (
                                 <CategorySection
                                     icon={icon}
                                     title={title}
@@ -39,7 +39,7 @@ const WishList = () => {
                                 </CategorySection>
                             ))}
                         </div>
-                        
+
                         <CategoryInfo />
                     </StaggeredItem>
                 </Section>

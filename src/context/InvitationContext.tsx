@@ -3,20 +3,25 @@ import type { Guest, InvitationContextI, InvitationStateType, ReducerActionType 
 import { GuestSchema, InvitationStateSchema } from "../schemas/invitationSchema";
 import { safeParser } from "../utils/parser";
 import * as z from "zod";
+import { CLAIMED_CATEGORIES, GUEST, INVITATION_CODE, RSVP_IS_SUBMITTED } from "../constants/localstorageKeys";
 
 const reducerInitialState: InvitationStateType = InvitationStateSchema.parse({
     isSubmitted: safeParser(
-        localStorage.getItem("RSVPIsSubmitted"),
+        localStorage.getItem(RSVP_IS_SUBMITTED),
         z.object({ isSubmitted: z.boolean() }),
         { isSubmitted: false }
     ).isSubmitted,
-    code: localStorage.getItem("invitationCode"),
+    code: localStorage.getItem(INVITATION_CODE),
     guest: safeParser(
-        localStorage.getItem("guest"),
+        localStorage.getItem(GUEST),
         GuestSchema,
         null
     ),
-    wishlistCategoriesClaimed: []
+    wishlistClaimedCategories: safeParser(
+        localStorage.getItem(CLAIMED_CATEGORIES),
+        z.array(z.string()),
+        []
+    )
 });
 
 const contextInitialState: InvitationContextI = {
@@ -24,7 +29,7 @@ const contextInitialState: InvitationContextI = {
     code: reducerInitialState.code,
     guest: reducerInitialState.guest,
     actionDispatch: null,
-    wishlistCategoriesClaimed: reducerInitialState.wishlistCategoriesClaimed
+    wishlistClaimedCategories: reducerInitialState.wishlistClaimedCategories
 };
 
 const InvitationContext = createContext<InvitationContextI>(contextInitialState);
@@ -59,15 +64,20 @@ const invitationProducer = (state: InvitationStateType, action: ReducerActionTyp
                 ...state,
                 isSubmitted: action.payload.isSubmitted
             }
-        case "SET_WISHLIST_CATEGORIES_CLAIMED":
+        case "SET_WISHLIST_CLAIMED_CATEGORY":
             return {
                 ...state,
-                wishlistCategoriesClaimed: [...state.wishlistCategoriesClaimed, action.payload.category]
+                wishlistClaimedCategories: [...state.wishlistClaimedCategories, action.payload.category]
             }
-        case "RESET_WISHLIST_CATEGORIES_CLAIMED":
+        case "REMOVE_WISHLIST_CLAIMED_CATEGORY":
             return {
                 ...state,
-                wishlistCategoriesClaimed: []
+                wishlistClaimedCategories: state.wishlistClaimedCategories.filter(item => item !== action.payload.category)
+            }
+        case "RESET_WISHLIST_CLAIMED_CATEGORIES":
+            return {
+                ...state,
+                wishlistClaimedCategories: []
             }
     }
 }
@@ -113,21 +123,29 @@ export const InvitationProvider = ({ children }: PropsWithChildren) => {
             })
         },
         resetGuestInfoState: () => {
-             dispatch({
+            dispatch({
                 type: "RESET_GUEST"
             })
         },
-        setWishlistCategoriesClamied: (category: string) => {
+        setWishlistClamiedCategory: (category: string) => {
             dispatch({
-                type: "SET_WISHLIST_CATEGORIES_CLAIMED",
+                type: "SET_WISHLIST_CLAIMED_CATEGORY",
                 payload: {
                     category
                 }
             })
         },
-        resetWishlistCategoriesClamied: () => {
+        removeWishlistClamiedCategory: (category: string) => {
             dispatch({
-                type: "RESET_WISHLIST_CATEGORIES_CLAIMED"
+                type: "REMOVE_WISHLIST_CLAIMED_CATEGORY",
+                payload: {
+                    category
+                }
+            })
+        },
+        resetWishlistClamiedCategories: () => {
+            dispatch({
+                type: "RESET_WISHLIST_CLAIMED_CATEGORIES"
             })
         }
     } as InvitationContextI["actionDispatch"]
@@ -137,14 +155,14 @@ export const InvitationProvider = ({ children }: PropsWithChildren) => {
             (Object.keys(actionDispatch) as Array<keyof typeof actionDispatch>).forEach((key) => {
                 if (key.startsWith("reset")) {
                     const fn = actionDispatch[key];
-                    
+
                     if (typeof fn === "function") {
                         (fn as () => void)() // assert TS fn has no parameters
                     }
                 }
             })
         }
-    }   
+    }
 
     return (
         <InvitationContext.Provider value={{
@@ -152,7 +170,7 @@ export const InvitationProvider = ({ children }: PropsWithChildren) => {
             isSubmitted: state.isSubmitted,
             code: state.code,
             guest: state.guest,
-            wishlistCategoriesClaimed: state.wishlistCategoriesClaimed
+            wishlistClaimedCategories: state.wishlistClaimedCategories
         }}>
             {children}
         </InvitationContext.Provider>

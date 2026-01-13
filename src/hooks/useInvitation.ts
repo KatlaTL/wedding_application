@@ -1,6 +1,7 @@
 import type { Guest, ValidCode } from "../types/invitationTypes";
 import { useInvitationContext } from "../context/InvitationContext";
 import { useNavigate } from "react-router-dom";
+import { GUEST, INVITATION_CODE, RSVP_IS_SUBMITTED } from "../constants/localstorageKeys";
 
 /**
  * Hook to handle invitation data logic
@@ -29,7 +30,7 @@ const useInvitation = () => {
             });
 
             actionDispatch?.setIsSubmittedState(true);
-            localStorage.setItem("RSVPIsSubmitted", JSON.stringify({ isSubmitted: true }));
+            localStorage.setItem(RSVP_IS_SUBMITTED, JSON.stringify({ isSubmitted: true }));
         } else {
             navigate("/invitation");
         }
@@ -40,15 +41,15 @@ const useInvitation = () => {
      */
     const updatedRSVP = () => {
         actionDispatch?.setIsSubmittedState(false);
-        localStorage.removeItem("RSVPIsSubmitted");
+        localStorage.removeItem(RSVP_IS_SUBMITTED);
     }
 
     /**
      * Saves the guest info in the InvitationContext reducer and localstorage
      */
     const saveGuestInfo = (guest: Pick<Guest, "firstName" | "lastName">, code: string) => {
-        localStorage.setItem("guest", JSON.stringify(guest));
-        localStorage.setItem("invitationCode", code);
+        localStorage.setItem(GUEST, JSON.stringify(guest));
+        localStorage.setItem(INVITATION_CODE, code);
 
         actionDispatch?.setGuestInfo(guest);
         actionDispatch?.setCodeState(code);
@@ -58,9 +59,9 @@ const useInvitation = () => {
      * Clears the guest data
      */
     const clearGuest = () => {
-        localStorage.removeItem("invitationCode");
-        localStorage.removeItem("guest");
-        localStorage.removeItem("RSVPIsSubmitted");
+        localStorage.removeItem(INVITATION_CODE);
+        localStorage.removeItem(GUEST);
+        localStorage.removeItem(RSVP_IS_SUBMITTED);
         actionDispatch?.resetAll();
         actionDispatch?.setIsSubmittedState(false);
     }
