@@ -44,7 +44,7 @@ const Button: React.FC<ButtoneProps> = ({
             variantStyle = "bg-destructive text-white"
             break;
         case "tertiary":
-            variantStyle = "text-primary bg-background hover:bg-primary hover:text-background !border-primary-30";
+            variantStyle = "text-primary bg-white hover:bg-primary hover:text-white !border-primary/50";
             break;
     }
 
