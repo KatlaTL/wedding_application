@@ -3,7 +3,7 @@ import PageTransition from "../../components/PageTransition"
 import Section from "../../components/Section";
 import StaggeredContent from "../../components/StaggeredContent"
 import CategorySection from "./_components/CategorySection";
-import useWishList from "../../hooks/useWishList";
+import useWishlist from "../../hooks/useWishlist";
 import StaggeredItem from "../../components/StaggeredItem";
 import CategoryTile from "./_components/CategoryTile";
 import CategoryInfo from "./_components/CategoryInfo";
@@ -12,7 +12,7 @@ import CategoryInfo from "./_components/CategoryInfo";
  * WishList page component
  */
 const WishList = () => {
-    const { wishListCategories } = useWishList();
+    const { wishListCategories } = useWishlist();
 
     return (
         <PageTransition>

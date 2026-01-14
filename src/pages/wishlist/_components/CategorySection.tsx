@@ -1,15 +1,15 @@
-import type { CategorySectionType } from "../../../types/wishListTypes";
+import type { CategorySectionType } from "../../../types/wishlistTypes";
 import { useEffect, useState, type PropsWithChildren } from "react";
 import Button from "../../../components/ui/Button";
 import { CircleCheckBig, ShoppingBag } from "lucide-react";
-import useWishList from "../../../hooks/useWishList";
+import useWishlist from "../../../hooks/useWishlist";
 
 /**
  * CategorySection component used in the WishList component
  */
 const CategorySection = ({ icon: Icon, title, description, totalClaimed, children }: PropsWithChildren<CategorySectionType>) => {
     const [claimed, setClaimed] = useState<boolean>(false);
-    const { saveClaimedCategory, removeClaimedCategory, claimedCategories, actionDispatch } = useWishList();
+    const { saveClaimedCategory, removeClaimedCategory, claimedCategories, actionDispatch } = useWishlist();
 
     useEffect(() => {
         claimedCategories.forEach(categoryName => {

@@ -1,7 +1,7 @@
 import z from "zod";
 import { CLAIMED_CATEGORIES } from "../constants/localstorageKeys";
 import { WishlistStateSchema } from "../schemas/wishlistSchema";
-import type {  WishlistContextI, WishlistReducerActionType, WishlistStateType } from "../types/wishListTypes";
+import type {  WishlistContextI, WishlistReducerActionType, WishlistStateType } from "../types/wishlistTypes";
 import { safeParser } from "../utils/parser";
 import { createContext, useContext, useReducer, type PropsWithChildren } from "react";
 

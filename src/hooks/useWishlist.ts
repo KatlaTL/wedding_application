@@ -1,4 +1,4 @@
-import type { CategoryType, DBCategoryType } from "../types/wishListTypes";
+import type { CategoryType, DBCategoryType } from "../types/wishlistTypes";
 import { CLAIMED_CATEGORIES } from "../constants/localstorageKeys";
 import { useWishlistContext } from "../context/wishlistContext";
 import { mapIcons } from "../utils/iconMapper";
@@ -6,7 +6,7 @@ import { mapIcons } from "../utils/iconMapper";
 /**
  * Hook to handle wishlist data logic
  */
-const useWishList = () => {
+const useWishlist = () => {
     const { ...rest } = useWishlistContext();
 
     /**
@@ -34,6 +34,8 @@ const useWishList = () => {
         const newArray = getClaimedCategories().filter(item => item !== category);
         localStorage.setItem(CLAIMED_CATEGORIES, JSON.stringify(newArray));
     }
+
+    
 
     //TO-DO move this to DB before continuing
     const wishListCategories: DBCategoryType[] = [
@@ -124,4 +126,4 @@ const useWishList = () => {
 
 }
 
-export default useWishList;
+export default useWishlist;

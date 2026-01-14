@@ -5,7 +5,7 @@ import Program from "./pages/program/Program"
 import Home from "./pages/home/Home"
 import { invitationLoader } from "./loaders/invitationLoader"
 import Layout from "./Layout"
-import WishList from "./pages/wishlist/WishList"
+import Wishlist from "./pages/wishlist/Wishlist"
 
 export const router = createBrowserRouter([
     {
@@ -15,7 +15,7 @@ export const router = createBrowserRouter([
             { path: "/program", element: <Program />, handle: { label: "Program" } },
             { path: "/location", element: <Location />, handle: { label: "Lokation" } },
             { path: "/invitation/:code?", element: <Invitation />, handle: { label: "Invitation", navPath: "/invitation" }, loader: invitationLoader },
-            { path: "/wishlist", element: <WishList />, handle: { label: "Ønskeliste" } },
+            { path: "/wishlist", element: <Wishlist />, handle: { label: "Ønskeliste" } },
             { path: "*", element: <Navigate to="/" replace /> },
         ]
     }

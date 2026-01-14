@@ -1,4 +1,4 @@
-import type { CategoryTileType } from "../../../types/wishListTypes";
+import type { CategoryTileType } from "../../../types/wishlistTypes";
 import { ExternalLink } from "lucide-react";
 
 /**
