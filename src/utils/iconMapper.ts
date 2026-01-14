@@ -1,6 +1,12 @@
 import * as LucideIcons from "lucide-react";
 import type { IconName } from "../types/utilsTypes";
 
-export const mapIcons = (icon: IconName): React.ForwardRefExoticComponent<Omit<LucideIcons.LucideProps, "ref">> => {
-    return LucideIcons[icon] as React.ForwardRefExoticComponent<Omit<LucideIcons.LucideProps, "ref">>
-}
+type LucideIcon = React.ForwardRefExoticComponent<Omit<LucideIcons.LucideProps, "ref">>;
+
+const FALLBACK_ICON: LucideIcon = LucideIcons.HelpCircle;
+
+export const mapIcons = (icon: IconName): LucideIcon => {
+    const Icon = LucideIcons[icon as keyof typeof LucideIcons];
+
+    return (Icon ?? FALLBACK_ICON) as LucideIcon;
+};

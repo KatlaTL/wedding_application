@@ -3,6 +3,7 @@ import { CLAIMED_CATEGORIES } from "../constants/localstorageKeys";
 import { useWishlistContext } from "../context/wishlistContext";
 import { mapIcons } from "../utils/iconMapper";
 
+
 /**
  * Hook to handle wishlist data logic
  */
@@ -35,10 +36,10 @@ const useWishlist = () => {
         localStorage.setItem(CLAIMED_CATEGORIES, JSON.stringify(newArray));
     }
 
-    
 
-    //TO-DO move this to DB before continuing
-    const wishListCategories: DBCategoryType[] = [
+
+    //TO-DO move this to DB
+    const dbCategories: DBCategoryType[] = [
         {
             icon: "Utensils",
             title: "Køkken & Spisestue",
@@ -115,6 +116,13 @@ const useWishlist = () => {
             ]
         },
     ]
+
+    const wishListCategories: CategoryType[] = dbCategories.map((category: DBCategoryType): CategoryType => {
+        return {
+            ...category,
+            icon: mapIcons(category.icon)
+        }
+    });
 
     return {
         wishListCategories,
