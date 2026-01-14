@@ -36,9 +36,9 @@ const useWishList = () => {
     }
 
     //TO-DO move this to DB before continuing
-    const wishListCategories: CategoryType[] = [
+    const wishListCategories: DBCategoryType[] = [
         {
-            icon: mapIcons("Utensils"),
+            icon: "Utensils",
             title: "Køkken & Spisestue",
             description: "Til madlavning og gæstfrihed",
             totalClaimed: 4,
@@ -76,7 +76,7 @@ const useWishList = () => {
             ]
         },
         {
-            icon: mapIcons("Utensils"),
+            icon: "Utensils",
             title: "Køkken & Spisestue",
             description: "Til madlavning og gæstfrihed",
             totalClaimed: 0,
