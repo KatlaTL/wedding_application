@@ -25,7 +25,6 @@ export type WishlistStateType = z.infer<typeof WishlistStateSchema>;
 
 export interface WishlistContextI extends WishlistStateType {
     actionDispatch: {
-        setCategories: (categories: DBCategoryType[]) => void;
         setClamiedCategory: (category: string) => void;
         removeClamiedCategory: (category: string) => void;
         resetClamiedCategories: () => void;
@@ -33,7 +32,6 @@ export interface WishlistContextI extends WishlistStateType {
 }
 
 export const WishlistActionTypes = {
-    SET_CATEGORIES: "SET_CATEGORIES",
     SET_CLAIMED_CATEGORY: "SET_CLAIMED_CATEGORY",
     REMOVE_CLAIMED_CATEGORY: "REMOVE_CLAIMED_CATEGORY",
     RESET_CLAIMED_CATEGORIES: "RESET_CLAIMED_CATEGORIES"
@@ -42,7 +40,6 @@ export const WishlistActionTypes = {
 export type WishlistActionTypes = typeof WishlistActionTypes[keyof typeof WishlistActionTypes];
 
 export type WishlistReducerActionType =
-    { type: typeof WishlistActionTypes.SET_CATEGORIES, payload: { categories: DBCategoryType[] } } |
     { type: typeof WishlistActionTypes.SET_CLAIMED_CATEGORY, payload: { category: string } } |
     { type: typeof WishlistActionTypes.REMOVE_CLAIMED_CATEGORY, payload: { category: string } } |
     { type: typeof WishlistActionTypes.RESET_CLAIMED_CATEGORIES }

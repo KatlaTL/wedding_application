@@ -7,12 +7,13 @@ import useWishlist from "../../hooks/useWishlist";
 import StaggeredItem from "../../components/StaggeredItem";
 import CategoryTile from "./_components/CategoryTile";
 import CategoryInfo from "./_components/CategoryInfo";
+import Loader from "../../components/ui/Loader";
 
 /**
  * WishList page component
  */
 const WishList = () => {
-    const { wishListCategories } = useWishlist();
+    const { categories, isLoading } = useWishlist();
 
     return (
         <PageTransition>
@@ -25,19 +26,24 @@ const WishList = () => {
                 <Section title="Ønskeliste" description="Din tilstedeværelse er den største gave. Men hvis du har lyst til at bidrage til vores nye liv sammen, har vi samlet lidt ønsker her.">
                     <StaggeredItem>
                         <div className="flex flex-col gap-8 mt-10">
-                            {wishListCategories.map(({ icon, items, title, description, totalClaimed }, index) => (
-                                <CategorySection
-                                    icon={icon}
-                                    title={title}
-                                    description={description}
-                                    totalClaimed={totalClaimed}
-                                    key={title + index}
-                                >
-                                    {items.map(({ title, description, link }, index) => (
-                                        <CategoryTile title={title} description={description} link={link} key={title + index} />
-                                    ))}
-                                </CategorySection>
-                            ))}
+                            {isLoading ? (
+                                <Loader />
+                            ) : (
+
+                                categories.map(({ icon, items, title, description, totalClaimed }, index) => (
+                                    <CategorySection
+                                        icon={icon}
+                                        title={title}
+                                        description={description}
+                                        totalClaimed={totalClaimed}
+                                        key={title + index}
+                                    >
+                                        {items.map(({ title, description, link }, index) => (
+                                            <CategoryTile title={title} description={description} link={link} key={title + index} />
+                                        ))}
+                                    </CategorySection>
+                                ))
+                            )}
                         </div>
 
                         <CategoryInfo />

@@ -1,7 +1,7 @@
 import z from "zod";
 import { CLAIMED_CATEGORIES } from "../constants/localstorageKeys";
 import { WishlistStateSchema } from "../schemas/wishlistSchema";
-import type {  WishlistContextI, WishlistReducerActionType, WishlistStateType } from "../types/wishlistTypes";
+import type { DBCategoryType, WishlistContextI, WishlistReducerActionType, WishlistStateType } from "../types/wishlistTypes";
 import { safeParser } from "../utils/parser";
 import { createContext, useContext, useReducer, type PropsWithChildren } from "react";
 
@@ -11,14 +11,12 @@ const reducerInitialState: WishlistStateType = WishlistStateSchema.parse({
         localStorage.getItem(CLAIMED_CATEGORIES),
         z.array(z.string()),
         []
-    ),
-    categories: []
+    )
 });
 
 const contextInitialState: WishlistContextI = {
     actionDispatch: null,
-    claimedCategories: reducerInitialState.claimedCategories,
-    categories: []
+    claimedCategories: reducerInitialState.claimedCategories
 };
 
 const WishlistContext = createContext<WishlistContextI>(contextInitialState);
@@ -28,11 +26,6 @@ const WishlistContext = createContext<WishlistContextI>(contextInitialState);
  */
 const wishlistProducer = (state: WishlistStateType, action: WishlistReducerActionType): WishlistStateType => {
     switch (action.type) {
-        case "SET_CATEGORIES":
-            return {
-                ...state,
-                categories: [...action.payload.categories]
-            }
         case "SET_CLAIMED_CATEGORY":
             return {
                 ...state,
@@ -89,8 +82,7 @@ export const WishlistProvider = ({ children }: PropsWithChildren) => {
     return (
         <WishlistContext.Provider value={{
             actionDispatch,
-            claimedCategories: state.claimedCategories,
-            categories: state.categories
+            claimedCategories: state.claimedCategories
         }}>
             {children}
         </WishlistContext.Provider>

@@ -20,5 +20,4 @@ export const CategoriesSchema = z.object({
 
 export const WishlistStateSchema = z.object({
     claimedCategories: z.array(z.string()),
-    categories: z.array(CategoriesSchema)
 });
