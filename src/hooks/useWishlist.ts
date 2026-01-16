@@ -2,8 +2,8 @@ import type { CategoryType, DBCategoryType } from "../types/wishlistTypes";
 import { CLAIMED_CATEGORIES } from "../constants/localstorageKeys";
 import { useWishlistContext } from "../context/wishlistContext";
 import { mapIcons } from "../utils/iconMapper";
-import { fetchCategories } from "../services/wishlistService";
-import { useQuery } from "@tanstack/react-query";
+import { claimCategory, fetchCategories } from "../services/wishlistService";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 
 /**
@@ -11,11 +11,20 @@ import { useQuery } from "@tanstack/react-query";
  */
 const useWishlist = () => {
     const { ...rest } = useWishlistContext();
+    const queryClient = useQueryClient();
 
     const { data: dbCategories = [], isLoading } = useQuery({
         queryKey: ["categories"],
         queryFn: fetchCategories,
-        
+
+    })
+
+    const claimMutation = useMutation({
+        mutationFn: ({ title, guestCode }: { title: string, guestCode: string }) => claimCategory(title, guestCode),
+        onSuccess: (claimId, variables) => {
+            // TO-DO save claimId / guestCode in context to make it possable to unclaim
+            queryClient.invalidateQueries({ queryKey: ["categories"] })
+        }
     })
 
     /**
@@ -44,6 +53,9 @@ const useWishlist = () => {
         localStorage.setItem(CLAIMED_CATEGORIES, JSON.stringify(newArray));
     }
 
+    /**
+     * Maps DBCategoryType to CategoryType
+     */
     const categories: CategoryType[] = dbCategories.map((category: DBCategoryType): CategoryType => {
         return {
             ...category,
