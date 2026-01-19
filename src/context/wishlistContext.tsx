@@ -1,7 +1,6 @@
-import z from "zod";
 import { CLAIMED_CATEGORIES } from "../constants/localstorageKeys";
-import { WishlistStateSchema } from "../schemas/wishlistSchema";
-import type { DBCategoryType, WishlistContextI, WishlistReducerActionType, WishlistStateType } from "../types/wishlistTypes";
+import { ClaimedCategories, WishlistStateSchema } from "../schemas/wishlistSchema";
+import type { WishlistContextI, WishlistReducerActionType, WishlistStateType } from "../types/wishlistTypes";
 import { safeParser } from "../utils/parser";
 import { createContext, useContext, useReducer, type PropsWithChildren } from "react";
 
@@ -9,7 +8,7 @@ import { createContext, useContext, useReducer, type PropsWithChildren } from "r
 const reducerInitialState: WishlistStateType = WishlistStateSchema.parse({
     claimedCategories: safeParser(
         localStorage.getItem(CLAIMED_CATEGORIES),
-        z.array(z.string()),
+        ClaimedCategories,
         []
     )
 });
@@ -29,12 +28,18 @@ const wishlistProducer = (state: WishlistStateType, action: WishlistReducerActio
         case "SET_CLAIMED_CATEGORY":
             return {
                 ...state,
-                claimedCategories: [...state.claimedCategories, action.payload.category]
+                claimedCategories: [...state.claimedCategories, {
+                    categoryTitle: action.payload.category,
+                    claims: [...state.claimedCategories.find(category => category.categoryTitle === action.payload.category)?.claims ?? [], {
+                        guestCode: action.payload.guestCode,
+                        claimId: action.payload.claimId
+                    }]
+                }]
             }
         case "REMOVE_CLAIMED_CATEGORY":
             return {
                 ...state,
-                claimedCategories: state.claimedCategories.filter(item => item !== action.payload.category)
+                claimedCategories: state.claimedCategories.filter(item => item.categoryTitle !== action.payload.category)
             }
         case "RESET_CLAIMED_CATEGORIES":
             return {
@@ -55,11 +60,13 @@ export const WishlistProvider = ({ children }: PropsWithChildren) => {
      * Contains all dispatch functions to update the reducer state
      */
     const actionDispatch = {
-        setClamiedCategory: (category: string) => {
+        setClamiedCategory: (category: string, guestCode: string, claimId: string) => {
             dispatch({
                 type: "SET_CLAIMED_CATEGORY",
                 payload: {
-                    category
+                    category,
+                    guestCode,
+                    claimId
                 }
             })
         },

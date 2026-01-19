@@ -1,12 +1,18 @@
+const charMap: Record<string, string> = {
+  æ: "ae",
+  ø: "o",
+  å: "a"
+};
+
 /**
  * Slugify a string
  */
-export const slugify = (text: string) => {
-  return text
+export const slugify = (text: string) =>
+  text
     .toLowerCase()
-    .normalize("NFD")               // separate accents
-    .replace(/[\u0300-\u036f]/g, "") // remove accents
-    .replace(/&/g, "og")            // optional Danish fix
-    .replace(/[^a-z0-9]+/g, "-")   // replace spaces and special chars with "-"
-    .replace(/(^-|-$)/g, "");      // trim leading/trailing "-"
-};
+    .replace(/[æøå]/g, m => charMap[m])
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/&/g, "og")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");

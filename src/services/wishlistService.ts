@@ -3,6 +3,7 @@ import { db } from "./firebase";
 import type { DBCategoryType } from "../types/wishlistTypes";
 import { CategoriesSchema } from "../schemas/wishlistSchema";
 import { slugify } from "../utils/slug";
+import { CopyMinus } from "lucide-react";
 
 const wishlistRef = collection(db, "wishlist");
 

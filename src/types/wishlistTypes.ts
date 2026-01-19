@@ -1,6 +1,6 @@
 import type { LucideProps } from "lucide-react";
 import type z from "zod";
-import type { CategoriesSchema, WishlistStateSchema } from "../schemas/wishlistSchema";
+import type { CategoriesSchema, ClaimedCategories, WishlistStateSchema } from "../schemas/wishlistSchema";
 
 export type CategoryTileType = {
     title: string;
@@ -21,11 +21,13 @@ export type CategoryType = CategorySectionType & {
 
 export type DBCategoryType = z.infer<typeof CategoriesSchema>;
 
+export type ClaimedCategories = z.infer<typeof ClaimedCategories>;
+
 export type WishlistStateType = z.infer<typeof WishlistStateSchema>;
 
 export interface WishlistContextI extends WishlistStateType {
     actionDispatch: {
-        setClamiedCategory: (category: string) => void;
+        setClamiedCategory: (category: string, guestCode: string, claimId: string) => void;
         removeClamiedCategory: (category: string) => void;
         resetClamiedCategories: () => void;
     } | null;
@@ -40,6 +42,6 @@ export const WishlistActionTypes = {
 export type WishlistActionTypes = typeof WishlistActionTypes[keyof typeof WishlistActionTypes];
 
 export type WishlistReducerActionType =
-    { type: typeof WishlistActionTypes.SET_CLAIMED_CATEGORY, payload: { category: string } } |
+    { type: typeof WishlistActionTypes.SET_CLAIMED_CATEGORY, payload: { category: string, guestCode: string, claimId: string } } |
     { type: typeof WishlistActionTypes.REMOVE_CLAIMED_CATEGORY, payload: { category: string } } |
     { type: typeof WishlistActionTypes.RESET_CLAIMED_CATEGORIES }

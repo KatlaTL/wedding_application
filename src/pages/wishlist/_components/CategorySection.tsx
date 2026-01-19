@@ -3,21 +3,32 @@ import { useEffect, useState, type PropsWithChildren } from "react";
 import Button from "../../../components/ui/Button";
 import { CircleCheckBig, ShoppingBag } from "lucide-react";
 import useWishlist from "../../../hooks/useWishlist";
+import useInvitation from "../../../hooks/useInvitation";
 
 /**
  * CategorySection component used in the WishList component
  */
 const CategorySection = ({ icon: Icon, title, description, totalClaimed, children }: PropsWithChildren<CategorySectionType>) => {
     const [claimed, setClaimed] = useState<boolean>(false);
-    const { saveClaimedCategory, removeClaimedCategory, claimedCategories, actionDispatch } = useWishlist();
+    const [claimId, setClaimId] = useState<string>("");
+    const { claimedCategories, claimMutation, unclaimMutation } = useWishlist();
+    const { code } = useInvitation();
 
+    //TO-DO fix bug which prevents the UI from rerendering properly 
     useEffect(() => {
-        claimedCategories.forEach(categoryName => {
-            if (categoryName === title) {
-                setClaimed(true);
-            }
-        })
-    }, [claimedCategories])
+        const category = claimedCategories.find(cat => cat.categoryTitle === title);
+
+        if (!category) {
+            setClaimed(false);
+            setClaimId("");
+            return;
+        }
+
+        const claim = category.claims.find(claim => claim.guestCode === code);
+
+        setClaimed(!!claim);
+        setClaimId(claim?.claimId ?? "");
+    }, [claimedCategories, title, code]);
 
     const getClaimedStatus = (totalClaimed: number): { label: string, style: string } => {
         if (totalClaimed === 0) {
@@ -41,15 +52,17 @@ const CategorySection = ({ icon: Icon, title, description, totalClaimed, childre
     }
 
     const handleClaimClick = (categoryName: string) => {
+        if (!code) return;
+
         if (!claimed) {
-            saveClaimedCategory(categoryName);
-            actionDispatch?.setClamiedCategory(categoryName);
+            claimMutation.mutate({ categoryTitle: categoryName, guestCode: code });
         } else {
-            removeClaimedCategory(categoryName);
-            actionDispatch?.removeClamiedCategory(categoryName);
+            unclaimMutation.mutate({ categoryTitle: categoryName, claimId: claimId });
         }
 
-        setClaimed(prev => !prev);
+        if (claimMutation.isSuccess || unclaimMutation.isSuccess) {
+            setClaimed(prev => !prev);
+        }
     }
 
     const claimedStatus = getClaimedStatus(totalClaimed);
@@ -69,16 +82,17 @@ const CategorySection = ({ icon: Icon, title, description, totalClaimed, childre
                             <p>{description}</p>
                         </div>
 
-                        <span className={`inline-flex w-max h-5 rounded-lg border mt-0.5 px-1.5 items-center text-[9px] transition-colors ${claimedStatus.style}`}>{claimedStatus.label}</span>
+                        {code && <span className={`inline-flex w-max h-5 rounded-lg border mt-0.5 px-1.5 items-center text-[9px] transition-colors ${claimedStatus.style}`}>{claimedStatus.label}</span>}
                     </div>
                 </div>
 
-                <div>
-                    <Button variant={`${claimed ? "secondary" : "tertiary"}`} size="small" className="transition-all duration-300 ease-in-out px-2" icon={claimed ? CircleCheckBig : ShoppingBag} iconGap={1.5} onClick={() => handleClaimClick(title)}>
-                        {claimed ? "Valgt" : "Vælg kategori"}
-                    </Button>
-
-                </div>
+                {code &&
+                    <div>
+                        <Button variant={`${claimed ? "secondary" : "tertiary"}`} size="small" className="transition-all duration-300 ease-in-out px-2" icon={claimed ? CircleCheckBig : ShoppingBag} iconGap={1.5} onClick={() => handleClaimClick(title)}>
+                            {claimed ? "Valgt" : "Vælg kategori"}
+                        </Button>
+                    </div>
+                }
             </div>
 
             <div className="grid md:grid-cols-3 xs:grid-cols-2 gap-3 mt-5">
