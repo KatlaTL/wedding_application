@@ -42,7 +42,7 @@ const CategorySection = ({ icon: Icon, title, description, totalClaimed, childre
             claimMutation.mutate({ categoryTitle: categoryName, guestCode: code });
         } else {
             const claimId = getClaimId(title, code);
-            
+
             if (!claimId) return;
 
             unclaimMutation.mutate({ categoryTitle: categoryName, claimId });
@@ -72,7 +72,14 @@ const CategorySection = ({ icon: Icon, title, description, totalClaimed, childre
 
                 {code &&
                     <div>
-                        <Button variant={`${claimed ? "secondary" : "tertiary"}`} size="small" className="transition-all duration-300 ease-in-out px-2" icon={claimed ? CircleCheckBig : ShoppingBag} iconGap={1.5} onClick={() => handleClaimClick(title)}>
+                        <Button
+                            variant={`${claimed ? "secondary" : "tertiary"}`}
+                            size="small"
+                            className="transition-all duration-300 ease-in-out px-2"
+                            icon={claimed ? CircleCheckBig : ShoppingBag}
+                            iconGap={1.5} onClick={() => handleClaimClick(title)}
+                            disabled={claimMutation.isPending || unclaimMutation.isPending}
+                        >
                             {claimed ? "Valgt" : "Vælg kategori"}
                         </Button>
                     </div>

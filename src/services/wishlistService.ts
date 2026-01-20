@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, serverTimestamp } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, increment, runTransaction, serverTimestamp } from "firebase/firestore";
 import { db } from "./firebase";
 import type { DBCategoryType } from "../types/wishlistTypes";
 import { CategoriesSchema } from "../schemas/wishlistSchema";
@@ -31,12 +31,19 @@ export const fetchCategories = async (): Promise<DBCategoryType[]> => {
  * @returns the Firestore claimRef.id
  */
 export const claimCategory = async (categoryTitle: string, guestCode: string): Promise<string> => {
-   const claimRef = await addDoc(collection(wishlistRef, slugify(categoryTitle), "claims"), {
-        guestCode,
-        claimedAt: serverTimestamp()
-    })
+    const categoryDocRef = doc(wishlistRef, slugify(categoryTitle));
 
-    return claimRef.id;
+    return await runTransaction(db, async (transaction) => {
+        const claimRef = doc(collection(categoryDocRef, "claims"));
+        transaction.set(claimRef, {
+            guestCode,
+            claimedAt: serverTimestamp()
+        })
+        
+        transaction.update(categoryDocRef, { totalClaimed: increment(1) });
+        
+        return claimRef.id;
+    })
 }
 
 /**
@@ -45,5 +52,23 @@ export const claimCategory = async (categoryTitle: string, guestCode: string): P
  * @param claimId the Firestore claimRef.id
  */
 export const unclaimCategory = async (categoryTitle: string, claimId: string) => {
-    await deleteDoc(doc(wishlistRef, slugify(categoryTitle), "claims", claimId));
+    const categoryDocRef = doc(wishlistRef, slugify(categoryTitle));
+
+    await runTransaction(db, async (transaction) => {
+        const docSnap = await transaction.get(categoryDocRef);
+        
+        if (!docSnap.exists()) {
+            throw "Category not found";
+        }
+        
+        const totalClaimed = docSnap.data()?.totalClaimed ?? 0;
+        
+        if (totalClaimed <= 0) {
+            throw "totalClaimed doesn't exists or its value is already 0 or less";
+        }
+        console.log(claimId)
+        transaction.delete(doc(categoryDocRef, "claims", claimId));
+        
+        transaction.update(categoryDocRef, { totalClaimed: increment(-1) });
+    })
 }

@@ -27,9 +27,9 @@ export type WishlistStateType = z.infer<typeof WishlistStateSchema>;
 
 export interface WishlistContextI extends WishlistStateType {
     actionDispatch: {
-        setClamiedCategory: (category: string, guestCode: string, claimId: string) => void;
-        removeClamiedCategory: (category: string) => void;
-        resetClamiedCategories: () => void;
+        setClaimedCategory: (category: string, guestCode: string, claimId: string) => void;
+        removeClaimedCategory: (category: string) => void;
+        resetClaimedCategories: () => void;
     } | null;
 }
 

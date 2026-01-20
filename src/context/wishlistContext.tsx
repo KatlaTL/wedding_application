@@ -86,7 +86,7 @@ export const WishlistProvider = ({ children }: PropsWithChildren) => {
      * Contains all dispatch functions to update the reducer state
      */
     const actionDispatch = {
-        setClamiedCategory: (category: string, guestCode: string, claimId: string) => {
+        setClaimedCategory: (category: string, guestCode: string, claimId: string) => {
             dispatch({
                 type: "SET_CLAIMED_CATEGORY",
                 payload: {
@@ -96,7 +96,7 @@ export const WishlistProvider = ({ children }: PropsWithChildren) => {
                 }
             })
         },
-        removeClamiedCategory: (category: string) => {
+        removeClaimedCategory: (category: string) => {
             dispatch({
                 type: "REMOVE_CLAIMED_CATEGORY",
                 payload: {
@@ -104,7 +104,7 @@ export const WishlistProvider = ({ children }: PropsWithChildren) => {
                 }
             })
         },
-        resetClamiedCategories: () => {
+        resetClaimedCategories: () => {
             dispatch({
                 type: "RESET_CLAIMED_CATEGORIES"
             })

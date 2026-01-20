@@ -29,7 +29,6 @@ const WishList = () => {
                             {isLoading ? (
                                 <Loader />
                             ) : (
-
                                 categories.map(({ icon, items, title, description, totalClaimed }, index) => (
                                     <CategorySection
                                         icon={icon}

@@ -24,11 +24,32 @@ const useWishlist = () => {
      */
     const claimMutation = useMutation({
         mutationFn: ({ categoryTitle, guestCode }: { categoryTitle: string, guestCode: string }) => claimCategory(categoryTitle, guestCode),
+        onMutate: async ({ categoryTitle, guestCode }) => {
+            await queryClient.cancelQueries({ queryKey: ["categories"] });
+
+            const previousCategories = queryClient.getQueryData<DBCategoryType[]>(["categories"]);
+
+            const previousClaimes: ClaimedCategories = [...claimedCategories];
+
+            queryClient.setQueryData<DBCategoryType[]>(["categories"], (old) => {
+                // Update old data to show claim instantly
+                return old ? old.map(cat => cat.title === categoryTitle ? { ...cat, totalClaimed: cat.totalClaimed + 1 } : cat) : [];
+            });
+
+            actionDispatch?.setClaimedCategory(categoryTitle, guestCode, "optimistic-placeholder-id");
+
+            return { previousCategories, previousClaimes };
+        },
         onSuccess: (claimId, variables) => {
             queryClient.invalidateQueries({ queryKey: ["categories"] });
-            actionDispatch?.setClamiedCategory(variables.categoryTitle, variables.guestCode, claimId);
+            actionDispatch?.setClaimedCategory(variables.categoryTitle, variables.guestCode, claimId);
             saveClaimedCategory(variables.categoryTitle, variables.guestCode, claimId);
-        }
+        },
+        onError: (err, variables, context) => {
+            queryClient.setQueryData(["categories"], context?.previousCategories);
+            actionDispatch?.removeClaimedCategory(variables.categoryTitle);
+            console.error(err);
+        },
     })
 
     /**
@@ -36,18 +57,45 @@ const useWishlist = () => {
      */
     const unclaimMutation = useMutation({
         mutationFn: ({ categoryTitle, claimId }: { categoryTitle: string, claimId: string }) => unclaimCategory(categoryTitle, claimId),
+        onMutate: async ({ categoryTitle, claimId }) => {
+            await queryClient.cancelQueries({ queryKey: ["categories"] });
+
+            const previousCategories = queryClient.getQueryData<DBCategoryType[]>(["categories"]);
+
+            const previousCategory = claimedCategories.find(cat => cat.categoryTitle === categoryTitle);
+            const previousClaim = previousCategory?.claims.find(claim => claim.claimId === claimId);
+            const previousGuestCode = previousClaim?.guestCode;
+
+            queryClient.setQueryData<DBCategoryType[]>(["categories"], (old) => {
+                // Update old data to show claim instantly
+                return old ? old.map(cat => cat.title === categoryTitle ? { ...cat, totalClaimed: cat.totalClaimed - 1 } : cat) : [];
+            });
+
+            if (previousGuestCode) {
+                actionDispatch?.removeClaimedCategory(categoryTitle);
+            }
+
+            return { previousCategories, previousGuestCode };
+        },
         onSuccess: (_, variables) => {
             queryClient.invalidateQueries({ queryKey: ["categories"] });
-            actionDispatch?.removeClamiedCategory(variables.categoryTitle);
+            actionDispatch?.removeClaimedCategory(variables.categoryTitle);
             removeClaimedCategory(variables.categoryTitle);
-        }
+        },
+        onError: (err, variables, context) => {
+            queryClient.setQueryData(["categories"], context?.previousCategories);
+            if (context?.previousGuestCode) {
+                actionDispatch?.setClaimedCategory(variables.categoryTitle, context.previousGuestCode, variables.claimId);
+            }
+            console.error(err);
+        },
     })
 
     const getClaimId = (categoryTitle: string, guestCode?: string) => {
         const category = claimedCategories.find(cat => cat.categoryTitle === categoryTitle);
 
         if (!category) return;
-    
+
         if (!guestCode) {
             return category.claims[0].claimId;
         }
