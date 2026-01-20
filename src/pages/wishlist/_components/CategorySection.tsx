@@ -1,5 +1,5 @@
 import type { CategorySectionType } from "../../../types/wishlistTypes";
-import { useEffect, useState, type PropsWithChildren } from "react";
+import { type PropsWithChildren } from "react";
 import Button from "../../../components/ui/Button";
 import { CircleCheckBig, ShoppingBag } from "lucide-react";
 import useWishlist from "../../../hooks/useWishlist";
@@ -9,26 +9,10 @@ import useInvitation from "../../../hooks/useInvitation";
  * CategorySection component used in the WishList component
  */
 const CategorySection = ({ icon: Icon, title, description, totalClaimed, children }: PropsWithChildren<CategorySectionType>) => {
-    const [claimed, setClaimed] = useState<boolean>(false);
-    const [claimId, setClaimId] = useState<string>("");
-    const { claimedCategories, claimMutation, unclaimMutation } = useWishlist();
+    const { claimedCategories, claimMutation, unclaimMutation, getClaimId } = useWishlist();
     const { code } = useInvitation();
 
-    //TO-DO fix bug which prevents the UI from rerendering properly 
-    useEffect(() => {
-        const category = claimedCategories.find(cat => cat.categoryTitle === title);
-
-        if (!category) {
-            setClaimed(false);
-            setClaimId("");
-            return;
-        }
-
-        const claim = category.claims.find(claim => claim.guestCode === code);
-
-        setClaimed(!!claim);
-        setClaimId(claim?.claimId ?? "");
-    }, [claimedCategories, title, code]);
+    const claimed = claimedCategories.some(cat => cat.categoryTitle === title);
 
     const getClaimedStatus = (totalClaimed: number): { label: string, style: string } => {
         if (totalClaimed === 0) {
@@ -57,11 +41,11 @@ const CategorySection = ({ icon: Icon, title, description, totalClaimed, childre
         if (!claimed) {
             claimMutation.mutate({ categoryTitle: categoryName, guestCode: code });
         } else {
-            unclaimMutation.mutate({ categoryTitle: categoryName, claimId: claimId });
-        }
+            const claimId = getClaimId(title, code);
+            
+            if (!claimId) return;
 
-        if (claimMutation.isSuccess || unclaimMutation.isSuccess) {
-            setClaimed(prev => !prev);
+            unclaimMutation.mutate({ categoryTitle: categoryName, claimId });
         }
     }
 

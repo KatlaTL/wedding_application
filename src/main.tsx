@@ -7,6 +7,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import { WishlistProvider } from './context/wishlistContext.tsx'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,7 +26,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <InvitationProvider>
-        <App />
+        <WishlistProvider>
+          <App />
+        </WishlistProvider>
       </InvitationProvider>
     </QueryClientProvider>
   </StrictMode>

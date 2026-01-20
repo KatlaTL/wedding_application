@@ -26,11 +26,37 @@ const WishlistContext = createContext<WishlistContextI>(contextInitialState);
 const wishlistProducer = (state: WishlistStateType, action: WishlistReducerActionType): WishlistStateType => {
     switch (action.type) {
         case "SET_CLAIMED_CATEGORY":
+            const existing = state.claimedCategories.find(
+                cat => cat.categoryTitle === action.payload.category
+            );
+
+            if (existing) {
+                return {
+                    ...state,
+                    claimedCategories: state.claimedCategories.map(cat => {
+                        if (cat.categoryTitle === action.payload.category) {
+                            return {
+                                ...cat,
+                                claims: [
+                                    ...cat.claims,
+                                    {
+                                        guestCode: action.payload.guestCode,
+                                        claimId: action.payload.claimId
+                                    }
+                                ]
+                            }
+                        }
+
+                        return cat;
+                    })
+                }
+            }
+
             return {
                 ...state,
                 claimedCategories: [...state.claimedCategories, {
                     categoryTitle: action.payload.category,
-                    claims: [...state.claimedCategories.find(category => category.categoryTitle === action.payload.category)?.claims ?? [], {
+                    claims: [{
                         guestCode: action.payload.guestCode,
                         claimId: action.payload.claimId
                     }]
@@ -97,13 +123,13 @@ export const WishlistProvider = ({ children }: PropsWithChildren) => {
 }
 
 /**
- * Hook which checks if the invitation context is defined
- * @returns Invitation context
+ * Hook which checks if the Wishlist context is defined
+ * @returns Wishlist context
  */
 export const useWishlistContext = () => {
     const context = useContext(WishlistContext);
     if (context === undefined) {
-        throw new Error('useInvitationContext must be used within a LoadingProvider');
+        throw new Error('useWishlistContext must be used within a LoadingProvider');
     }
     return context;
 };

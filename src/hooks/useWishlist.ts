@@ -10,7 +10,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
  * Hook to handle wishlist data logic
  */
 const useWishlist = () => {
-    const { actionDispatch, ...rest } = useWishlistContext();
+    const { actionDispatch, claimedCategories } = useWishlistContext();
     const queryClient = useQueryClient();
 
     const { data: dbCategories = [], isLoading } = useQuery({
@@ -42,6 +42,19 @@ const useWishlist = () => {
             removeClaimedCategory(variables.categoryTitle);
         }
     })
+
+    const getClaimId = (categoryTitle: string, guestCode?: string) => {
+        const category = claimedCategories.find(cat => cat.categoryTitle === categoryTitle);
+
+        if (!category) return;
+    
+        if (!guestCode) {
+            return category.claims[0].claimId;
+        }
+
+        return category.claims.find(claim => claim.guestCode === guestCode)?.claimId;
+    }
+
 
     /**
      * Get the claimedCategories list in localstorage
@@ -95,7 +108,8 @@ const useWishlist = () => {
         saveClaimedCategory,
         removeClaimedCategory,
         actionDispatch,
-        ...rest
+        claimedCategories,
+        getClaimId
     };
 
 }
