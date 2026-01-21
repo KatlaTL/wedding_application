@@ -1,21 +1,21 @@
 import { CLAIMED_CATEGORIES } from "../constants/localstorageKeys";
-import { ClaimedCategories, WishlistStateSchema } from "../schemas/wishlistSchema";
-import type { WishlistContextI, WishlistReducerActionType, WishlistStateType } from "../types/wishlistTypes";
+import { WishlistClaimedCategories, WishlistStateSchema } from "../schemas/wishlistSchema";
+import type { ClaimedCategories, WishlistContextI, WishlistReducerActionType, WishlistStateType } from "../types/wishlistTypes";
 import { safeParser } from "../utils/parser";
 import { createContext, useContext, useReducer, type PropsWithChildren } from "react";
 
 
 const reducerInitialState: WishlistStateType = WishlistStateSchema.parse({
-    claimedCategories: safeParser(
+    wishlistClaimedCategories: safeParser(
         localStorage.getItem(CLAIMED_CATEGORIES),
-        ClaimedCategories,
+        WishlistClaimedCategories,
         []
     )
 });
 
 const contextInitialState: WishlistContextI = {
     actionDispatch: null,
-    claimedCategories: reducerInitialState.claimedCategories
+    wishlistClaimedCategories: reducerInitialState.wishlistClaimedCategories,
 };
 
 const WishlistContext = createContext<WishlistContextI>(contextInitialState);
@@ -26,51 +26,87 @@ const WishlistContext = createContext<WishlistContextI>(contextInitialState);
 const wishlistProducer = (state: WishlistStateType, action: WishlistReducerActionType): WishlistStateType => {
     switch (action.type) {
         case "SET_CLAIMED_CATEGORY":
-            const existing = state.claimedCategories.find(
-                cat => cat.categoryTitle === action.payload.category
-            );
+            const guestCodeExists = state.wishlistClaimedCategories.find(item => item.guestCode === action.payload.guestCode);
 
-            if (existing) {
+            if (!guestCodeExists) {
                 return {
                     ...state,
-                    claimedCategories: state.claimedCategories.map(cat => {
-                        if (cat.categoryTitle === action.payload.category) {
-                            return {
-                                ...cat,
-                                claims: [
-                                    ...cat.claims,
-                                    {
-                                        guestCode: action.payload.guestCode,
+                    wishlistClaimedCategories: [...state.wishlistClaimedCategories, {
+                        guestCode: action.payload.guestCode,
+                        claimedCategories: [{
+                            categoryTitle: action.payload.category,
+                            claimId: action.payload.claimId
+                        }]
+                    }]
+                }
+            }
+
+            const categoryExists = guestCodeExists?.claimedCategories.some(cat => cat.categoryTitle === action.payload.category);
+
+            if (categoryExists) {
+                return {
+                    ...state,
+                    wishlistClaimedCategories: state.wishlistClaimedCategories.map(item => {
+                        if (item.guestCode === action.payload.guestCode) {
+
+                            const itemClaimedCategories = item.claimedCategories.map(cat => {
+                                if (cat.categoryTitle === action.payload.category) {
+                                    return {
+                                        ...cat,
+                                        categoryTitle: action.payload.category,
                                         claimId: action.payload.claimId
                                     }
-                                ]
+                                }
+                                return cat;
+                            });
+
+                            return {
+                                ...item,
+                                claimedCategories: [...itemClaimedCategories]
                             }
                         }
 
-                        return cat;
+                        return item;
                     })
                 }
             }
 
             return {
                 ...state,
-                claimedCategories: [...state.claimedCategories, {
-                    categoryTitle: action.payload.category,
-                    claims: [{
-                        guestCode: action.payload.guestCode,
-                        claimId: action.payload.claimId
-                    }]
-                }]
+                wishlistClaimedCategories: state.wishlistClaimedCategories.map(item => {
+                    if (item.guestCode === action.payload.guestCode) {
+                        return {
+                            ...item,
+                            claimedCategories: [
+                                ...item.claimedCategories,
+                                {
+                                    categoryTitle: action.payload.category,
+                                    claimId: action.payload.claimId
+                                }
+                            ] as ClaimedCategories
+                        }
+                    }
+
+                    return item;
+                })
             }
         case "REMOVE_CLAIMED_CATEGORY":
             return {
                 ...state,
-                claimedCategories: state.claimedCategories.filter(item => item.categoryTitle !== action.payload.category)
+                wishlistClaimedCategories: state.wishlistClaimedCategories.map(item => {
+                    if (item.guestCode === action.payload.guestCode) {
+                        return {
+                            ...item,
+                            claimedCategories: item.claimedCategories.filter(cat => cat.categoryTitle !== action.payload.category)
+                        }
+                    }
+                    return item;
+                })
             }
         case "RESET_CLAIMED_CATEGORIES":
             return {
                 ...state,
-                claimedCategories: []
+                wishlistClaimedCategories: []
             }
     }
 }
@@ -96,11 +132,12 @@ export const WishlistProvider = ({ children }: PropsWithChildren) => {
                 }
             })
         },
-        removeClaimedCategory: (category: string) => {
+        removeClaimedCategory: (category: string, guestCode: string) => {
             dispatch({
                 type: "REMOVE_CLAIMED_CATEGORY",
                 payload: {
-                    category
+                    category,
+                    guestCode
                 }
             })
         },
@@ -115,7 +152,7 @@ export const WishlistProvider = ({ children }: PropsWithChildren) => {
     return (
         <WishlistContext.Provider value={{
             actionDispatch,
-            claimedCategories: state.claimedCategories
+            wishlistClaimedCategories: state.wishlistClaimedCategories
         }}>
             {children}
         </WishlistContext.Provider>

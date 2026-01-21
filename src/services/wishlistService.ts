@@ -66,7 +66,7 @@ export const unclaimCategory = async (categoryTitle: string, claimId: string) =>
         if (totalClaimed <= 0) {
             throw "totalClaimed doesn't exists or its value is already 0 or less";
         }
-        console.log(claimId)
+        
         transaction.delete(doc(categoryDocRef, "claims", claimId));
         
         transaction.update(categoryDocRef, { totalClaimed: increment(-1) });

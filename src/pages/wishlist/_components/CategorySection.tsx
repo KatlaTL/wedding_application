@@ -2,15 +2,15 @@ import type { CategorySectionType } from "../../../types/wishlistTypes";
 import { type PropsWithChildren } from "react";
 import Button from "../../../components/ui/Button";
 import { CircleCheckBig, ShoppingBag } from "lucide-react";
-import useWishlist from "../../../hooks/useWishlist";
+import useWishlistClaims from "../../../hooks/wishlist/useWishlistClaims";
 import useInvitation from "../../../hooks/useInvitation";
 
 /**
  * CategorySection component used in the WishList component
  */
 const CategorySection = ({ icon: Icon, title, description, totalClaimed, children }: PropsWithChildren<CategorySectionType>) => {
-    const { claimedCategories, claimMutation, unclaimMutation, getClaimId } = useWishlist();
     const { code } = useInvitation();
+    const { claimedCategories, claimMutation, unclaimMutation, getClaimId } = useWishlistClaims(code);
 
     const claimed = claimedCategories.some(cat => cat.categoryTitle === title);
 
@@ -41,7 +41,7 @@ const CategorySection = ({ icon: Icon, title, description, totalClaimed, childre
         if (!claimed) {
             claimMutation.mutate({ categoryTitle: categoryName, guestCode: code });
         } else {
-            const claimId = getClaimId(title, code);
+            const claimId = getClaimId(title);
 
             if (!claimId) return;
 
