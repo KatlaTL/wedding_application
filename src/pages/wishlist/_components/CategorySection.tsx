@@ -2,7 +2,7 @@ import type { CategorySectionType } from "../../../types/wishlistTypes";
 import { type PropsWithChildren } from "react";
 import Button from "../../../components/ui/Button";
 import { CircleCheckBig, ShoppingBag } from "lucide-react";
-import useWishlistClaims from "../../../hooks/wishlist/useWishlistClaims";
+import useWishlistClaims from "../../../hooks/useWishlist";
 import useInvitation from "../../../hooks/useInvitation";
 
 /**
@@ -10,7 +10,7 @@ import useInvitation from "../../../hooks/useInvitation";
  */
 const CategorySection = ({ icon: Icon, title, description, totalClaimed, children }: PropsWithChildren<CategorySectionType>) => {
     const { code } = useInvitation();
-    const { claimedCategories, claimMutation, unclaimMutation, getClaimId } = useWishlistClaims(code);
+    const { claimedCategories, claimMutation, unclaimMutation } = useWishlistClaims();
 
     const claimed = claimedCategories.some(cat => cat.categoryTitle === title);
 
@@ -39,13 +39,9 @@ const CategorySection = ({ icon: Icon, title, description, totalClaimed, childre
         if (!code) return;
 
         if (!claimed) {
-            claimMutation.mutate({ categoryTitle: categoryName, guestCode: code });
+            claimMutation.mutate({ categoryTitle: categoryName });
         } else {
-            const claimId = getClaimId(title);
-
-            if (!claimId) return;
-
-            unclaimMutation.mutate({ categoryTitle: categoryName, claimId });
+            unclaimMutation.mutate({ categoryTitle: categoryName });
         }
     }
 

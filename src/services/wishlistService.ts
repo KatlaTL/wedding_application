@@ -1,8 +1,10 @@
-import { collection, deleteDoc, doc, getDocs, increment, runTransaction, serverTimestamp } from "firebase/firestore";
+import { collection, deleteField, doc, getDocs, increment, runTransaction } from "firebase/firestore";
 import { db } from "./firebase";
 import type { DBCategoryType } from "../types/wishlistTypes";
 import { CategoriesSchema } from "../schemas/wishlistSchema";
 import { slugify } from "../utils/slug";
+
+type ClaimActionType = "claim" | "unclaim";
 
 const wishlistRef = collection(db, "wishlist");
 
@@ -25,50 +27,45 @@ export const fetchCategories = async (): Promise<DBCategoryType[]> => {
 }
 
 /**
- * Claims a category
+ * Claims or unclaims a category
  * @param categoryTitle - The category title 
  * @param guestCode - The code of the guest who is claiming the category 
- * @returns the Firestore claimRef.id
+ * @param action - The action the function should take: claim or unclaim
  */
-export const claimCategory = async (categoryTitle: string, guestCode: string): Promise<string> => {
-    const categoryDocRef = doc(wishlistRef, slugify(categoryTitle));
-
-    return await runTransaction(db, async (transaction) => {
-        const claimRef = doc(collection(categoryDocRef, "claims"));
-        transaction.set(claimRef, {
-            guestCode,
-            claimedAt: serverTimestamp()
-        })
-        
-        transaction.update(categoryDocRef, { totalClaimed: increment(1) });
-        
-        return claimRef.id;
-    })
-}
-
-/**
- * unclaims a category 
- * @param categoryTitle - The category title 
- * @param claimId the Firestore claimRef.id
- */
-export const unclaimCategory = async (categoryTitle: string, claimId: string) => {
+export const updateCategoryClaim = async (categoryTitle: string, guestCode: string, action: ClaimActionType) => {
     const categoryDocRef = doc(wishlistRef, slugify(categoryTitle));
 
     await runTransaction(db, async (transaction) => {
-        const docSnap = await transaction.get(categoryDocRef);
-        
-        if (!docSnap.exists()) {
-            throw "Category not found";
+        const categorySnap = await transaction.get(categoryDocRef);
+
+        if (!categorySnap.exists()) {
+            throw new Error("Category does not exist");
         }
-        
-        const totalClaimed = docSnap.data()?.totalClaimed ?? 0;
-        
-        if (totalClaimed <= 0) {
-            throw "totalClaimed doesn't exists or its value is already 0 or less";
+
+        const data = categorySnap.data();
+
+        const hasClaimed = data.claims?.[guestCode] ?? false;
+
+        if (action === "claim") {
+            if (hasClaimed) {
+                throw new Error("This guest has already claimed this category");
+            }
+
+            transaction.update(categoryDocRef, {
+                [`claims.${guestCode}`]: true,
+                totalClaimed: increment(1)
+            });
+
+        } else if (action === "unclaim") {
+            if (!hasClaimed) {
+                throw new Error("Cannot unclaim; not claimed yet");
+            }
+
+            transaction.update(categoryDocRef, {
+                [`claims.${guestCode}`]: deleteField(),
+                totalClaimed: increment(-1)
+            });
         }
-        
-        transaction.delete(doc(categoryDocRef, "claims", claimId));
-        
-        transaction.update(categoryDocRef, { totalClaimed: increment(-1) });
+
     })
 }

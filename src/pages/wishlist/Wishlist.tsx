@@ -3,17 +3,17 @@ import PageTransition from "../../components/PageTransition"
 import Section from "../../components/Section";
 import StaggeredContent from "../../components/StaggeredContent"
 import CategorySection from "./_components/CategorySection";
-import useWishlistCategories from "../../hooks/wishlist/useWishlistCategories";
 import StaggeredItem from "../../components/StaggeredItem";
 import CategoryTile from "./_components/CategoryTile";
 import CategoryInfo from "./_components/CategoryInfo";
 import Loader from "../../components/ui/Loader";
+import useWishlist from "../../hooks/useWishlist";
 
 /**
  * WishList page component
  */
 const WishList = () => {
-    const { categories, isLoading } = useWishlistCategories();
+    const { categories, isLoading } = useWishlist();
 
     return (
         <PageTransition>

@@ -1,40 +1,55 @@
-import type { ClaimedCategories, DBCategoryType, WishlistClaimedCategories } from "../../types/wishlistTypes";
-import { CLAIMED_CATEGORIES } from "../../constants/localstorageKeys";
-import { useWishlistContext } from "../../context/wishlistContext";
-import { claimCategory, unclaimCategory } from "../../services/wishlistService";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { CategoryType, ClaimedCategories, DBCategoryType, WishlistClaimedCategories } from "../types/wishlistTypes";
+import { CLAIMED_CATEGORIES } from "../constants/localstorageKeys";
+import { useWishlistContext } from "../context/wishlistContext";
+import { fetchCategories, updateCategoryClaim } from "../services/wishlistService";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import useInvitation from "./useInvitation";
+import { mapIcons } from "../utils/iconMapper";
+import { useEffect, useMemo } from "react";
 
 /**
- * Hook to handle wishlist category claim data logic
+ * Hook to handle wishlist category and claim data logic
  */
-const useWishlistClaims = (guestCode: string | null) => {
-    // Early return if guestCode is null
-    if (!guestCode) {
-        return {
-            claimedCategories: [],
-            claimMutation: {
-                mutate: () => { },
-                isPending: false,
-            },
-            unclaimMutation: {
-                mutate: () => { },
-                isPending: false,
-            },
-            getClaimId: () => null,
-        };
-    }
+const useWishlist = () => {
+    const { code: guestCode } = useInvitation();
 
     const { actionDispatch, wishlistClaimedCategories } = useWishlistContext();
     const queryClient = useQueryClient();
 
-    const claimedCategories = wishlistClaimedCategories.find(item => item.guestCode === guestCode)?.claimedCategories ?? [];
+    const claimedCategories = guestCode
+        ? useMemo(() => wishlistClaimedCategories.find(item => item.guestCode === guestCode)?.claimedCategories ?? [], [guestCode, wishlistClaimedCategories])
+        : [];
 
+    const { data: dbCategories = [], isLoading } = useQuery({
+        queryKey: ["categories"],
+        queryFn: fetchCategories,
+
+    })
+
+    //TO-DO fix this 
+    useEffect(() => {
+        dbCategories.forEach((category) => {
+            const categoryClaimed = category.claims?.[guestCode ?? ""];
+
+            if (categoryClaimed) {
+                actionDispatch?.setClaimedCategory(category.title, guestCode!);
+            }
+        })
+    }, [dbCategories, guestCode])
+
+    //TO-DO merge mutation functions into one
     /**
      * The mutation function to store the claimed category in the database
      */
     const claimMutation = useMutation({
-        mutationFn: ({ categoryTitle }: { categoryTitle: string, guestCode: string }) => claimCategory(categoryTitle, guestCode),
-        onMutate: async (variables) => {
+        mutationFn: ({ categoryTitle }: { categoryTitle: string }) => {
+            if (!guestCode) throw new Error("Guest code is required");
+
+            return updateCategoryClaim(categoryTitle, guestCode, "claim")
+        },
+        onMutate: async ({ categoryTitle }) => {
+            if (!guestCode) return;
+
             await queryClient.cancelQueries({ queryKey: ["categories"] });
 
             const previousCategories = queryClient.getQueryData<DBCategoryType[]>(["categories"]);
@@ -43,22 +58,26 @@ const useWishlistClaims = (guestCode: string | null) => {
 
             queryClient.setQueryData<DBCategoryType[]>(["categories"], (old) => {
                 // Update old data to show claim instantly
-                return old ? old.map(cat => cat.title === variables.categoryTitle ? { ...cat, totalClaimed: cat.totalClaimed + 1 } : cat) : [];
+                return old ? old.map(cat => cat.title === categoryTitle ? { ...cat, totalClaimed: cat.totalClaimed + 1 } : cat) : [];
             });
 
-            actionDispatch?.setClaimedCategory(variables.categoryTitle, variables.guestCode, "optimistic-placeholder-id");
+            actionDispatch?.setClaimedCategory(categoryTitle, guestCode);
 
             return { previousCategories, previousClaimes };
         },
-        onSuccess: (claimId, variables) => {
+        onSuccess: (_, { categoryTitle }) => {
             queryClient.invalidateQueries({ queryKey: ["categories"] });
-            actionDispatch?.setClaimedCategory(variables.categoryTitle, variables.guestCode, claimId);
-            saveWishlistClaimedCategory(variables.categoryTitle, claimId);
+
+            if (!guestCode) return;
+            actionDispatch?.setClaimedCategory(categoryTitle, guestCode);
+            saveWishlistClaimedCategory(categoryTitle);
         },
-        onError: (err, variables, context) => {
+        onError: (err, { categoryTitle }, context) => {
             queryClient.setQueryData(["categories"], context?.previousCategories);
-            actionDispatch?.removeClaimedCategory(variables.categoryTitle, variables.guestCode);
             console.error(err);
+
+            if (!guestCode) return;
+            actionDispatch?.removeClaimedCategory(categoryTitle, guestCode);
         },
     })
 
@@ -66,8 +85,12 @@ const useWishlistClaims = (guestCode: string | null) => {
      * The mutation function to unclaimed a category stored in the database
      */
     const unclaimMutation = useMutation({
-        mutationFn: ({ categoryTitle, claimId }: { categoryTitle: string, claimId: string }) => unclaimCategory(categoryTitle, claimId),
+        mutationFn: ({ categoryTitle }: { categoryTitle: string }) => {
+            if (!guestCode) throw new Error("Guest code is required");
+            return updateCategoryClaim(categoryTitle, guestCode, "unclaim")
+        },
         onMutate: async ({ categoryTitle }) => {
+            if (!guestCode) return;
             await queryClient.cancelQueries({ queryKey: ["categories"] });
 
             const previousCategories = queryClient.getQueryData<DBCategoryType[]>(["categories"]);
@@ -83,33 +106,22 @@ const useWishlistClaims = (guestCode: string | null) => {
                 actionDispatch?.removeClaimedCategory(previousCategory.categoryTitle, guestCode);
             }
 
-            return { previousCategories, previousCategory };
+            return { previousCategories };
         },
-        onSuccess: (_, variables) => {
+        onSuccess: (_, { categoryTitle }) => {
             queryClient.invalidateQueries({ queryKey: ["categories"] });
-            removeWishlistClaimedCategory(variables.categoryTitle);
+            removeWishlistClaimedCategory(categoryTitle);
         },
-        onError: (err, variables, context) => {
+        onError: (err, { categoryTitle }, context) => {
             queryClient.setQueryData(["categories"], context?.previousCategories);
-            if (context?.previousCategory) {
-                actionDispatch?.setClaimedCategory(variables.categoryTitle, guestCode, context.previousCategory.claimId);
-            }
             console.error(err);
+
+            if (!guestCode) return;
+            actionDispatch?.setClaimedCategory(categoryTitle, guestCode);
         },
     })
 
-    /**
-     * Get the claimId for a category
-     */
-    const getClaimId = (categoryTitle: string) => {
-        const category = claimedCategories.find(cat => cat.categoryTitle === categoryTitle);
-
-        if (!category) return;
-
-        return category.claimId;
-    }
-
-
+    //TO-DO merge localstorage functions into one helper function
     /**
      * Get the claimedCategories list in localstorage
      */
@@ -124,13 +136,12 @@ const useWishlistClaims = (guestCode: string | null) => {
     /**
      * Saves the claimedCategory in localstorage
      */
-    const saveWishlistClaimedCategory = (category: string, claimId: string) => {
+    const saveWishlistClaimedCategory = (category: string) => {
         const wishlistClaimedCategories: WishlistClaimedCategories = getWishlistClaimedCategories();
         localStorage.setItem(CLAIMED_CATEGORIES, JSON.stringify([...wishlistClaimedCategories, {
             guestCode: guestCode,
             claimedCategories: [{
-                categoryTitle: category,
-                claimId: claimId
+                categoryTitle: category
             }]
         }] as WishlistClaimedCategories));
     }
@@ -151,13 +162,24 @@ const useWishlistClaims = (guestCode: string | null) => {
         localStorage.setItem(CLAIMED_CATEGORIES, JSON.stringify(newArray));
     }
 
+    /**
+     * Maps DBCategoryType to CategoryType and save the claimed categories in context
+     */
+    const categories: CategoryType[] = useMemo(() => dbCategories.map((category: DBCategoryType): CategoryType => {
+        return {
+            ...category,
+            icon: mapIcons(category.icon)
+        }
+    }), [dbCategories]);
+
     return {
         claimMutation,
         unclaimMutation,
         claimedCategories,
-        getClaimId
+        categories,
+        isLoading,
     };
 
 }
 
-export default useWishlistClaims;
+export default useWishlist;

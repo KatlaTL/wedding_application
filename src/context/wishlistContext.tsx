@@ -34,8 +34,7 @@ const wishlistProducer = (state: WishlistStateType, action: WishlistReducerActio
                     wishlistClaimedCategories: [...state.wishlistClaimedCategories, {
                         guestCode: action.payload.guestCode,
                         claimedCategories: [{
-                            categoryTitle: action.payload.category,
-                            claimId: action.payload.claimId
+                            categoryTitle: action.payload.category
                         }]
                     }]
                 }
@@ -54,7 +53,6 @@ const wishlistProducer = (state: WishlistStateType, action: WishlistReducerActio
                                     return {
                                         ...cat,
                                         categoryTitle: action.payload.category,
-                                        claimId: action.payload.claimId
                                     }
                                 }
                                 return cat;
@@ -80,8 +78,7 @@ const wishlistProducer = (state: WishlistStateType, action: WishlistReducerActio
                             claimedCategories: [
                                 ...item.claimedCategories,
                                 {
-                                    categoryTitle: action.payload.category,
-                                    claimId: action.payload.claimId
+                                    categoryTitle: action.payload.category
                                 }
                             ] as ClaimedCategories
                         }
@@ -122,13 +119,12 @@ export const WishlistProvider = ({ children }: PropsWithChildren) => {
      * Contains all dispatch functions to update the reducer state
      */
     const actionDispatch = {
-        setClaimedCategory: (category: string, guestCode: string, claimId: string) => {
+        setClaimedCategory: (category: string, guestCode: string) => {
             dispatch({
                 type: "SET_CLAIMED_CATEGORY",
                 payload: {
                     category,
-                    guestCode,
-                    claimId
+                    guestCode
                 }
             })
         },

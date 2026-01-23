@@ -15,12 +15,12 @@ export const CategoriesSchema = z.object({
     title: z.string(),
     description: z.string(),
     totalClaimed: z.number(),
-    items: CategoryItemsSchema
+    items: CategoryItemsSchema,
+    claims: z.record(z.string(), z.boolean()).optional()
 });
 
 export const ClaimedCategoriesSchema = z.array(z.object({
     categoryTitle: z.string(),
-    claimId: z.string()
 }))
 
 export const WishlistClaimedCategoriesSchema = z.array(z.object({
