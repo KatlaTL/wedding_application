@@ -1,6 +1,6 @@
 import type { LucideProps } from "lucide-react";
 import type z from "zod";
-import type { CategoriesSchema, ClaimedCategories, WishlistClaimedCategories, WishlistStateSchema } from "../schemas/wishlistSchema";
+import type { CategoriesSchema, ClaimedCategoriesSchema, WishlistClaimedCategoriesSchema, WishlistStateSchema } from "../schemas/wishlistSchema";
 
 export type CategoryTileType = {
     title: string;
@@ -21,9 +21,9 @@ export type CategoryType = CategorySectionType & {
 
 export type DBCategoryType = z.infer<typeof CategoriesSchema>;
 
-export type ClaimedCategories = z.infer<typeof ClaimedCategories>;
+export type ClaimedCategories = z.infer<typeof ClaimedCategoriesSchema>;
 
-export type WishlistClaimedCategories = z.infer<typeof WishlistClaimedCategories>;
+export type WishlistClaimedCategories = z.infer<typeof WishlistClaimedCategoriesSchema>;
 
 export type WishlistStateType = z.infer<typeof WishlistStateSchema>;
 

@@ -18,16 +18,16 @@ export const CategoriesSchema = z.object({
     items: CategoryItemsSchema
 });
 
-export const ClaimedCategories = z.array(z.object({
+export const ClaimedCategoriesSchema = z.array(z.object({
     categoryTitle: z.string(),
     claimId: z.string()
 }))
 
-export const WishlistClaimedCategories = z.array(z.object({
+export const WishlistClaimedCategoriesSchema = z.array(z.object({
     guestCode: z.string(),
-    claimedCategories: ClaimedCategories
+    claimedCategories: ClaimedCategoriesSchema
 }))
 
 export const WishlistStateSchema = z.object({
-    wishlistClaimedCategories: WishlistClaimedCategories
+    wishlistClaimedCategories: WishlistClaimedCategoriesSchema
 })

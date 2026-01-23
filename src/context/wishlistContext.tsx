@@ -1,5 +1,5 @@
 import { CLAIMED_CATEGORIES } from "../constants/localstorageKeys";
-import { WishlistClaimedCategories, WishlistStateSchema } from "../schemas/wishlistSchema";
+import { WishlistClaimedCategoriesSchema, WishlistStateSchema } from "../schemas/wishlistSchema";
 import type { ClaimedCategories, WishlistContextI, WishlistReducerActionType, WishlistStateType } from "../types/wishlistTypes";
 import { safeParser } from "../utils/parser";
 import { createContext, useContext, useReducer, type PropsWithChildren } from "react";
@@ -8,7 +8,7 @@ import { createContext, useContext, useReducer, type PropsWithChildren } from "r
 const reducerInitialState: WishlistStateType = WishlistStateSchema.parse({
     wishlistClaimedCategories: safeParser(
         localStorage.getItem(CLAIMED_CATEGORIES),
-        WishlistClaimedCategories,
+        WishlistClaimedCategoriesSchema,
         []
     )
 });
