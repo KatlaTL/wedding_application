@@ -27,7 +27,6 @@ const useWishlistClaims = (guestCode: string | null) => {
     const { actionDispatch, wishlistClaimedCategories } = useWishlistContext();
     const queryClient = useQueryClient();
 
-    console.log(guestCode)
     const claimedCategories = wishlistClaimedCategories.find(item => item.guestCode === guestCode)?.claimedCategories ?? [];
 
     /**

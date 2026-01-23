@@ -110,15 +110,16 @@ export const InvitationProvider = ({ children }: PropsWithChildren) => {
 
     if (actionDispatch) {
         actionDispatch.resetAll = () => {
-            (Object.keys(actionDispatch) as Array<keyof typeof actionDispatch>).forEach((key) => {
-                if (key.startsWith("reset")) {
-                    const fn = actionDispatch[key];
-
-                    if (typeof fn === "function") {
-                        (fn as () => void)() // assert TS fn has no parameters
-                    }
+            for (const [key, fn] of Object.entries(actionDispatch)) {
+                if (
+                    key.startsWith("reset") &&
+                    key !== "resetAll" &&
+                    typeof fn === "function" && 
+                    fn.length === 0
+                ) {
+                    (fn as () => void)();
                 }
-            })
+            }
         }
     }
 
