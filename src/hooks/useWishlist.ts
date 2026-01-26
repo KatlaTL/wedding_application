@@ -1,11 +1,13 @@
-import type { CategoryType, ClaimedCategories, DBCategoryType, WishlistClaimedCategories } from "../types/wishlistTypes";
+import type { CategoryType, ClaimActionType, DBCategoryType } from "../types/wishlistTypes";
 import { CLAIMED_CATEGORIES } from "../constants/localstorageKeys";
 import { useWishlistContext } from "../context/wishlistContext";
 import { fetchCategories, updateCategoryClaim } from "../services/wishlistService";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useInvitation from "./useInvitation";
 import { mapIcons } from "../utils/iconMapper";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
+import { optimisticUpdate, removeClaimedCategory, upsertClaimedCategory } from "../utils/wishlist/claimedCategories";
+import { safeParser } from "../utils/parser";
 
 /**
  * Hook to handle wishlist category and claim data logic
@@ -20,24 +22,13 @@ const useWishlist = () => {
         ? useMemo(() => wishlistClaimedCategories.find(item => item.guestCode === guestCode)?.claimedCategories ?? [], [guestCode, wishlistClaimedCategories])
         : [];
 
+
     const { data: dbCategories = [], isLoading } = useQuery({
         queryKey: ["categories"],
         queryFn: fetchCategories,
 
     })
 
-    //TO-DO fix this 
-    useEffect(() => {
-        dbCategories.forEach((category) => {
-            const categoryClaimed = category.claims?.[guestCode ?? ""];
-
-            if (categoryClaimed) {
-                actionDispatch?.setClaimedCategory(category.title, guestCode!);
-            }
-        })
-    }, [dbCategories, guestCode])
-
-    //TO-DO merge mutation functions into one
     /**
      * The mutation function to store the claimed category in the database
      */
@@ -47,30 +38,14 @@ const useWishlist = () => {
 
             return updateCategoryClaim(categoryTitle, guestCode, "claim")
         },
-        onMutate: async ({ categoryTitle }) => {
+        onMutate: async ({categoryTitle}) => {
             if (!guestCode) return;
 
-            await queryClient.cancelQueries({ queryKey: ["categories"] });
-
-            const previousCategories = queryClient.getQueryData<DBCategoryType[]>(["categories"]);
-
-            const previousClaimes: ClaimedCategories = [...claimedCategories];
-
-            queryClient.setQueryData<DBCategoryType[]>(["categories"], (old) => {
-                // Update old data to show claim instantly
-                return old ? old.map(cat => cat.title === categoryTitle ? { ...cat, totalClaimed: cat.totalClaimed + 1 } : cat) : [];
-            });
-
-            actionDispatch?.setClaimedCategory(categoryTitle, guestCode);
-
-            return { previousCategories, previousClaimes };
+            return optimisticUpdate({categoryTitle, action: "claim", guestCode, queryClient, actionDispatch})
         },
         onSuccess: (_, { categoryTitle }) => {
             queryClient.invalidateQueries({ queryKey: ["categories"] });
-
-            if (!guestCode) return;
-            actionDispatch?.setClaimedCategory(categoryTitle, guestCode);
-            saveWishlistClaimedCategory(categoryTitle);
+            updateWishlistClaimedCategory(categoryTitle, "claim");
         },
         onError: (err, { categoryTitle }, context) => {
             queryClient.setQueryData(["categories"], context?.previousCategories);
@@ -89,28 +64,14 @@ const useWishlist = () => {
             if (!guestCode) throw new Error("Guest code is required");
             return updateCategoryClaim(categoryTitle, guestCode, "unclaim")
         },
-        onMutate: async ({ categoryTitle }) => {
+        onMutate: async ({categoryTitle}) => {
             if (!guestCode) return;
-            await queryClient.cancelQueries({ queryKey: ["categories"] });
-
-            const previousCategories = queryClient.getQueryData<DBCategoryType[]>(["categories"]);
-
-            const previousCategory = claimedCategories.find(cat => cat.categoryTitle === categoryTitle);
-
-            queryClient.setQueryData<DBCategoryType[]>(["categories"], (old) => {
-                // Update old data to show claim instantly
-                return old ? old.map(cat => cat.title === categoryTitle ? { ...cat, totalClaimed: cat.totalClaimed - 1 } : cat) : [];
-            });
-
-            if (previousCategory) {
-                actionDispatch?.removeClaimedCategory(previousCategory.categoryTitle, guestCode);
-            }
-
-            return { previousCategories };
+            
+            return optimisticUpdate({categoryTitle, action: "unclaim", guestCode, queryClient, actionDispatch})
         },
         onSuccess: (_, { categoryTitle }) => {
             queryClient.invalidateQueries({ queryKey: ["categories"] });
-            removeWishlistClaimedCategory(categoryTitle);
+            updateWishlistClaimedCategory(categoryTitle, "unclaim");
         },
         onError: (err, { categoryTitle }, context) => {
             queryClient.setQueryData(["categories"], context?.previousCategories);
@@ -121,45 +82,21 @@ const useWishlist = () => {
         },
     })
 
-    //TO-DO merge localstorage functions into one helper function
     /**
-     * Get the claimedCategories list in localstorage
+     * Adds or remove a category from the claimedCategories list based on the action provided
+     * @param category - Category title
+     * @param action - "claim" or "unclaim"
      */
-    const getWishlistClaimedCategories = (): WishlistClaimedCategories => {
-        try {
-            return JSON.parse(localStorage.getItem(CLAIMED_CATEGORIES) ?? "[]"); //Use nullish coalescing as a fallback for better performance instead of relying on the catch block
-        } catch {
-            return [];
+    const updateWishlistClaimedCategory = (category: string, action: ClaimActionType) => {
+        if (!guestCode) return;
+
+        const claimedCategories = safeParser(localStorage.getItem(CLAIMED_CATEGORIES), []);
+
+        if (action === "claim") {
+            localStorage.setItem(CLAIMED_CATEGORIES, JSON.stringify(upsertClaimedCategory(claimedCategories, guestCode, category)));
+        } else if (action === "unclaim") {
+            localStorage.setItem(CLAIMED_CATEGORIES, JSON.stringify(removeClaimedCategory(claimedCategories, guestCode, category)));
         }
-    }
-
-    /**
-     * Saves the claimedCategory in localstorage
-     */
-    const saveWishlistClaimedCategory = (category: string) => {
-        const wishlistClaimedCategories: WishlistClaimedCategories = getWishlistClaimedCategories();
-        localStorage.setItem(CLAIMED_CATEGORIES, JSON.stringify([...wishlistClaimedCategories, {
-            guestCode: guestCode,
-            claimedCategories: [{
-                categoryTitle: category
-            }]
-        }] as WishlistClaimedCategories));
-    }
-
-    /**
-     * Remove a category from the claimedCategories list in localstorag
-     */
-    const removeWishlistClaimedCategory = (category: string) => {
-        const newArray = getWishlistClaimedCategories().map(item => {
-            if (item.guestCode === guestCode) {
-                return {
-                    ...item,
-                    claimedCategories: item.claimedCategories.filter(cat => cat.categoryTitle !== category)
-                }
-            }
-            return item;
-        })
-        localStorage.setItem(CLAIMED_CATEGORIES, JSON.stringify(newArray));
     }
 
     /**

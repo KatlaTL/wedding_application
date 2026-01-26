@@ -1,10 +1,8 @@
 import { collection, deleteField, doc, getDocs, increment, runTransaction } from "firebase/firestore";
 import { db } from "./firebase";
-import type { DBCategoryType } from "../types/wishlistTypes";
+import type { ClaimActionType, DBCategoryType } from "../types/wishlistTypes";
 import { CategoriesSchema } from "../schemas/wishlistSchema";
 import { slugify } from "../utils/slug";
-
-type ClaimActionType = "claim" | "unclaim";
 
 const wishlistRef = collection(db, "wishlist");
 

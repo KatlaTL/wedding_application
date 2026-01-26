@@ -1,18 +1,18 @@
 import { createContext, useContext, useReducer, type PropsWithChildren } from "react";
 import type { Guest, InvitationContextI, InvitationReducerActionType, InvitationStateType } from "../types/invitationTypes";
 import { GuestSchema, InvitationStateSchema } from "../schemas/invitationSchema";
-import { safeParser } from "../utils/parser";
+import { safeParserZod } from "../utils/parser";
 import * as z from "zod";
 import { GUEST, INVITATION_CODE, RSVP_IS_SUBMITTED } from "../constants/localstorageKeys";
 
 const reducerInitialState: InvitationStateType = InvitationStateSchema.parse({
-    isSubmitted: safeParser(
+    isSubmitted: safeParserZod(
         localStorage.getItem(RSVP_IS_SUBMITTED),
         z.object({ isSubmitted: z.boolean() }),
         { isSubmitted: false }
     ).isSubmitted,
     code: localStorage.getItem(INVITATION_CODE),
-    guest: safeParser(
+    guest: safeParserZod(
         localStorage.getItem(GUEST),
         GuestSchema,
         null

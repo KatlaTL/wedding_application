@@ -1,12 +1,13 @@
 import { CLAIMED_CATEGORIES } from "../constants/localstorageKeys";
 import { WishlistClaimedCategoriesSchema, WishlistStateSchema } from "../schemas/wishlistSchema";
-import type { ClaimedCategories, WishlistContextI, WishlistReducerActionType, WishlistStateType } from "../types/wishlistTypes";
-import { safeParser } from "../utils/parser";
+import type {  WishlistContextI, WishlistReducerActionType, WishlistStateType } from "../types/wishlistTypes";
+import { safeParserZod } from "../utils/parser";
 import { createContext, useContext, useReducer, type PropsWithChildren } from "react";
+import { removeClaimedCategory, upsertClaimedCategory } from "../utils/wishlist/claimedCategories";
 
 
 const reducerInitialState: WishlistStateType = WishlistStateSchema.parse({
-    wishlistClaimedCategories: safeParser(
+    wishlistClaimedCategories: safeParserZod(
         localStorage.getItem(CLAIMED_CATEGORIES),
         WishlistClaimedCategoriesSchema,
         []
@@ -22,83 +23,18 @@ const WishlistContext = createContext<WishlistContextI>(contextInitialState);
 
 /**
  * The producer used to handle the state logic for the wishlist useReducer
- */
+*/
 const wishlistProducer = (state: WishlistStateType, action: WishlistReducerActionType): WishlistStateType => {
     switch (action.type) {
         case "SET_CLAIMED_CATEGORY":
-            const guestCodeExists = state.wishlistClaimedCategories.find(item => item.guestCode === action.payload.guestCode);
-
-            if (!guestCodeExists) {
-                return {
-                    ...state,
-                    wishlistClaimedCategories: [...state.wishlistClaimedCategories, {
-                        guestCode: action.payload.guestCode,
-                        claimedCategories: [{
-                            categoryTitle: action.payload.category
-                        }]
-                    }]
-                }
-            }
-
-            const categoryExists = guestCodeExists?.claimedCategories.some(cat => cat.categoryTitle === action.payload.category);
-
-            if (categoryExists) {
-                return {
-                    ...state,
-                    wishlistClaimedCategories: state.wishlistClaimedCategories.map(item => {
-                        if (item.guestCode === action.payload.guestCode) {
-
-                            const itemClaimedCategories = item.claimedCategories.map(cat => {
-                                if (cat.categoryTitle === action.payload.category) {
-                                    return {
-                                        ...cat,
-                                        categoryTitle: action.payload.category,
-                                    }
-                                }
-                                return cat;
-                            });
-
-                            return {
-                                ...item,
-                                claimedCategories: [...itemClaimedCategories]
-                            }
-                        }
-
-                        return item;
-                    })
-                }
-            }
-
             return {
                 ...state,
-                wishlistClaimedCategories: state.wishlistClaimedCategories.map(item => {
-                    if (item.guestCode === action.payload.guestCode) {
-                        return {
-                            ...item,
-                            claimedCategories: [
-                                ...item.claimedCategories,
-                                {
-                                    categoryTitle: action.payload.category
-                                }
-                            ] as ClaimedCategories
-                        }
-                    }
-
-                    return item;
-                })
+                wishlistClaimedCategories: upsertClaimedCategory(state.wishlistClaimedCategories, action.payload.guestCode, action.payload.category)
             }
         case "REMOVE_CLAIMED_CATEGORY":
             return {
                 ...state,
-                wishlistClaimedCategories: state.wishlistClaimedCategories.map(item => {
-                    if (item.guestCode === action.payload.guestCode) {
-                        return {
-                            ...item,
-                            claimedCategories: item.claimedCategories.filter(cat => cat.categoryTitle !== action.payload.category)
-                        }
-                    }
-                    return item;
-                })
+                wishlistClaimedCategories: removeClaimedCategory(state.wishlistClaimedCategories, action.payload.guestCode, action.payload.category)
             }
         case "RESET_CLAIMED_CATEGORIES":
             return {
