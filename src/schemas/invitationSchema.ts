@@ -9,7 +9,7 @@ export const GuestSchema = z.object({
     needLift: z.boolean().optional(),
     canOfferLift: z.boolean().optional(),
     dietary: DietarySchema.optional(),
-    allergies: z.string().optional()
+    allergies: z.string().optional().nullable()
 });
 
 export const InvitationStateSchema = z.object({

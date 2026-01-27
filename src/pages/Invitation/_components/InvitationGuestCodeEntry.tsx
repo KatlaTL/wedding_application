@@ -17,7 +17,7 @@ const InvitationGuestCodeEntry = () => {
     const [invitationCode, setInvitationCode] = useState<string>("");
     const [error, setError] = useState<string>("");
 
-    const { validCodes, guestCode, saveGuestInfo } = useInvitation();
+    const { guestList, guestCode, saveGuestInfo } = useInvitation();
     const navigate = useNavigate();
 
     // If a code is found in memory then redirect to the guest invitation page
@@ -33,10 +33,10 @@ const InvitationGuestCodeEntry = () => {
 
         const trimedCode = invitationCode.trim();
 
-        if (validCodes[trimedCode]) {
+        if (guestList[trimedCode]) {
             const guestNames = {
-                firstName: validCodes[trimedCode].firstName,
-                lastName: validCodes[trimedCode].lastName
+                firstName: guestList[trimedCode].firstName,
+                lastName: guestList[trimedCode].lastName
             }
 
             saveGuestInfo(guestNames, trimedCode);

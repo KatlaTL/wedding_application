@@ -37,7 +37,7 @@ const Invitation = () => {
 
     const navigate = useNavigate();
     const { guestCode } = useParams();
-    const { validCodes, saveRSVP, isSubmitted, clearGuest } = useInvitation();
+    const { guestList, saveRSVP, isSubmitted, clearGuest } = useInvitation();
 
     const dietaryOptions: DietaryType[] = ["Vegetarian", "Vegan", "Omnivore"];
 
@@ -103,7 +103,7 @@ const Invitation = () => {
     return (
         <PageTransition>
             <StaggeredContent>
-                <Section title="Bekræft deltagelse" description={`${validCodes[guestCode]?.firstName} ${validCodes[guestCode]?.lastName} lad os vide, om du kommer!`}>
+                <Section title="Bekræft deltagelse" description={`${guestList[guestCode]?.firstName} ${guestList[guestCode]?.lastName} lad os vide, om du kommer!`}>
                     <StaggeredItem>
                         <div className="bg-background-muted rounded-lg border-primary-30 border p-5 max-w-120 mt-7 mb-5 xs:mx-auto mx-5 md:mx-0">
                             <Wrapper>

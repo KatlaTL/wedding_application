@@ -1,7 +1,9 @@
-import type { Guest, ValidCode } from "../types/invitationTypes";
+import type { GuestType } from "../types/invitationTypes";
 import { useInvitationContext } from "../context/InvitationContext";
 import { useNavigate } from "react-router-dom";
 import { GUEST, INVITATION_CODE, RSVP_IS_SUBMITTED } from "../constants/localstorageKeys";
+import { useQuery } from "@tanstack/react-query";
+import { fetchGuestList } from "../services/invitationService";
 
 /**
  * Hook to handle invitation data logic
@@ -10,18 +12,17 @@ const useInvitation = () => {
     const { actionDispatch, ...rest } = useInvitationContext();
     const navigate = useNavigate();
 
-    //TO-DO check if validcode is stored in the DB
-    const validCodes: ValidCode = {
-        "123abc": { id: 1, firstName: "Asger", lastName: "Thorsboe Lundblad" },
-        "abc123": { id: 1, firstName: "Rikke", lastName: "Samsing Bendixen" },
-    }
+    const { data: guestList = {}, isLoading } = useQuery({
+        queryKey: ["guestList"],
+        queryFn: fetchGuestList,
+    })
 
     /**
      * Save the response from the RSVP. \
      * Stores it in the InvitationContext reducer. \
      * TO-DO save it in DB
      */
-    const saveRSVP = (guest: Omit<Guest, "firstName" | "lastName">) => {
+    const saveRSVP = (guest: Omit<GuestType, "firstName" | "lastName">) => {
         if (rest.guest) {
             actionDispatch?.setGuestInfo({
                 firstName: rest.guest.firstName,
@@ -47,7 +48,7 @@ const useInvitation = () => {
     /**
      * Saves the guest info in the InvitationContext reducer and localstorage
      */
-    const saveGuestInfo = (guest: Pick<Guest, "firstName" | "lastName">, guestCode: string) => {
+    const saveGuestInfo = (guest: Pick<GuestType, "firstName" | "lastName">, guestCode: string) => {
         localStorage.setItem(GUEST, JSON.stringify(guest));
         localStorage.setItem(INVITATION_CODE, guestCode);
 
@@ -67,7 +68,8 @@ const useInvitation = () => {
     }
 
     return {
-        validCodes,
+        guestList,
+        isLoading,
         saveRSVP,
         updatedRSVP,
         saveGuestInfo,

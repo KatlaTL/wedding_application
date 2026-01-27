@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer, type PropsWithChildren } from "react";
-import type { Guest, InvitationContextI, InvitationReducerActionType, InvitationStateType } from "../types/invitationTypes";
+import type { GuestType, InvitationContextI, InvitationReducerActionType, InvitationStateType } from "../types/invitationTypes";
 import { GuestSchema, InvitationStateSchema } from "../schemas/invitationSchema";
 import { safeParserZod } from "../utils/parser";
 import * as z from "zod";
@@ -93,7 +93,7 @@ export const InvitationProvider = ({ children }: PropsWithChildren) => {
                 type: "RESET_GUEST_CODE"
             })
         },
-        setGuestInfo: (guest: Guest) => {
+        setGuestInfo: (guest: GuestType) => {
             dispatch({
                 type: "SET_GUEST",
                 payload: {

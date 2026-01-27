@@ -1,25 +1,25 @@
 import { redirect, type LoaderFunctionArgs } from "react-router-dom";
-import type { ValidCode } from "../types/invitationTypes";
+import { fetchGuestList } from "../services/invitationService";
+import { queryClient } from "../queryClient";
 
 /**
  * Invitation loader. Used as a guard before entering the invitation route
  */
-export const invitationLoader = ({ params }: LoaderFunctionArgs) => {
-    const { code } = params;
+export const invitationLoader = async ({ params }: LoaderFunctionArgs) => {
+    const { guestCode } = params;
 
-    if (!code) {
+    if (!guestCode) {
         return null;
     }
 
-    // TO-DO get valid code from backend
-    const validCodes: ValidCode = {
-        "123abc": { id: 1, firstName: "Asger", lastName: "Thorsboe Lundblad" },
-        "abc123": { id: 1, firstName: "Rikke", lastName: "Samsing Bendixen" },
-    }
+    const guestList = await queryClient.fetchQuery({
+        queryKey: ["guestList"],
+        queryFn: fetchGuestList,
+    })
+    
+    const trimedCode = guestCode.trim();
 
-    const trimedCode = code.trim();
-
-    if (!validCodes[trimedCode]) {
+    if (!guestList[trimedCode]) {
         return redirect("/invitation");
     }
 
