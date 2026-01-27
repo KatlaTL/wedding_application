@@ -47,12 +47,12 @@ const useInvitation = () => {
     /**
      * Saves the guest info in the InvitationContext reducer and localstorage
      */
-    const saveGuestInfo = (guest: Pick<Guest, "firstName" | "lastName">, code: string) => {
+    const saveGuestInfo = (guest: Pick<Guest, "firstName" | "lastName">, guestCode: string) => {
         localStorage.setItem(GUEST, JSON.stringify(guest));
-        localStorage.setItem(INVITATION_CODE, code);
+        localStorage.setItem(INVITATION_CODE, guestCode);
 
         actionDispatch?.setGuestInfo(guest);
-        actionDispatch?.setCodeState(code);
+        actionDispatch?.setGuestCodeState(guestCode);
     }
 
     /**

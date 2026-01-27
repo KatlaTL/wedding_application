@@ -14,7 +14,7 @@ export const router = createBrowserRouter([
             { path: "/", element: <Home />, handle: { label: "Home" } },
             { path: "/program", element: <Program />, handle: { label: "Program" } },
             { path: "/location", element: <Location />, handle: { label: "Lokation" } },
-            { path: "/invitation/:code?", element: <Invitation />, handle: { label: "Invitation", navPath: "/invitation" }, loader: invitationLoader },
+            { path: "/invitation/:guestCode?", element: <Invitation />, handle: { label: "Invitation", navPath: "/invitation" }, loader: invitationLoader },
             { path: "/wishlist", element: <Wishlist />, handle: { label: "Ønskeliste" } },
             { path: "*", element: <Navigate to="/" replace /> },
         ]

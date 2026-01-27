@@ -11,7 +11,7 @@ const reducerInitialState: InvitationStateType = InvitationStateSchema.parse({
         z.object({ isSubmitted: z.boolean() }),
         { isSubmitted: false }
     ).isSubmitted,
-    code: localStorage.getItem(INVITATION_CODE),
+    guestCode: localStorage.getItem(INVITATION_CODE),
     guest: safeParserZod(
         localStorage.getItem(GUEST),
         GuestSchema,
@@ -21,7 +21,7 @@ const reducerInitialState: InvitationStateType = InvitationStateSchema.parse({
 
 const contextInitialState: InvitationContextI = {
     isSubmitted: reducerInitialState.isSubmitted,
-    code: reducerInitialState.code,
+    guestCode: reducerInitialState.guestCode,
     guest: reducerInitialState.guest,
     actionDispatch: null,
 };
@@ -33,15 +33,15 @@ const InvitationContext = createContext<InvitationContextI>(contextInitialState)
  */
 const invitationProducer = (state: InvitationStateType, action: InvitationReducerActionType): InvitationStateType => {
     switch (action.type) {
-        case "SET_CODE":
+        case "SET_GUEST_CODE":
             return {
                 ...state,
-                code: action.payload.code
+                guestCode: action.payload.guestCode
             }
-        case "RESET_CODE":
+        case "RESET_GUEST_CODE":
             return {
                 ...state,
-                code: null
+                guestCode: null
             }
         case "SET_GUEST":
             return {
@@ -80,17 +80,17 @@ export const InvitationProvider = ({ children }: PropsWithChildren) => {
                 }
             })
         },
-        setCodeState: (code: string) => {
+        setGuestCodeState: (guestCode: string) => {
             dispatch({
-                type: "SET_CODE",
+                type: "SET_GUEST_CODE",
                 payload: {
-                    code
+                    guestCode
                 }
             })
         },
-        resetCodeState: () => {
+        resetGuestCodeState: () => {
             dispatch({
-                type: "RESET_CODE"
+                type: "RESET_GUEST_CODE"
             })
         },
         setGuestInfo: (guest: Guest) => {
@@ -127,7 +127,7 @@ export const InvitationProvider = ({ children }: PropsWithChildren) => {
         <InvitationContext.Provider value={{
             actionDispatch,
             isSubmitted: state.isSubmitted,
-            code: state.code,
+            guestCode: state.guestCode,
             guest: state.guest
         }}>
             {children}

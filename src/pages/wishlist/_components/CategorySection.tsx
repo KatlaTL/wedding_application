@@ -9,7 +9,7 @@ import useInvitation from "../../../hooks/useInvitation";
  * CategorySection component used in the WishList component
  */
 const CategorySection = ({ icon: Icon, title, description, totalClaimed, children }: PropsWithChildren<CategorySectionType>) => {
-    const { code } = useInvitation();
+    const { guestCode } = useInvitation();
     const { claimedCategories, claimMutation, unclaimMutation } = useWishlistClaims();
 
     const claimed = claimedCategories.some(cat => cat.categoryTitle === title);
@@ -36,7 +36,7 @@ const CategorySection = ({ icon: Icon, title, description, totalClaimed, childre
     }
 
     const handleClaimClick = (categoryName: string) => {
-        if (!code) return;
+        if (!guestCode) return;
 
         if (!claimed) {
             claimMutation.mutate({ categoryTitle: categoryName });
@@ -62,11 +62,11 @@ const CategorySection = ({ icon: Icon, title, description, totalClaimed, childre
                             <p>{description}</p>
                         </div>
 
-                        {code && <span className={`inline-flex w-max h-5 rounded-lg border mt-0.5 px-1.5 items-center text-[9px] transition-colors ${claimedStatus.style}`}>{claimedStatus.label}</span>}
+                        {guestCode && <span className={`inline-flex w-max h-5 rounded-lg border mt-0.5 px-1.5 items-center text-[9px] transition-colors ${claimedStatus.style}`}>{claimedStatus.label}</span>}
                     </div>
                 </div>
 
-                {code &&
+                {guestCode &&
                     <div>
                         <Button
                             variant={`${claimed ? "secondary" : "tertiary"}`}

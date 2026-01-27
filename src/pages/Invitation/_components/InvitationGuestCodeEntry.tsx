@@ -13,17 +13,17 @@ import StaggeredItem from "../../../components/StaggeredItem";
 /**
  * InvitationCodeEntry component.
  */
-const InvitationCodeEntry = () => {
+const InvitationGuestCodeEntry = () => {
     const [invitationCode, setInvitationCode] = useState<string>("");
     const [error, setError] = useState<string>("");
 
-    const { validCodes, code, saveGuestInfo } = useInvitation();
+    const { validCodes, guestCode, saveGuestInfo } = useInvitation();
     const navigate = useNavigate();
 
     // If a code is found in memory then redirect to the guest invitation page
     useEffect(() => {
-        if (code) {
-            navigate(`/invitation/${code}`);
+        if (guestCode) {
+            navigate(`/invitation/${guestCode}`);
         }
     }, [])
 
@@ -81,4 +81,4 @@ const InvitationCodeEntry = () => {
     )
 }
 
-export default InvitationCodeEntry;
+export default InvitationGuestCodeEntry;

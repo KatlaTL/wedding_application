@@ -13,7 +13,7 @@ import { safeParser } from "../utils/parser";
  * Hook to handle wishlist category and claim data logic
  */
 const useWishlist = () => {
-    const { code: guestCode } = useInvitation();
+    const { guestCode } = useInvitation();
 
     const { actionDispatch, wishlistClaimedCategories } = useWishlistContext();
     const queryClient = useQueryClient();

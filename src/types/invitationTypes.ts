@@ -17,8 +17,8 @@ export type InvitationStateType = z.infer<typeof InvitationStateSchema>;
 export interface InvitationContextI extends InvitationStateType {
     actionDispatch: {
         setIsSubmittedState: (isSubmitted: boolean) => void;
-        setCodeState: (code: string) => void;
-        resetCodeState: () => void;
+        setGuestCodeState: (guestCode: string) => void;
+        resetGuestCodeState: () => void;
         setGuestInfo: (guest: Guest) => void;
         resetGuestInfoState: () => void;
         setWishlistClamiedCategory: (category: string) => void;
@@ -29,8 +29,8 @@ export interface InvitationContextI extends InvitationStateType {
 }
 
 export const InvitationActionTypes = {
-    SET_CODE: "SET_CODE",
-    RESET_CODE: "RESET_CODE",
+    SET_GUEST_CODE: "SET_GUEST_CODE",
+    RESET_GUEST_CODE: "RESET_GUEST_CODE",
     SET_IS_SUBMITTED: "SET_IS_SUBMITTED",
     SET_GUEST: "SET_GUEST",
     RESET_GUEST: "RESET_GUEST",
@@ -39,8 +39,8 @@ export const InvitationActionTypes = {
 export type InvitationActionTypes = typeof InvitationActionTypes[keyof typeof InvitationActionTypes];
 
 export type InvitationReducerActionType =
-    { type: typeof InvitationActionTypes.SET_CODE, payload: { code: string } } |
-    { type: typeof InvitationActionTypes.RESET_CODE } |
+    { type: typeof InvitationActionTypes.SET_GUEST_CODE, payload: { guestCode: string } } |
+    { type: typeof InvitationActionTypes.RESET_GUEST_CODE } |
     { type: typeof InvitationActionTypes.SET_IS_SUBMITTED, payload: { isSubmitted: boolean } } |
     { type: typeof InvitationActionTypes.SET_GUEST, payload: { guest: Guest } } |
     { type: typeof InvitationActionTypes.RESET_GUEST }

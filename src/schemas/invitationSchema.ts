@@ -14,6 +14,6 @@ export const GuestSchema = z.object({
 
 export const InvitationStateSchema = z.object({
     isSubmitted: z.boolean(),
-    code: z.string().nullable(),
+    guestCode: z.string().nullable(),
     guest: GuestSchema.nullable(),
 });
