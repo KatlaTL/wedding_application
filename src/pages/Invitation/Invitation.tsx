@@ -20,6 +20,7 @@ import invitationImage from "../../assets/images/invitation.jpeg";
 import PageTransition from "../../components/PageTransition";
 import StaggeredContent from "../../components/StaggeredContent";
 import StaggeredItem from "../../components/StaggeredItem";
+import useBindGuestCode from "../../hooks/useBindGuestCode";
 
 /**
  * Invitation page component. \
@@ -37,7 +38,8 @@ const Invitation = () => {
 
     const navigate = useNavigate();
     const { guestCode } = useParams();
-    const { guestList, saveRSVP, isSubmitted, clearGuest } = useInvitation();
+    const { guestList, saveRSVP, isSubmitted, clearGuest, setGuestListQueryEnabled } = useInvitation();
+    const { unBindGuestCodeMutation } = useBindGuestCode();
 
     const dietaryOptions: DietaryType[] = ["Vegetarian", "Vegan", "Omnivore"];
 
@@ -48,8 +50,13 @@ const Invitation = () => {
     }
 
     const handleNewCodeClick = () => {
-        clearGuest();
-        navigate("/invitation");
+        unBindGuestCodeMutation.mutate({}, {
+            onSuccess: () => {
+                setGuestListQueryEnabled(false);
+                clearGuest();
+                navigate("/invitation");
+            }
+        })
     }
 
     const handleRSVPSubmit = () => {

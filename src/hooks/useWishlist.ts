@@ -26,7 +26,6 @@ const useWishlist = () => {
     const { data: dbCategories = [], isLoading } = useQuery({
         queryKey: ["categories"],
         queryFn: fetchCategories,
-
     })
 
     /**

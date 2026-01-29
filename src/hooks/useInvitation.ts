@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { GUEST, INVITATION_CODE, RSVP_IS_SUBMITTED } from "../constants/localstorageKeys";
 import { useQuery } from "@tanstack/react-query";
 import { fetchGuestList } from "../services/invitationService";
+import { useState } from "react";
 
 /**
  * Hook to handle invitation data logic
@@ -11,11 +12,20 @@ import { fetchGuestList } from "../services/invitationService";
 const useInvitation = () => {
     const { actionDispatch, ...rest } = useInvitationContext();
     const navigate = useNavigate();
+    const [isEnabled, setIsEnabled] = useState<boolean>(false);
 
-    const { data: guestList = {}, isLoading } = useQuery({
+    const { data: guestList = {}, isLoading: guestListIsLoading, refetch: refetchGuestList } = useQuery({
         queryKey: ["guestList"],
         queryFn: fetchGuestList,
+        enabled: isEnabled
     })
+
+    /**
+     * Set the guestList query property enabled to true or false \
+     * Default is false.
+     * @param value - boolean
+     */
+    const setGuestListQueryEnabled = (value: boolean) => setIsEnabled(value);
 
     /**
      * Save the response from the RSVP. \
@@ -69,12 +79,14 @@ const useInvitation = () => {
 
     return {
         guestList,
-        isLoading,
+        guestListIsLoading,
         saveRSVP,
         updatedRSVP,
         saveGuestInfo,
         clearGuest,
         actionDispatch,
+        setGuestListQueryEnabled,
+        refetchGuestList,
         ...rest
     };
 }

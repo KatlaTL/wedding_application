@@ -1,0 +1,1 @@
+export const INVALID_GUEST_CODE="Ugyldig invitationskode. Tjek venligst din invitation, og prøv igen."

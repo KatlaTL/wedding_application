@@ -1,4 +1,4 @@
-import { Lock } from "lucide-react";
+import { LoaderIcon, Lock } from "lucide-react";
 import HeadingWithIcon from "../../../components/HeadingWithIcon";
 import Section from "../../../components/Section"
 import Wrapper from "./Wrapper";
@@ -9,15 +9,19 @@ import { useNavigate } from "react-router-dom";
 import Error from "../../../components/Error";
 import StaggeredContent from "../../../components/StaggeredContent";
 import StaggeredItem from "../../../components/StaggeredItem";
+import useBindGuestCode from "../../../hooks/useBindGuestCode";
+import { INVALID_GUEST_CODE } from "../../../constants/errorMessages";
 
 /**
  * InvitationCodeEntry component.
  */
 const InvitationGuestCodeEntry = () => {
     const [invitationCode, setInvitationCode] = useState<string>("");
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
 
-    const { guestList, guestCode, saveGuestInfo } = useInvitation();
+    const { bindGuestCodeMutation } = useBindGuestCode();
+    const { guestCode, saveGuestInfo, setGuestListQueryEnabled, refetchGuestList } = useInvitation();
     const navigate = useNavigate();
 
     // If a code is found in memory then redirect to the guest invitation page
@@ -30,21 +34,35 @@ const InvitationGuestCodeEntry = () => {
 
     const handleSubmit = () => {
         setError("");
+        setIsLoading(true);
 
         const trimedCode = invitationCode.trim();
 
-        if (guestList[trimedCode]) {
-            const guestNames = {
-                firstName: guestList[trimedCode].firstName,
-                lastName: guestList[trimedCode].lastName
-            }
+        bindGuestCodeMutation.mutate({ guestCode: trimedCode }, {
+            onSuccess: async () => {
+                setGuestListQueryEnabled(true);
 
-            saveGuestInfo(guestNames, trimedCode);
+                const { data } = await refetchGuestList()
 
-            navigate(`/invitation/${trimedCode}`);
-        } else {
-            setError("Ugyldig invitationskode. Tjek venligst din invitation, og prøv igen.");
-        }
+                if (data && data[trimedCode]) {
+
+                    const guestNames = {
+                        firstName: data[trimedCode].firstName,
+                        lastName: data[trimedCode].lastName
+                    }
+
+                    saveGuestInfo(guestNames, trimedCode);
+
+                    navigate(`/invitation/${trimedCode}`);
+                } else {
+                    setError(INVALID_GUEST_CODE);
+                }
+            },
+            onError: () => {
+                setError(INVALID_GUEST_CODE);
+                setIsLoading(false);
+            },
+        })
     }
 
     return (
@@ -71,7 +89,8 @@ const InvitationGuestCodeEntry = () => {
 
                                 {error && <Error errorText={error} />}
 
-                                <Button variant="secondary" disabled={!invitationCode} onClick={handleSubmit}>Tilgå min invitation</Button>
+
+                                <Button variant="secondary" isLoading={isLoading} disabled={!invitationCode || isLoading} onClick={handleSubmit}>Tilgå min invitation</Button>
                             </div>
                         </div>
                     </form>

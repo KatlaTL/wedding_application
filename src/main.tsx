@@ -8,15 +8,18 @@ import {
 } from "@tanstack/react-query";
 import { WishlistProvider } from './context/wishlistContext.tsx'
 import { queryClient } from './queryClient.ts'
+import { AuthProvider } from './context/authContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <InvitationProvider>
-        <WishlistProvider>
-          <App />
-        </WishlistProvider>
-      </InvitationProvider>
-    </QueryClientProvider>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <InvitationProvider>
+          <WishlistProvider>
+            <App />
+          </WishlistProvider>
+        </InvitationProvider>
+      </QueryClientProvider>
+    </AuthProvider>
   </StrictMode>
 )

@@ -1,9 +1,41 @@
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "./firebase";
+import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import { auth, db } from "./firebase";
 import type { GuestListType } from "../types/invitationTypes";
 import { GuestSchema } from "../schemas/invitationSchema";
 
 const guestListRef = collection(db, "guestList");
+
+/**
+ * Binds the provided guest code to the current anonymously authenticated user
+ * @param guestCode - The guest code
+ */
+export const bindGuestCode = async (guestCode: string) => {
+    if (!auth.currentUser) throw new Error("Not authenticated");
+
+    const guestDocRef = doc(guestListRef, guestCode);
+    const guestSnap = await getDoc(guestDocRef);
+
+    if (!guestSnap.exists) {
+        throw new Error("Invalid guest code");
+    }
+
+    const sessionRef = doc(db, "guestSessions", auth.currentUser.uid);
+
+    await setDoc(sessionRef, {
+        guestCode,
+        boundAt: new Date(),
+    }, { merge: false });
+}
+
+/**
+ * Unbinds the current guest code from the anonymously authenticated user
+ */
+export const unbindGuest = async () => {
+    if (!auth.currentUser) return;
+    
+    const sessionRef = doc(db, "guestSessions", auth.currentUser.uid);
+    await deleteDoc(sessionRef);
+}
 
 /**
  * Fetches the guest list
@@ -22,6 +54,6 @@ export const fetchGuestList = async (): Promise<GuestListType> => {
 
         acc[doc.id] = parsed.data;
 
-       return acc;
+        return acc;
     }, {} as GuestListType)
 }
