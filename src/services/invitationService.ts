@@ -15,7 +15,7 @@ export const bindGuestCode = async (guestCode: string) => {
     const guestDocRef = doc(guestListRef, guestCode);
     const guestSnap = await getDoc(guestDocRef);
 
-    if (!guestSnap.exists) {
+    if (!guestSnap.exists()) {
         throw new Error("Invalid guest code");
     }
 
@@ -32,7 +32,7 @@ export const bindGuestCode = async (guestCode: string) => {
  */
 export const unbindGuest = async () => {
     if (!auth.currentUser) return;
-    
+
     const sessionRef = doc(db, "guestSessions", auth.currentUser.uid);
     await deleteDoc(sessionRef);
 }
