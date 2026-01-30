@@ -5,6 +5,9 @@ import { queryClient } from "../queryClient";
 
 const useBindGuestCode = () => {
 
+    /**
+     * Mutation function to bind the guest code to the anonymously signed in user 
+     */
     const bindGuestCodeMutation = useMutation({
         mutationFn: ({ guestCode }: { guestCode: string }) => bindGuestCode(guestCode),
         onError: (err) => {
@@ -13,6 +16,9 @@ const useBindGuestCode = () => {
         }
     })
 
+    /**
+     * Mutation function to unbind the guest code from the anonymously signed in user 
+     */
     const unBindGuestCodeMutation = useMutation({
         mutationFn: ({}: {}) => unbindGuest(),
         onSuccess: () => {

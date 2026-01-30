@@ -1,7 +1,8 @@
-import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "./firebase";
-import type { GuestListType } from "../types/invitationTypes";
+import type { GuestListType, GuestType } from "../types/invitationTypes";
 import { GuestSchema } from "../schemas/invitationSchema";
+import { sanitizeObject } from "../utils/normalizeObject";
 
 const guestListRef = collection(db, "guestList");
 
@@ -31,7 +32,7 @@ export const bindGuestCode = async (guestCode: string) => {
  * Unbinds the current guest code from the anonymously authenticated user
  */
 export const unbindGuest = async () => {
-    if (!auth.currentUser) return;
+    if (!auth.currentUser) throw new Error("Not authenticated");
 
     const sessionRef = doc(db, "guestSessions", auth.currentUser.uid);
     await deleteDoc(sessionRef);
@@ -56,4 +57,15 @@ export const fetchGuestList = async (): Promise<GuestListType> => {
 
         return acc;
     }, {} as GuestListType)
+}
+
+export const updateGuestRSVP = async (guestCode: string, RSVP: Partial<GuestType>) => {
+    if (!RSVP) throw new Error("Missing RSVP data");
+
+    const guestDocRef = doc(guestListRef, guestCode);
+
+    return await updateDoc(guestDocRef, {
+        ...sanitizeObject(RSVP),
+        updatedAt: serverTimestamp(),
+    });
 }

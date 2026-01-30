@@ -2,9 +2,10 @@ import type { GuestType } from "../types/invitationTypes";
 import { useInvitationContext } from "../context/InvitationContext";
 import { useNavigate } from "react-router-dom";
 import { GUEST, INVITATION_CODE, RSVP_IS_SUBMITTED } from "../constants/localstorageKeys";
-import { useQuery } from "@tanstack/react-query";
-import { fetchGuestList } from "../services/invitationService";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { fetchGuestList, updateGuestRSVP } from "../services/invitationService";
 import { useState } from "react";
+import { queryClient } from "../queryClient";
 
 /**
  * Hook to handle invitation data logic
@@ -21,6 +22,20 @@ const useInvitation = () => {
     })
 
     /**
+     * The RSVP update mutation 
+     */
+    const updateRSVPMutation = useMutation({
+        mutationFn: ({ RSVP }: { RSVP: Partial<GuestType> }) => {
+            if (!rest.guestCode) throw new Error("Guest code is required");
+            return updateGuestRSVP(rest.guestCode, RSVP);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["guestList"] });
+        },
+        onError: (err) => console.error(err)
+    })
+
+    /**
      * Set the guestList query property enabled to true or false \
      * Default is false.
      * @param value - boolean
@@ -30,21 +45,21 @@ const useInvitation = () => {
     /**
      * Save the response from the RSVP. \
      * Stores it in the InvitationContext reducer. \
-     * TO-DO save it in DB
      */
     const saveRSVP = (guest: Omit<GuestType, "firstName" | "lastName">) => {
-        if (rest.guest) {
-            actionDispatch?.setGuestInfo({
-                firstName: rest.guest.firstName,
-                lastName: rest.guest.lastName,
-                ...guest
-            });
-
-            actionDispatch?.setIsSubmittedState(true);
-            localStorage.setItem(RSVP_IS_SUBMITTED, JSON.stringify({ isSubmitted: true }));
-        } else {
+        if (!rest.guest) {
             navigate("/invitation");
+            return;
         }
+
+        actionDispatch?.setGuestInfo({
+            firstName: rest.guest.firstName,
+            lastName: rest.guest.lastName,
+            ...guest
+        });
+
+        actionDispatch?.setIsSubmittedState(true);
+        localStorage.setItem(RSVP_IS_SUBMITTED, JSON.stringify({ isSubmitted: true }));
     }
 
     /**
@@ -80,6 +95,7 @@ const useInvitation = () => {
     return {
         guestList,
         guestListIsLoading,
+        updateRSVPMutation,
         saveRSVP,
         updatedRSVP,
         saveGuestInfo,

@@ -1,4 +1,4 @@
-import { LoaderIcon, Lock } from "lucide-react";
+import { Lock } from "lucide-react";
 import HeadingWithIcon from "../../../components/HeadingWithIcon";
 import Section from "../../../components/Section"
 import Wrapper from "./Wrapper";

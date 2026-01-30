@@ -21,6 +21,7 @@ import PageTransition from "../../components/PageTransition";
 import StaggeredContent from "../../components/StaggeredContent";
 import StaggeredItem from "../../components/StaggeredItem";
 import useBindGuestCode from "../../hooks/useBindGuestCode";
+import { SOMETHING_WENT_WRONG } from "../../constants/errorMessages";
 
 /**
  * Invitation page component. \
@@ -38,7 +39,7 @@ const Invitation = () => {
 
     const navigate = useNavigate();
     const { guestCode } = useParams();
-    const { guestList, saveRSVP, isSubmitted, clearGuest, setGuestListQueryEnabled } = useInvitation();
+    const { guestList, saveRSVP, updateRSVPMutation, isSubmitted, clearGuest, setGuestListQueryEnabled } = useInvitation();
     const { unBindGuestCodeMutation } = useBindGuestCode();
 
     const dietaryOptions: DietaryType[] = ["Vegetarian", "Vegan", "Omnivore"];
@@ -61,12 +62,18 @@ const Invitation = () => {
 
     const handleRSVPSubmit = () => {
         setError("");
-        saveRSVP({
+
+        const RSVPData = {
             isAttending,
             needLift,
             canOfferLift,
             dietary,
             allergies
+        };
+
+        updateRSVPMutation.mutate({ RSVP: RSVPData }, {
+            onSuccess: () => saveRSVP(RSVPData),
+            onError: () => setError(SOMETHING_WENT_WRONG)
         });
     }
 
@@ -115,8 +122,8 @@ const Invitation = () => {
                         <div className="bg-background-muted rounded-lg border-primary-30 border p-5 max-w-120 mt-7 mb-5 xs:mx-auto mx-5 md:mx-0">
                             <Wrapper>
                                 <ButtonGroup className="mx-auto">
-                                    <Button size="small" icon={Mail} className="w-45!" onClick={() => setModalIsOpen(true)}>Se din invitation</Button>
-                                    <Button size="small" icon={RotateCcw} className="w-45!" onClick={handleNewCodeClick}>Indtast en anden kode</Button>
+                                    <Button type="button" size="small" icon={Mail} className="w-45!" onClick={() => setModalIsOpen(true)}>Se din invitation</Button>
+                                    <Button type="button" size="small" icon={RotateCcw} className="w-45!" onClick={handleNewCodeClick}>Indtast en anden kode</Button>
                                 </ButtonGroup>
                             </Wrapper>
                         </div>
@@ -130,8 +137,8 @@ const Invitation = () => {
 
                                     <Wrapper>
                                         <ButtonGroup title="Deltager du?">
-                                            <Button size="small" icon={CheckCircle} variant={setButtonVariant(isAttending, "secondary")} onClick={() => setIsAttending(true)}>Ja, jeg kommer</Button>
-                                            <Button size="small" icon={XCircle} variant={setButtonVariant(isAttending, "destructive")} onClick={() => setIsAttending(false)}>Nej, desværre ikke</Button>
+                                            <Button type="button" size="small" icon={CheckCircle} variant={setButtonVariant(isAttending, "secondary")} onClick={() => setIsAttending(true)}>Ja, jeg kommer</Button>
+                                            <Button type="button" size="small" icon={XCircle} variant={setButtonVariant(isAttending, "destructive")} onClick={() => setIsAttending(false)}>Nej, desværre ikke</Button>
                                         </ButtonGroup>
                                     </Wrapper>
 
@@ -142,13 +149,13 @@ const Invitation = () => {
                                                 <HeadingWithIcon icon={Car} text="Transport" className="mb-2" />
 
                                                 <ButtonGroup title="Har du brug for et lift fra Odense?" className="mb-2">
-                                                    <Button size="small" className="!w-auto px-3" variant={setButtonVariant(needLift, "secondary")} onClick={() => setNeedLift(true)}>Ja, jeg har behov for et lift</Button>
-                                                    <Button size="small" className="!w-auto px-3" variant={setButtonVariant(needLift, "destructive")} onClick={() => setNeedLift(false)}>Nej, jeg klare den</Button>
+                                                    <Button type="button" size="small" className="!w-auto px-3" variant={setButtonVariant(needLift, "secondary")} onClick={() => setNeedLift(true)}>Ja, jeg har behov for et lift</Button>
+                                                    <Button type="button" size="small" className="!w-auto px-3" variant={setButtonVariant(needLift, "destructive")} onClick={() => setNeedLift(false)}>Nej, jeg klare den</Button>
                                                 </ButtonGroup>
 
                                                 <ButtonGroup title="Kan du tilbyde et lift til andre gæster?">
-                                                    <Button size="small" className="!w-auto px-3" variant={setButtonVariant(canOfferLift, "secondary")} onClick={() => setCanOfferLift(true)}>Ja, jeg kan tilbyde et lift</Button>
-                                                    <Button size="small" className="!w-auto px-3" variant={setButtonVariant(canOfferLift, "destructive")} onClick={() => setCanOfferLift(false)}>Nej, desværre ikke</Button>
+                                                    <Button type="button" size="small" className="!w-auto px-3" variant={setButtonVariant(canOfferLift, "secondary")} onClick={() => setCanOfferLift(true)}>Ja, jeg kan tilbyde et lift</Button>
+                                                    <Button type="button" size="small" className="!w-auto px-3" variant={setButtonVariant(canOfferLift, "destructive")} onClick={() => setCanOfferLift(false)}>Nej, desværre ikke</Button>
                                                 </ButtonGroup>
                                             </Wrapper>
 
@@ -192,7 +199,7 @@ const Invitation = () => {
 
                                     {error && <Error errorText={error} />}
 
-                                    <Button variant="secondary" className="" disabled={disableButton()} onClick={handleRSVPSubmit}>Bekræft deltagelse</Button>
+                                    <Button type="button" variant="secondary" className="" disabled={disableButton()} onClick={handleRSVPSubmit}>Bekræft deltagelse</Button>
                                 </div>
                             </div>
                         </form>

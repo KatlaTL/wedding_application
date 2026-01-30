@@ -28,7 +28,7 @@ const Button: React.FC<ButtoneProps> = ({
     ...props
 }) => {
 
-    const baseStyle = "flex items-center justify-center w-full rounded-lg bg-background border border-primary hover:cursor-pointer outline-none disabled:pointer-events-none disabled:opacity-50 transition-colors";
+    const baseStyle = "flex items-center justify-center mx-auto w-full rounded-lg bg-background border border-primary hover:cursor-pointer outline-none disabled:pointer-events-none disabled:opacity-50 transition-colors";
 
     let variantStyle = "";
 
