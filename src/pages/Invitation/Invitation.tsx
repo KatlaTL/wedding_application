@@ -34,6 +34,7 @@ const Invitation = () => {
     const [dietary, setDietary] = useState<DietaryType>();
     const [allergies, setAllergies] = useState<string>();
     const [error, setError] = useState<string>("");
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
@@ -62,6 +63,7 @@ const Invitation = () => {
 
     const handleRSVPSubmit = () => {
         setError("");
+        setIsLoading(true);
 
         const RSVPData = {
             isAttending,
@@ -73,7 +75,8 @@ const Invitation = () => {
 
         updateRSVPMutation.mutate({ RSVP: RSVPData }, {
             onSuccess: () => saveRSVP(RSVPData),
-            onError: () => setError(SOMETHING_WENT_WRONG)
+            onError: () => setError(SOMETHING_WENT_WRONG),
+            onSettled: () => setIsLoading(false)
         });
     }
 
@@ -199,7 +202,7 @@ const Invitation = () => {
 
                                     {error && <Error errorText={error} />}
 
-                                    <Button type="button" variant="secondary" className="" disabled={disableButton()} onClick={handleRSVPSubmit}>Bekræft deltagelse</Button>
+                                    <Button type="button" variant="secondary" isLoading={isLoading} disabled={disableButton()} onClick={handleRSVPSubmit}>Bekræft deltagelse</Button>
                                 </div>
                             </div>
                         </form>
