@@ -1,36 +1,30 @@
-import { Martini, Users, Utensils } from "lucide-react"
-import type { ProgramType } from "../types/programTypes"
+import { fetchProgram } from "../services/programService";
+import { useQuery } from "@tanstack/react-query";
+import type { DBProgramType, ProgramType } from "../types/programTypes";
+import { useMemo } from "react";
+import { mapIcons } from "../utils/iconMapper";
 
 /**
  * Hook to handle program data logic
  */
 const useProgram = () => {
-    const program: ProgramType[] = [
-        {
-            icon: Users,
-            title: "Vielse",
-            description: 'Vær med, når vi siger "ja" omgivet af familie og venner',
-            location: "Køng Kirke",
-            time: "kl. 12:30"
-        },
-        {
-            icon: Martini,
-            title: "Reception",
-            description: "Vi tager til hjemstavnsgården hvor der er kage, drikkelse og andet sjov",
-            location: "Hjemstavnsgården",
-            time: "kl. 14:00"
-        },
-        {
-            icon: Utensils,
-            title: "Festmiddag",
-            description: "Vi tager til præstegården i Odense hvor holder festmiddagen",
-            location: "Georgsgade 50",
-            time: "kl. 18:00"
+
+    const { data: dbProgram = [], isLoading } = useQuery({
+        queryKey: ["program"],
+        queryFn: fetchProgram,
+    })
+
+    /**
+    * Maps DBProgramType to ProgramType
+    */
+    const program: ProgramType[] = useMemo(() => dbProgram.map((category: DBProgramType): ProgramType => {
+        return {
+            ...category,
+            icon: mapIcons(category.icon)
         }
-    ]
+    }), [dbProgram]);
 
-
-    return program;
+    return { program, isLoading };
 
 }
 

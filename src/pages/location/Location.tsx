@@ -23,7 +23,7 @@ const Location = () => {
                     ) : (
                         <div className="flex flex-col md:grid grid-cols-2 gap-3 mx-5 md:mx-0">
                             {locations.map((location, index) =>
-                                <StaggeredItem>
+                                <StaggeredItem key={location.title + index}>
                                     <LocationTile
                                         key={location.title + index}
                                         title={location.title}

@@ -99,7 +99,7 @@ const useWishlist = () => {
     }
 
     /**
-     * Maps DBCategoryType to CategoryType and save the claimed categories in context
+     * Maps DBCategoryType to CategoryType
      */
     const categories: CategoryType[] = useMemo(() => dbCategories.map((category: DBCategoryType): CategoryType => {
         return {

@@ -1,6 +1,7 @@
 import { MapPin, Clock } from "lucide-react";
 import type React from "react";
 import type { ProgramType } from "../../../types/programTypes";
+import { useNavigate } from "react-router-dom";
 
 /**
  * ProgramTiles used in the Program component
@@ -12,6 +13,10 @@ const ProgramTile: React.FC<ProgramType> = ({
     time,
     icon: Icon
 }) => {
+    const navigate = useNavigate();
+
+    const handleClick = () => navigate("/location");
+
     return (
         <div className="min-h-32 mx-5 md:mx-0 bg-background-muted rounded-lg border-primary-30 border-l-4 border-1">
             <div className="flex flex-row p-5 items-start h-full">
@@ -26,7 +31,7 @@ const ProgramTile: React.FC<ProgramType> = ({
                     </div>
 
 
-                    <div className="text-xs flex gap-1 mt-5 md:mt-0">
+                    <div className="text-xs flex gap-1 mt-5 md:mt-0 cursor-pointer" onClick={handleClick}>
                         <span>
                             <MapPin className="h-4 w-4" />
                         </span>
