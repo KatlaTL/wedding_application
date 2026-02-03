@@ -1,6 +1,7 @@
 import { Clock, MapPin } from "lucide-react"
 import Button from "../../../components/ui/Button"
 import type { LocationType } from "../../../types/locationTypes";
+import GoogleMap from "../../../components/ui/GoogleMap";
 
 /**
  * LocationTiles used in the Location component
@@ -9,13 +10,20 @@ const LocationTile: React.FC<LocationType> = ({
     title,
     address,
     description,
-    time
+    time,
+    mapUrl,
+    iframeUrl
 }) => {
+    const handleClick = () => window.open(mapUrl, "_blank", "noopener,noreferrer");
+
     return (
         <div className="bg-background-muted rounded-lg border-primary-30 border hover:shadow-lg h-fit">
             <div className="min-h-20 h-[40%] bg-gradient-to-br from-white/20 to-primary/20 flex justify-center items-center">
-                {/* Placeholder for image */}
-                <MapPin className="text-primary/70 h-8 w-8" />
+                {iframeUrl ? (
+                    <GoogleMap src={iframeUrl} />
+                ) : (
+                    <MapPin className="text-primary/70 h-8 w-8" />
+                )}
             </div>
 
             <div className="flex flex-col items-start text-left text-xs text-muted-foreground p-5">
@@ -29,12 +37,15 @@ const LocationTile: React.FC<LocationType> = ({
                         <p className="!text-primary">{time}</p>
                     </div>
                 </div>
-                <p className="pb-3">{description}</p>
+
+                <div className="min-h-20">
+                    <p className="pb-3">{description}</p>
+                </div>
 
                 <p className="pb-3">{address}</p>
 
                 {/* Add onclick */}
-                <Button size="small" icon={MapPin}>Se på kortet</Button>
+                <Button size="small" icon={MapPin} onClick={handleClick}>Se på kortet</Button>
             </div>
         </div>
     )

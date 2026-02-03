@@ -1,31 +1,17 @@
-import type { LocationType } from "../types/locationTypes";
+import { useQuery } from "@tanstack/react-query";
+import { fetchLocations } from "../services/locationService";
 
 /**
  * Hook to handle location data logic
  */
 const useLocation = () => {
-    const Locations: LocationType[] = [
-        {
-            address: "Bodebjergvej 2, 5620 Glamsbjerg",
-            mapUrl: "",
-            imageUrl: "",
-            title: "Køng Kirke",
-            description: "Køng kirke er der hvor Rikke er konfirmeret og ligger ved siden af Rikkes barndomshjem",
-            time: "kl. 12:30"
-        },
-        {
-            address: "Bodebjergvej 2, 5620 Glamsbjerg",
-            mapUrl: "",
-            imageUrl: "",
-            title: "Køng Kirke",
-            description: "Køng kirke er der hvor Rikke er konfirmeret og ligger ved siden af Rikkes barndomshjem",
-            time: "kl. 12:30"
-        },
-    ]
 
+    const { data: locations = [], isLoading } = useQuery({
+        queryKey: ["locations"],
+        queryFn: fetchLocations,
+    })
 
-    return Locations;
-
+    return { locations, isLoading };
 }
 
 export default useLocation;
