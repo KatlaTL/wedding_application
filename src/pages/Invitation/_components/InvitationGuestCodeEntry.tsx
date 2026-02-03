@@ -56,6 +56,7 @@ const InvitationGuestCodeEntry = () => {
                     navigate(`/invitation/${trimedCode}`);
                 } else {
                     setError(INVALID_GUEST_CODE);
+                    setIsLoading(false);
                 }
             },
             onError: () => {
