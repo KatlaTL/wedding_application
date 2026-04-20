@@ -84,7 +84,7 @@ const InvitationGuestCodeEntry = () => {
                                         onChange={e => setInvitationCode(e.target.value)}
                                         placeholder="Skriv din personlig invitations kode her"
                                         required
-                                        className="rounded-md h-7 px-2 text-xs text-color-text placeholder-muted-foreground placeholder:text-xs border border-primary-30 focus:outline-primary"
+                                        className="rounded-md h-7 px-2 text-xs text-color-text placeholder-muted-foreground placeholder:text-sm border border-primary-30 focus:outline-primary"
                                     />
                                 </Wrapper>
 
