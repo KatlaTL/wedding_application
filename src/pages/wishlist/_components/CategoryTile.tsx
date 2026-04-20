@@ -7,9 +7,9 @@ import { ExternalLink } from "lucide-react";
 const CategoryTile = ({ title, description, link }: CategoryTileType) => {
 
     return (
-        <div className="flex flex-col px-5 rounded-lg py-3 bg-white/90 w-full h-20 justify-between text-left">
+        <div className="flex flex-col px-5 rounded-lg py-3 bg-white/90 w-full h-25 justify-between text-left">
             <div className="flex relative">
-                <h4 className="text-color-text text-xs">{title}</h4>
+                <h4 className="text-color-text text-base">{title}</h4>
 
 
                 <div className={`absolute right-0 rounded-lg py-1 px-2 text-[7px] text-current ${link ? "bg-primary/90 hover:bg-primary" : "bg-muted/50 text-muted-foreground border border-muted-foreground/20"}`}>
@@ -18,10 +18,10 @@ const CategoryTile = ({ title, description, link }: CategoryTileType) => {
                             href={link}
                             target="_blank"
                             rel="noopener noreferrer nofollow"
-                            className="flex items-center gap-1.5 text-background"
+                            className="flex items-center gap-1.5 text-background text-[10px]"
                         >
                             Eksternt link
-                            <ExternalLink className="h-3 w-3"/>
+                            <ExternalLink className="h-3.5 w-3.5"/>
                         </a>
                     ) : (
                         <span>Valgfri gave</span>
@@ -29,7 +29,7 @@ const CategoryTile = ({ title, description, link }: CategoryTileType) => {
                 </div>
 
             </div>
-            <p className="text-[10px]">{description}</p>
+            <p className="text-xs">{description}</p>
         </div >
     )
 }

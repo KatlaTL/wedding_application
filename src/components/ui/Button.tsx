@@ -54,21 +54,17 @@ const Button: React.FC<ButtoneProps> = ({
 
     switch (size) {
         case "small":
-            sizeStyle = "h-6 text-xs";
-            break;
-        case "medium":
             sizeStyle = "h-8 text-sm";
             break;
+        case "medium":
+            sizeStyle = "h-10 text-base";
+            break;
         case "large":
-            sizeStyle = "h-10 text-lg";
+            sizeStyle = "h-12 text-lg";
             break;
     }
 
     const buttonIconStyle = Icon ? `flex items-center justify-center gap-${iconGap}` : "";
-
-    const iconStyle = variant === "primary"
-        ? "h-[11px] w-[11px] mb-[0.5px]"
-        : "h-[11px] w-[11px] mb-[0.5px]";
 
     return (
         <button
@@ -77,7 +73,7 @@ const Button: React.FC<ButtoneProps> = ({
         >
             {Icon &&
                 <span>
-                    <Icon className={iconStyle} />
+                    <Icon className="h-[14px] w-[14px] mb-[0.5px]" />
                 </span>
             }
 

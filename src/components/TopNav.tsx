@@ -27,9 +27,9 @@ const TopNav = () => {
 
     const linkClassNames: ((props: NavLinkRenderProps) => string | undefined) | undefined = ({ isActive }) => {
         if (isActive) {
-            return "text-primary";
+            return "text-primary text-lg";
         }
-        return "hover:text-primary";
+        return "hover:text-primary text-lg";
     }
 
     const navLinks = routes[0].children!
@@ -47,7 +47,7 @@ const TopNav = () => {
         <nav className={`fixed top-0 left-0 right-0 z-50 text-xs bg-background pt-3 ${!isAtTop ? "backdrop-blur-sm shadow-sm" : ""} ${!isOpen && !isAtTop ? "pb-3" : ""}`}>
             <div className="w-full md:w-[65%] mx-auto px-4 transition-all duration-500">
                 <div className="flex justify-between gap-5">
-                    <div className="text-primary">
+                    <div className="text-primary text-lg">
                         <Link to="/">A &amp; R</Link>
                     </div>
 

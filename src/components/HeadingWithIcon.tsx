@@ -14,7 +14,7 @@ type HeadingWithIconType = {
 const HeadingWithIcon = ({ icon: Icon, text, className = "" }: HeadingWithIconType) => {
     return (
         <div className={`flex gap-1.5 ${className}`}>
-            <Icon className="h-3.5 w-3.5 text-primary" />
+            <Icon className="h-4.5 w-4.5 mt-0.5 text-primary" />
             <h3>{text}</h3>
         </div>
     )

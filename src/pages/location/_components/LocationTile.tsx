@@ -2,6 +2,7 @@ import { Clock, MapPin } from "lucide-react"
 import Button from "../../../components/ui/Button"
 import type { LocationType } from "../../../types/locationTypes";
 import GoogleMap from "../../../components/ui/GoogleMap";
+import ClockText from "../../../components/ClockText";
 
 /**
  * LocationTiles used in the Location component
@@ -18,7 +19,7 @@ const LocationTile: React.FC<LocationType> = ({
 
     return (
         <div className="bg-background-muted rounded-lg border-primary-30 border hover:shadow-lg h-fit">
-            <div className="min-h-20 h-[40%] bg-gradient-to-br from-white/20 to-primary/20 flex justify-center items-center">
+            <div className="min-h-30 h-[45%] bg-gradient-to-br from-white/20 to-primary/20 flex justify-center items-center">
                 {iframeUrl ? (
                     <GoogleMap src={iframeUrl} />
                 ) : (
@@ -30,15 +31,10 @@ const LocationTile: React.FC<LocationType> = ({
                 <div className="flex justify-between w-full">
                     <h3 className="text-primary pb-5">{title}</h3>
 
-                    <div className="flex items-start gap-1.5 text-primary">
-                        <span>
-                            <Clock className="h-[11px] w-[11px] mt-[3px]" />
-                        </span>
-                        <p className="!text-primary">{time}</p>
-                    </div>
+                    <ClockText time={time} />
                 </div>
 
-                <div className="min-h-20">
+                <div className="min-h-25">
                     <p className="pb-3">{description}</p>
                 </div>
 

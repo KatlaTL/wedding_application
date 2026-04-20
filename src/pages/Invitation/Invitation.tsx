@@ -122,11 +122,11 @@ const Invitation = () => {
             <StaggeredContent>
                 <Section title="Bekræft deltagelse" description={`${guestList[guestCode]?.firstName} ${guestList[guestCode]?.lastName} lad os vide, om du kommer!`}>
                     <StaggeredItem>
-                        <div className="bg-background-muted rounded-lg border-primary-30 border p-5 max-w-120 mt-7 mb-5 xs:mx-auto mx-5 md:mx-0">
+                        <div className="bg-background-muted rounded-lg border-primary-30 border p-5 w-120 mt-7 mb-5 xs:mx-auto mx-5 md:mx-0">
                             <Wrapper>
                                 <ButtonGroup className="mx-auto">
-                                    <Button type="button" size="small" icon={Mail} className="w-45!" onClick={() => setModalIsOpen(true)}>Se din invitation</Button>
-                                    <Button type="button" size="small" icon={RotateCcw} className="w-45!" onClick={handleNewCodeClick}>Indtast en anden kode</Button>
+                                    <Button type="button" size="small" icon={Mail} className="w-50!" onClick={() => setModalIsOpen(true)}>Se din invitation</Button>
+                                    <Button type="button" size="small" icon={RotateCcw} className="w-50!" onClick={handleNewCodeClick}>Indtast en anden kode</Button>
                                 </ButtonGroup>
                             </Wrapper>
                         </div>
@@ -134,7 +134,7 @@ const Invitation = () => {
 
                     <StaggeredItem>
                         <form onSubmit={(e) => e.preventDefault()}>
-                            <div className="bg-background-muted rounded-lg border-primary-30 border p-5 max-w-120 xs:mx-auto mx-5 md:mx-0">
+                            <div className="bg-background-muted rounded-lg border-primary-30 border p-5 w-120 xs:mx-auto mx-5 md:mx-0">
                                 <div className="flex flex-col items-start text-left gap-3">
                                     <HeadingWithIcon icon={Users} text="Tilmelding" />
 
@@ -152,13 +152,13 @@ const Invitation = () => {
                                                 <HeadingWithIcon icon={Car} text="Transport" className="mb-2" />
 
                                                 <ButtonGroup title="Har du brug for et lift fra Odense?" className="mb-2">
-                                                    <Button type="button" size="small" className="!w-auto px-3" variant={setButtonVariant(needLift, "secondary")} onClick={() => setNeedLift(true)}>Ja, jeg har behov for et lift</Button>
-                                                    <Button type="button" size="small" className="!w-auto px-3" variant={setButtonVariant(needLift, "destructive")} onClick={() => setNeedLift(false)}>Nej, jeg klare den</Button>
+                                                    <Button type="button" size="small" className="px-3" variant={setButtonVariant(needLift, "secondary")} onClick={() => setNeedLift(true)}>Ja, jeg har behov for et lift</Button>
+                                                    <Button type="button" size="small" className="px-3" variant={setButtonVariant(needLift, "destructive")} onClick={() => setNeedLift(false)}>Nej, jeg klare den</Button>
                                                 </ButtonGroup>
 
                                                 <ButtonGroup title="Kan du tilbyde et lift til andre gæster?">
-                                                    <Button type="button" size="small" className="!w-auto px-3" variant={setButtonVariant(canOfferLift, "secondary")} onClick={() => setCanOfferLift(true)}>Ja, jeg kan tilbyde et lift</Button>
-                                                    <Button type="button" size="small" className="!w-auto px-3" variant={setButtonVariant(canOfferLift, "destructive")} onClick={() => setCanOfferLift(false)}>Nej, desværre ikke</Button>
+                                                    <Button type="button" size="small" className="px-3" variant={setButtonVariant(canOfferLift, "secondary")} onClick={() => setCanOfferLift(true)}>Ja, jeg kan tilbyde et lift</Button>
+                                                    <Button type="button" size="small" className="px-3" variant={setButtonVariant(canOfferLift, "destructive")} onClick={() => setCanOfferLift(false)}>Nej, desværre ikke</Button>
                                                 </ButtonGroup>
                                             </Wrapper>
 
@@ -166,15 +166,15 @@ const Invitation = () => {
                                             <Wrapper className="bg-muted rounded-lg p-2 !flex-row text-xs text-color-text">
                                                 <div className="flex gap-5">
                                                     {dietaryOptions.map((value, index) =>
-                                                        <div className="flex gap-1 text-xs" key={value + index}>
+                                                        <div className="flex gap-1 text-sm" key={value + index}>
                                                             <Checkbox
-                                                                className="flex size-4 items-center justify-center bg-background rounded border-primary outline-none"
+                                                                className="flex size-5 items-center justify-center bg-background rounded border-primary outline-none"
                                                                 onCheckedChange={(checked) => handleCheckedChange(checked, value)}
                                                                 checked={dietary === value}
                                                                 id={value}
                                                             >
                                                                 <CheckboxIndicator>
-                                                                    <CheckIcon className="size-4 bg-primary text-background-muted rounded" />
+                                                                    <CheckIcon className="size-5 bg-primary text-background-muted rounded" />
                                                                 </CheckboxIndicator>
                                                             </Checkbox>
                                                             <label htmlFor={value}>
@@ -194,7 +194,7 @@ const Invitation = () => {
                                                     onChange={e => setAllergies(e.target.value)}
                                                     placeholder="Fortæl os gerne, hvis du har allergier eller særlige kostbehov"
                                                     rows={3}
-                                                    className="rounded-lg px-2 pt-1 resize-none text-xs text-color-text placeholder-muted-foreground placeholder:text-xs border border-primary-30 focus:outline-primary"
+                                                    className="rounded-lg px-2 pt-1 resize-none text-xs text-color-text placeholder-muted-foreground placeholder:text-sm border border-primary-30 focus:outline-primary"
                                                 />
                                             </Wrapper>
                                         </>

@@ -52,17 +52,17 @@ const CategorySection = ({ icon: Icon, title, description, totalClaimed, childre
             <div className="flex text-left gap-2 justify-between">
                 <div className="flex gap-2">
                     <div className="flex bg-primary/15 w-10 h-10 rounded-lg justify-center items-center self-center">
-                        <Icon className="w-6 h-6 text-primary" />
+                        <Icon className="w-7 h-7 text-primary" />
                     </div>
 
                     <div className="flex flex-col gap-2">
                         <div className="flex flex-col">
-                            <h3 className="text-base">{title}</h3>
+                            <h3>{title}</h3>
 
                             <p>{description}</p>
                         </div>
 
-                        {guestCode && <span className={`inline-flex w-max h-5 rounded-lg border mt-0.5 px-1.5 items-center text-[9px] transition-colors ${claimedStatus.style}`}>{claimedStatus.label}</span>}
+                        {guestCode && <span className={`inline-flex w-max h-5 rounded-lg border mt-0.5 px-2.5 items-center text-color-text text-[11px] transition-colors ${claimedStatus.style}`}>{claimedStatus.label}</span>}
                     </div>
                 </div>
 

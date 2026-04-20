@@ -2,6 +2,7 @@ import { MapPin, Clock } from "lucide-react";
 import type React from "react";
 import type { ProgramType } from "../../../types/programTypes";
 import { useNavigate } from "react-router-dom";
+import ClockText from "../../../components/ClockText";
 
 /**
  * ProgramTiles used in the Program component
@@ -26,12 +27,12 @@ const ProgramTile: React.FC<ProgramType> = ({
 
                 <div className="flex flex-col items-start justify-between md:ml-5 ml-3 text-muted-foreground flex-1 h-full">
                     <div className="text-left">
-                        <h3 className="!text-sm pb-1">{title}</h3>
+                        <h3 className="pb-1">{title}</h3>
                         <p>{description}</p>
                     </div>
 
 
-                    <div className="text-xs flex gap-1 mt-5 md:mt-0 cursor-pointer" onClick={handleClick}>
+                    <div className="text-sm flex gap-1 mt-5 md:mt-0 cursor-pointer" onClick={handleClick}>
                         <span>
                             <MapPin className="h-4 w-4" />
                         </span>
@@ -39,12 +40,7 @@ const ProgramTile: React.FC<ProgramType> = ({
                     </div>
                 </div>
 
-                <div className="flex items-start gap-1.5 text-sm text-primary ml-auto">
-                    <span>
-                        <Clock className="h-[11px] w-[11px] mt-[3px]" />
-                    </span>
-                    <p className="!text-primary">{time}</p>
-                </div>
+                <ClockText time={time} />
             </div>
         </div>
     )

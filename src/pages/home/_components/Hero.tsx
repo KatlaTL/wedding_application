@@ -32,7 +32,7 @@ const Hero = () => {
             <StaggeredItem>
                 <div className="relative text-center max-w-4xl mx-auto">
                     <div className="w-70 flex-col items-center justify-center">
-                        <p className="!text-sm  mb-2">Vi glæder os til at se dig! <br /> Klik nedenfor for at bekræfte din deltagelse.</p>
+                        <p className="!text-base  mb-2">Vi glæder os til at se dig! <br /> Klik nedenfor for at bekræfte din deltagelse.</p>
 
                         <Button
                             size="medium"

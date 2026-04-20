@@ -21,7 +21,7 @@ const Location = () => {
                     {isLoading ? (
                         <Loader />
                     ) : (
-                        <div className="flex flex-col md:grid grid-cols-2 gap-3 mx-5 md:mx-0">
+                        <div className="flex flex-col md:grid grid-cols-2 gap-3 mx-5 md:mx-0 mt-3">
                             {locations.map((location, index) =>
                                 <StaggeredItem key={location.title + index}>
                                     <LocationTile
