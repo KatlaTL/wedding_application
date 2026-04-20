@@ -1,4 +1,4 @@
-import { onAuthStateChanged, signInAnonymously, type User } from "firebase/auth";
+import { browserSessionPersistence, onAuthStateChanged, setPersistence, signInAnonymously, type User } from "firebase/auth";
 import { createContext, useContext, useEffect, useState, type PropsWithChildren } from "react";
 import { auth } from "../services/firebase";
 
@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 await signInAnonymously(auth);
+                await setPersistence(auth, browserSessionPersistence);
                 return;
             }
 

@@ -38,7 +38,10 @@ const LocationTile: React.FC<LocationType> = ({
                     <p className="pb-3">{description}</p>
                 </div>
 
-                <p className="pb-3">{address}</p>
+                <div className="flex items-start gap-1.5">
+                    <MapPin className="text-primary h-4 w-4 mt-0.5" />
+                    <p className="pb-3">{address}</p>
+                </div>
 
                 {/* Add onclick */}
                 <Button size="small" icon={MapPin} onClick={handleClick}>Se på kortet</Button>
