@@ -1,11 +1,12 @@
 import { LoaderIcon, type LucideProps } from "lucide-react";
 import type { ButtonHTMLAttributes } from "react";
+import type { IconType } from "react-icons/lib";
 
-export type ButtonVariant = "primary" | "secondary" | "secondary-no-hover" | "destructive" | "tertiary";
+export type ButtonVariant = "primary" | "secondary" | "secondary-no-hover" | "destructive" | "tertiary" | "plain";
 interface ButtoneProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: ButtonVariant;
     size?: "small" | "medium" | "large";
-    icon?: React.ForwardRefExoticComponent<Omit<LucideProps, "ref">> | null;
+    icon?: React.ForwardRefExoticComponent<Omit<LucideProps, "ref">> | IconType | null;
     iconGap?: number;
     isLoading?: boolean;
 }
@@ -48,6 +49,9 @@ const Button: React.FC<ButtoneProps> = ({
         case "tertiary":
             variantStyle = "text-primary bg-white hover:bg-primary hover:text-white !border-primary/50";
             break;
+        case "plain":
+            variantStyle = "text-black bg-white hover:bg-gray-50 active:bg-gray-100 !border-black/20";
+            break;
     }
 
     let sizeStyle = "";
@@ -66,6 +70,8 @@ const Button: React.FC<ButtoneProps> = ({
 
     const buttonIconStyle = Icon ? `flex items-center justify-center gap-${iconGap}` : "";
 
+    const iconStyle = variant === "plain" ? "h-[16px] w-[16px] mb-[0.5px]" : "h-[14px] w-[14px] mb-[0.5px]";
+
     return (
         <button
             className={`${baseStyle} ${variantStyle} ${sizeStyle} ${buttonIconStyle} ${className}`}
@@ -73,7 +79,7 @@ const Button: React.FC<ButtoneProps> = ({
         >
             {Icon &&
                 <span>
-                    <Icon className="h-[14px] w-[14px] mb-[0.5px]" />
+                    <Icon className={iconStyle} />
                 </span>
             }
 

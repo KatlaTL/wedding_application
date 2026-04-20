@@ -20,7 +20,9 @@ const WishList = () => {
             <StaggeredContent>
                 <StaggeredItem>
                     <div className="relative top-25">
-                        <Gift className="h-12 w-12 mx-auto relative text-primary" />
+                        <div className="flex mx-auto rounded-full w-14 h-14 bg-primary/10 justify-center items-center">
+                            <Gift className="h-8 w-8 mx-auto relative text-primary" />
+                        </div>
                     </div>
                 </StaggeredItem>
                 <Section title="Ønskeliste" description="Din tilstedeværelse er den største gave. Men hvis du har lyst til at bidrage til vores nye liv sammen, har vi samlet lidt ønsker her.">

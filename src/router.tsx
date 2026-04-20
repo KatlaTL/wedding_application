@@ -9,6 +9,10 @@ import Wishlist from "./pages/wishlist/Wishlist"
 import { wishlistLoader } from "./loaders/wishlistLoader"
 import { programLoader } from "./loaders/programLoader"
 import { locationLoader } from "./loaders/locationLoader"
+import AdminGoogleSignIn from "./pages/admin/_components/AdminGoogleSignIn"
+import AdminDashboard from "./pages/admin/_components/AdminDashboard"
+import { adminLoader } from "./loaders/adminLoader"
+import AdminLayout from "./pages/admin/AdminLayout"
 
 export const router = createBrowserRouter([
     {
@@ -20,6 +24,12 @@ export const router = createBrowserRouter([
             { path: "/location", element: <Location />, handle: { label: "Lokation" }, loader: locationLoader },
             { path: "/invitation/:guestCode?", element: <Invitation />, handle: { label: "Invitation", navPath: "/invitation" }, loader: invitationLoader },
             { path: "/wishlist", element: <Wishlist />, handle: { label: "Ønskeliste" }, loader: wishlistLoader },
+            {
+                path: "/admin", element: <AdminLayout />, handle: { label: "Admin Panel" }, loader: adminLoader, children: [
+                    { index: true, element: <AdminDashboard /> }, //TO-DO remove label to exclude it from the main menu
+                ]
+            },
+            { path: "/admin/login", element: <AdminGoogleSignIn /> },
             { path: "*", element: <Navigate to="/" replace /> },
         ]
     }

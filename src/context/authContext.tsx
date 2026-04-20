@@ -2,12 +2,21 @@ import { browserSessionPersistence, onAuthStateChanged, setPersistence, signInAn
 import { createContext, useContext, useEffect, useState, type PropsWithChildren } from "react";
 import { auth } from "../services/firebase";
 
-type AuthContextValue = {
+type AuthContextI = {
     user: User | null;
     isLoading: boolean;
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 };
 
-const AuthContext = createContext<AuthContextValue | null>(null);
+const contextInitialState: AuthContextI = {
+    user: null,
+    isLoading: true,
+    setIsLoading: () => {
+        throw new Error("setIsLoading must be used within AuthProvider");
+    }
+};
+
+const AuthContext = createContext<AuthContextI>(contextInitialState);
 
 /**
  * Auth context provider \
@@ -20,14 +29,15 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            setUser(user);
+            setIsLoading(false);
+
+            localStorage.setItem("user", JSON.stringify(user));
+
             if (!user) {
                 await signInAnonymously(auth);
                 await setPersistence(auth, browserSessionPersistence);
-                return;
             }
-
-            setUser(user);
-            setIsLoading(false);
         })
 
         return unsubscribe;
@@ -36,12 +46,13 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     return (
         <AuthContext.Provider value={{
             user,
-            isLoading
+            isLoading,
+            setIsLoading
         }}>
             {children}
         </AuthContext.Provider>
     )
-} 
+}
 
 /**
  * Hook which checks if the auth context is defined
