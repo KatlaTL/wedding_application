@@ -2,7 +2,7 @@ import { LoaderIcon, type LucideProps } from "lucide-react";
 import type { ButtonHTMLAttributes } from "react";
 import type { IconType } from "react-icons/lib";
 
-export type ButtonVariant = "primary" | "secondary" | "secondary-no-hover" | "destructive" | "tertiary" | "plain";
+export type ButtonVariant = "primary" | "secondary" | "secondary-no-hover" | "destructive" | "tertiary" | "plain" | "tab" | "ghost";
 interface ButtoneProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: ButtonVariant;
     size?: "small" | "medium" | "large";
@@ -54,6 +54,12 @@ const Button: React.FC<ButtoneProps> = ({
         case "plain":
             variantStyle = "text-gray-900 font-medium bg-white hover:bg-gray-50 active:bg-gray-100 !border-black/20";
             break;
+        case "tab":
+            variantStyle = "bg-transparent !border-none !rounded-full hover:bg-white my-1";
+            break;
+        case "ghost":
+            variantStyle = "bg-transparent !border-none hover:bg-gray-300/80 rounded-lg p-2 active:bg-gray-400/80";
+            break;
     }
 
     let sizeStyle = "";
@@ -87,7 +93,7 @@ const Button: React.FC<ButtoneProps> = ({
 
             {isLoading ? (
                 <>
-                    {loadingText} 
+                    {loadingText}
                     <LoaderIcon className="animate-spin" style={{ animation: "spin 2.5s linear infinite" }} />
                 </>
             ) :

@@ -46,7 +46,7 @@ const useInvitation = () => {
      * Save the response from the RSVP. \
      * Stores it in the InvitationContext reducer. \
      */
-    const saveRSVP = (guest: Omit<GuestType, "firstName" | "lastName">) => {
+    const saveRSVP = (guest: Omit<GuestType, "firstName" | "lastName" | "email">) => {
         if (!rest.guest) {
             navigate("/invitation");
             return;
@@ -55,6 +55,7 @@ const useInvitation = () => {
         actionDispatch?.setGuestInfo({
             firstName: rest.guest.firstName,
             lastName: rest.guest.lastName,
+            email: rest.guest.email,
             ...guest
         });
 
@@ -73,7 +74,7 @@ const useInvitation = () => {
     /**
      * Saves the guest info in the InvitationContext reducer and localstorage
      */
-    const saveGuestInfo = (guest: Pick<GuestType, "firstName" | "lastName">, guestCode: string) => {
+    const saveGuestInfo = (guest: Pick<GuestType, "firstName" | "lastName" | "email">, guestCode: string) => {
         localStorage.setItem(GUEST, JSON.stringify(guest));
         localStorage.setItem(INVITATION_CODE, guestCode);
 

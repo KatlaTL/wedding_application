@@ -70,7 +70,7 @@ const Invitation = () => {
             needLift,
             canOfferLift,
             dietary,
-            allergies
+            allergies,
         };
 
         updateRSVPMutation.mutate({ RSVP: RSVPData }, {

@@ -5,6 +5,7 @@ export const DietarySchema = z.enum(["Vegan", "Vegetarian", "Omnivore"]);
 export const GuestSchema = z.object({
     firstName: z.string(),
     lastName: z.string(),
+    email: z.email().nullable(),
     isAttending: z.boolean().optional().nullable(),
     needLift: z.boolean().optional().nullable(),
     canOfferLift: z.boolean().optional().nullable(),
