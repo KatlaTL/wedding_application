@@ -25,7 +25,7 @@ export const router = createBrowserRouter([
             { path: "/invitation/:guestCode?", element: <Invitation />, handle: { label: "Invitation", navPath: "/invitation" }, loader: invitationLoader },
             { path: "/wishlist", element: <Wishlist />, handle: { label: "Ønskeliste" }, loader: wishlistLoader },
             {
-                path: "/admin", element: <AdminLayout />, handle: { label: "Admin Panel" }, loader: adminLoader, children: [
+                path: "/admin", element: <AdminLayout />, handle: { label: "Admin Panel", requiresAuth: true }, loader: adminLoader, children: [
                     { index: true, element: <AdminDashboard /> }, //TO-DO remove label to exclude it from the main menu
                 ]
             },

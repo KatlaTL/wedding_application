@@ -13,11 +13,12 @@
     --color-primary-30: #F28C6B4D;
     --color-destructive: #EF4444;
     --breakpoint-xs: 500px;
+    --color-gray-900: oklch(21% .034 264.665);
 }
 
 @layer base {
     body {
-        @apply font-serif tracking-wide;
+        @apply font-sans tracking-wide; /* font-serif */ 
     }
     
     h1 {

@@ -9,6 +9,7 @@ interface ButtoneProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     icon?: React.ForwardRefExoticComponent<Omit<LucideProps, "ref">> | IconType | null;
     iconGap?: number;
     isLoading?: boolean;
+    loadingText?: string;
 }
 
 /**
@@ -26,6 +27,7 @@ const Button: React.FC<ButtoneProps> = ({
     icon: Icon,
     iconGap = 3,
     isLoading = false,
+    loadingText = "",
     ...props
 }) => {
 
@@ -50,7 +52,7 @@ const Button: React.FC<ButtoneProps> = ({
             variantStyle = "text-primary bg-white hover:bg-primary hover:text-white !border-primary/50";
             break;
         case "plain":
-            variantStyle = "text-black bg-white hover:bg-gray-50 active:bg-gray-100 !border-black/20";
+            variantStyle = "text-gray-900 font-medium bg-white hover:bg-gray-50 active:bg-gray-100 !border-black/20";
             break;
     }
 
@@ -83,7 +85,14 @@ const Button: React.FC<ButtoneProps> = ({
                 </span>
             }
 
-            {isLoading ? <LoaderIcon className="animate-spin" style={{ animation: "spin 2.5s linear infinite" }} /> : children}
+            {isLoading ? (
+                <>
+                    {loadingText} 
+                    <LoaderIcon className="animate-spin" style={{ animation: "spin 2.5s linear infinite" }} />
+                </>
+            ) :
+                children
+            }
         </button>
     )
 }

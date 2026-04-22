@@ -36,7 +36,7 @@ const AdminGoogleSignIn = () => {
 
                                     <p>Log venligst ind med din Google-konto for at få adgang til administrationspanelet.</p>
 
-                                    <Button variant="plain" isLoading={isLoading} icon={FcGoogle} onClick={handleLoginClick}>Sign in with Google</Button>
+                                    <Button variant="plain" className="text-sm" isLoading={isLoading} loadingText="Logger ind..." icon={FcGoogle} onClick={handleLoginClick}>Sign in with Google</Button>
                                 </div>
                             </div>
                         </form>

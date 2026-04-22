@@ -1,6 +1,7 @@
 import { browserSessionPersistence, onAuthStateChanged, setPersistence, signInAnonymously, type User } from "firebase/auth";
 import { createContext, useContext, useEffect, useState, type PropsWithChildren } from "react";
 import { auth } from "../services/firebase";
+import { initAuth } from "../services/authService";
 
 type AuthContextI = {
     user: User | null;
@@ -28,16 +29,11 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
+        initAuth();
+
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             setUser(user);
             setIsLoading(false);
-
-            localStorage.setItem("user", JSON.stringify(user));
-
-            if (!user) {
-                await signInAnonymously(auth);
-                await setPersistence(auth, browserSessionPersistence);
-            }
         })
 
         return unsubscribe;
@@ -61,7 +57,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 export const useAuthContext = () => {
     const context = useContext(AuthContext);
     if (context === undefined) {
-        throw new Error('useAuthContext must be used within a LoadingProvider');
+        throw new Error('useAuthContext must be used within a AuthProvider');
     }
     return context;
 };
