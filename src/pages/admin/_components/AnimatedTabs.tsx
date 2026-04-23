@@ -19,6 +19,7 @@ const AnimatedTabs = ({ tabs }: { tabs: TabsType[] }) => {
             {tabs.map((tab, index) => (
 
                 <Button
+                    key={tab.title + index}
                     variant="tab"
                     size="small"
                     className={"z-10"}
