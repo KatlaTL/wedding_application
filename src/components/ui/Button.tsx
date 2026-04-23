@@ -7,6 +7,7 @@ interface ButtoneProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: ButtonVariant;
     size?: "small" | "medium" | "large";
     icon?: React.ForwardRefExoticComponent<Omit<LucideProps, "ref">> | IconType | null;
+    iconStyle?: string;
     iconGap?: number;
     isLoading?: boolean;
     loadingText?: string;
@@ -14,10 +15,13 @@ interface ButtoneProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 /**
  * Button component to ensure consistent style
- * @param variant - Takes 4 different variants as plain text: "primary" | "secondary" | "secondary-no-hover" | "destructive" | "tertiary". Default variant is primary
- * @param size - Takes 3 different sizes as plain text: "small" | "medium" | "large". Default size is medium
+ * @param variant - Takes 4 different variants as plain text: "primary" | "secondary" | "secondary-no-hover" | "destructive" | "tertiary" | "plain" | "tab" | "ghost". Default variant is primary
+ * @param size - Takes 3 different sizes as plain text: "small" | "medium" | "large". Default size is medium. If variant is ghost size will always be set to small
  * @param icon - Accepts only a lucide-react icon
+ * @param iconStyle - Accepts Tailwindcss styling
  * @param iconGap - The distance between the icon and the tekst. Default is tailwind gap-3
+ * @param isLoading - Displays a spinner in the button if true
+ * @param loadingText - Displays a text in the button if isLoading is true
  */
 const Button: React.FC<ButtoneProps> = ({
     children,
@@ -25,6 +29,7 @@ const Button: React.FC<ButtoneProps> = ({
     size = "medium",
     className = "",
     icon: Icon,
+    iconStyle: iconStyleProp = "",
     iconGap = 3,
     isLoading = false,
     loadingText = "",
@@ -58,7 +63,7 @@ const Button: React.FC<ButtoneProps> = ({
             variantStyle = "bg-transparent !border-none !rounded-full hover:bg-white my-1";
             break;
         case "ghost":
-            variantStyle = "bg-transparent !border-none hover:bg-gray-300/80 rounded-lg p-2 active:bg-gray-400/80";
+            variantStyle = "bg-transparent !border-none hover:bg-gray-300/80 rounded-lg active:bg-gray-400/80 !w-8 !h-8";
             break;
     }
 
@@ -87,7 +92,7 @@ const Button: React.FC<ButtoneProps> = ({
         >
             {Icon &&
                 <span>
-                    <Icon className={iconStyle} />
+                    <Icon className={`${iconStyle} ${iconStyleProp}`} />
                 </span>
             }
 

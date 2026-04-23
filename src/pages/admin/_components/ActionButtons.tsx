@@ -11,24 +11,27 @@ type ActionButtonsType<T> = {
 const ActionButtons = <T,>({ row, onDelete, onEdit, excludeEdit = false }: ActionButtonsType<T>) => {
 
   return (
-    <div className="flex flex-row justify-center gap-2">
+    <div className="flex flex-row mr-auto max-w-15">
       {!excludeEdit && (
         <Button
           variant="ghost"
           className="text-primary"
+          icon={Edit}
           onClick={(e) => {
             e.stopPropagation();
             onEdit?.(row)
-          }}><Edit className="size-4" /></Button>
+          }}></Button>
       )}
 
       <Button
         variant="ghost"
         className="text-destructive"
+        icon={Trash2}
+        iconStyle="text-red-600"
         onClick={(e) => {
           e.stopPropagation();
           onDelete?.(row)
-        }}><Trash2 className="size-4 text-red-600" /></Button>
+        }}/>
     </div>
   )
 };

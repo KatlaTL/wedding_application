@@ -46,12 +46,13 @@ const InvitationGuestCodeEntry = () => {
 
                 if (data && data[trimedCode]) {
 
-                    const guestNames = {
+                    const guestInfo = {
                         firstName: data[trimedCode].firstName,
-                        lastName: data[trimedCode].lastName
+                        lastName: data[trimedCode].lastName,
+                        email: data[trimedCode].email,
                     }
 
-                    saveGuestInfo(guestNames, trimedCode);
+                    saveGuestInfo(guestInfo, trimedCode);
 
                     navigate(`/invitation/${trimedCode}`);
                 } else {

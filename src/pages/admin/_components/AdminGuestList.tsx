@@ -1,3 +1,4 @@
+import CopyClipboardButton from "../../../components/CopyClipboardButton";
 import StaggeredItem from "../../../components/StaggeredItem";
 import type { Column } from "../../../components/ui/Table";
 import Table from "../../../components/ui/Table";
@@ -11,7 +12,16 @@ const AdminGuestList = () => {
     const guestListColumns: Column<AdminGuestType>[] = [
         { key: "name", label: "Navn", render: (row) => <span className="font-medium">{row.name}</span> },
         { key: "email", label: "Email" },
-        { key: "invitationCode", label: "Invitations kode", render: (row) => <div className="bg-muted p-1.5 w-fit">{row.invitationCode}</div> },
+        {
+            key: "invitationCode", label: "Invitations kode", render: (row) => (
+                <div className="flex gap-2">
+                    <div className="bg-muted p-1.5 w-fit">
+                        {row.invitationCode}
+                    </div>
+                    <CopyClipboardButton text={row.invitationCode} />
+                </div>
+            )
+        },
         {
             key: "action", label: "Handlinger", textFloat: "right", render: (row) => (
                 <ActionButtons
