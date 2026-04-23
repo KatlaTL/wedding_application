@@ -12,7 +12,7 @@ const useAuth = () => {
         try {
             const user = await signInWithGoogle();
 
-            const authorizedEmails: string = import.meta.env.VITE_AUTHORIZED_EMAILS;
+            const authorizedEmails: string = import.meta.env.VITE_AUTHORIZED_EMAILS ?? "";
             const authorizedEmailsArr = authorizedEmails.split(";");
 
             if (!authorizedEmailsArr.includes(user.email ?? "")) {

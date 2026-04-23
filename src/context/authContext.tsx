@@ -1,4 +1,4 @@
-import { browserSessionPersistence, onAuthStateChanged, setPersistence, signInAnonymously, type User } from "firebase/auth";
+import { onAuthStateChanged, type User } from "firebase/auth";
 import { createContext, useContext, useEffect, useState, type PropsWithChildren } from "react";
 import { auth } from "../services/firebase";
 import { initAuth } from "../services/authService";
