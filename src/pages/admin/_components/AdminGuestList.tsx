@@ -1,15 +1,21 @@
-import { Plus } from "lucide-react";
 import CopyClipboardButton from "../../../components/CopyClipboardButton";
 import StaggeredItem from "../../../components/StaggeredItem";
 import Button from "../../../components/ui/Button";
 import type { Column } from "../../../components/ui/Table";
 import Table from "../../../components/ui/Table";
 import useAdmin from "../../../hooks/useAdmin";
-import type { AdminGuestType } from "../../../types/adminTypes";
-import ActionButtons from "./ActionButtons";
+import type { AdminGuestType, AdminTabContentProps } from "../../../types/adminTypes";
+import Modal from "../../../components/Modal";
+import { useState } from "react";
+import InnerModal from "./shared/InnerModal";
+import FormWrapper from "../../../components/FormWrapper";
+import Input from "../../../components/ui/Input";
+import ActionButtons from "./shared/ActionButtons";
+import TabContentHeading from "./shared/TabContentHeading";
 
-const AdminGuestList = () => {
+const AdminGuestList = ({ activeTab, previousTab }: AdminTabContentProps) => {
     const { guestList } = useAdmin();
+    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
     const guestListColumns: Column<AdminGuestType>[] = [
         { key: "name", label: "Navn", render: (row) => <span className="font-medium">{row.name}</span> },
@@ -37,23 +43,44 @@ const AdminGuestList = () => {
 
 
     return (
-        <StaggeredItem>
-            <div className="mt-10 flex justify-between items-center">
-                <div>
-                    <h3 className="text-color-text font-medium text-lg">Gæsteliste</h3>
-                    <p>Administrer dine gæster og invitationskoder</p>
-                </div>
-                <div>
-                    <Button variant="secondary" size="small" className="p-2" icon={Plus}>Tilføj gæst</Button>
-                </div>
-            </div>
+        <>
+            <StaggeredItem variants={{
+                hidden: {
+                    opacity: 0,
+                    x: activeTab > previousTab ? -10 : 10,
+                    scale: 1
+                },
+                visible: {
+                    opacity: 1,
+                    x: 0,
+                    scale: 1,
+                    transition: {
+                        duration: 0.6,
+                        delay: 0,
+                        ease: "easeInOut",
+                    }
+                }
+            }}>
+                <TabContentHeading title="Gæsteliste" description="Administrer dine gæster og invitationskoder" ctaText="Tilføj gæst" onClick={() => setModalIsOpen(true)} />
 
-            <div className="bg-background-muted rounded-lg border-primary-30 border p-5 mt-5 mb-5 xs:mx-auto mx-5 md:mx-0">
-                <h4 className="text-base">Antal gæster: {guestList.length} </h4>
+                <div className="bg-background-muted rounded-lg border-primary-30 border p-5 mb-5 xs:mx-auto mx-5 md:mx-0">
+                    <h4 className="text-base">Antal gæster: {guestList.length} </h4>
 
-                <Table columns={guestListColumns} data={guestList} />
-            </div>
-        </StaggeredItem>
+                    <Table columns={guestListColumns} data={guestList} />
+                </div>
+            </StaggeredItem>
+
+            <Modal isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)}>
+                <InnerModal title="Tilføj ny gæst">
+                    <FormWrapper className="mb-4">
+                        <Input label="Navn" name="guestName" value="" placeholder="John Smith" required={true} />
+                        <Input label="Email" name="guestEmail" value="" placeholder="john@example.com" required={true} />
+                    </FormWrapper>
+
+                    <Button variant="secondary" size="small">Tilføj gæst</Button>
+                </InnerModal>
+            </Modal>
+        </>
     )
 }
 

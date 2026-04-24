@@ -18,9 +18,10 @@
 
 @layer base {
     body {
-        @apply font-sans tracking-wide; /* font-serif */ 
+        @apply font-sans tracking-wide;
+        /* font-serif */
     }
-    
+
     h1 {
         @apply text-primary md:text-5xl text-3xl;
     }
@@ -34,12 +35,17 @@
     }
 
     p {
-        @apply text-sm text-muted-foreground ;
+        @apply text-sm text-muted-foreground;
     }
 }
 
 html {
-  scrollbar-gutter: stable;
+    scrollbar-gutter: stable;
+}
+
+html body[data-scroll-locked] {
+    --removed-body-scroll-bar-size: 0 !important;
+    margin-right: 0 !important;
 }
 
 .border-primary {
@@ -59,5 +65,5 @@ html {
 }
 
 .gradient {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 50%, var(--color-tertiary) 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 50%, var(--color-tertiary) 100%);
 }

@@ -4,8 +4,6 @@ import { CheckIcon } from "@radix-ui/react-icons";
 import Button, { type ButtonVariant } from "../../components/ui/Button";
 import HeadingWithIcon from "../../components/HeadingWithIcon";
 import ButtonGroup from "./_components/ButtonGroup";
-import Wrapper from "./_components/Wrapper";
-import { Checkbox, CheckboxIndicator } from "../../components/ui/Checkbox";
 import { useState } from "react";
 import type { CheckedState } from "@radix-ui/react-checkbox";
 import InvitationGuestCodeEntry from "./_components/InvitationGuestCodeEntry";
@@ -22,6 +20,8 @@ import StaggeredContent from "../../components/StaggeredContent";
 import StaggeredItem from "../../components/StaggeredItem";
 import useBindGuestCode from "../../hooks/useBindGuestCode";
 import { SOMETHING_WENT_WRONG } from "../../constants/errorMessages";
+import FormWrapper from "../../components/FormWrapper";
+import { Checkbox, CheckboxIndicator } from "../../components/ui/CheckboxRadix";
 
 /**
  * Invitation page component. \
@@ -123,12 +123,12 @@ const Invitation = () => {
                 <Section title="Bekræft deltagelse" description={`${guestList[guestCode]?.firstName} ${guestList[guestCode]?.lastName} lad os vide, om du kommer!`}>
                     <StaggeredItem>
                         <div className="bg-background-muted rounded-lg border-primary-30 border p-5 w-120 mt-7 mb-5 xs:mx-auto mx-5 md:mx-0">
-                            <Wrapper>
+                            <FormWrapper>
                                 <ButtonGroup className="mx-auto">
                                     <Button type="button" size="small" icon={Mail} className="w-50!" onClick={() => setModalIsOpen(true)}>Se din invitation</Button>
                                     <Button type="button" size="small" icon={RotateCcw} className="w-50!" onClick={handleNewCodeClick}>Indtast en anden kode</Button>
                                 </ButtonGroup>
-                            </Wrapper>
+                            </FormWrapper>
                         </div>
                     </StaggeredItem>
 
@@ -138,17 +138,17 @@ const Invitation = () => {
                                 <div className="flex flex-col items-start text-left gap-3">
                                     <HeadingWithIcon icon={Users} text="Tilmelding" />
 
-                                    <Wrapper>
+                                    <FormWrapper>
                                         <ButtonGroup title="Deltager du?">
                                             <Button type="button" size="small" icon={CheckCircle} variant={setButtonVariant(isAttending, "secondary")} onClick={() => setIsAttending(true)}>Ja, jeg kommer</Button>
                                             <Button type="button" size="small" icon={XCircle} variant={setButtonVariant(isAttending, "destructive")} onClick={() => setIsAttending(false)}>Nej, desværre ikke</Button>
                                         </ButtonGroup>
-                                    </Wrapper>
+                                    </FormWrapper>
 
 
                                     {isAttending && (
                                         <>
-                                            <Wrapper className="bg-muted rounded-lg p-2">
+                                            <FormWrapper className="bg-muted rounded-lg p-2">
                                                 <HeadingWithIcon icon={Car} text="Transport" className="mb-2" />
 
                                                 <ButtonGroup title="Har du brug for et lift fra Odense?" className="mb-2">
@@ -160,10 +160,10 @@ const Invitation = () => {
                                                     <Button type="button" size="small" className="px-3" variant={setButtonVariant(canOfferLift, "secondary")} onClick={() => setCanOfferLift(true)}>Ja, jeg kan tilbyde et lift</Button>
                                                     <Button type="button" size="small" className="px-3" variant={setButtonVariant(canOfferLift, "destructive")} onClick={() => setCanOfferLift(false)}>Nej, desværre ikke</Button>
                                                 </ButtonGroup>
-                                            </Wrapper>
+                                            </FormWrapper>
 
 
-                                            <Wrapper className="bg-muted rounded-lg p-2 !flex-row text-xs text-color-text">
+                                            <FormWrapper className="bg-muted rounded-lg p-2 !flex-row text-xs text-color-text">
                                                 <div className="flex gap-5">
                                                     {dietaryOptions.map((value, index) =>
                                                         <div className="flex gap-1 text-sm" key={value + index}>
@@ -183,9 +183,9 @@ const Invitation = () => {
                                                         </div>
                                                     )}
                                                 </div>
-                                            </Wrapper>
+                                            </FormWrapper>
 
-                                            <Wrapper className="mb-2">
+                                            <FormWrapper className="mb-2">
                                                 <p className="!text-color-text">Har du kostrestriktioner eller allergier?</p>
 
                                                 <textarea
@@ -196,7 +196,7 @@ const Invitation = () => {
                                                     rows={3}
                                                     className="rounded-lg px-2 pt-1 resize-none text-xs text-color-text placeholder-muted-foreground placeholder:text-sm border border-primary-30 focus:outline-primary"
                                                 />
-                                            </Wrapper>
+                                            </FormWrapper>
                                         </>
                                     )}
 
@@ -208,7 +208,7 @@ const Invitation = () => {
                         </form>
                     </StaggeredItem>
                     <Modal isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)}>
-                        <img src={invitationImage} alt="Invitation" className="h-full" />
+                        <img src={invitationImage} alt="Invitation" className="h-[90vh]" />
                     </Modal>
                 </Section>
 

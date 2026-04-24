@@ -1,10 +1,14 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
-import type { TabsType } from '../../../types/adminTypes';
-import Button from '../../../components/ui/Button';
+import type { TabsType } from '../../../../types/adminTypes';
+import Button from '../../../../components/ui/Button';
 
-const AnimatedTabs = ({ tabs }: { tabs: TabsType[] }) => {
-    const [activeTab, setActiveTab] = useState<number>(0);
+type AnimatedTabsProps = {
+    tabs: TabsType[];
+    activeTab: number;
+    setActiveTab: (value: number) => void;
+}
+
+const AnimatedTabs = ({ tabs, activeTab, setActiveTab }: AnimatedTabsProps) => {
 
     return (
         <div className="relative flex gap-1 bg-muted px-1 rounded-full">
@@ -17,7 +21,6 @@ const AnimatedTabs = ({ tabs }: { tabs: TabsType[] }) => {
                 transition={{ duration: 0.5, ease: 'easeOut' }}
             />
             {tabs.map((tab, index) => (
-
                 <Button
                     key={tab.title + index}
                     variant="tab"

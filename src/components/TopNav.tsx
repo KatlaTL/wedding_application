@@ -7,7 +7,6 @@ import { Menu, X } from "lucide-react";
 import useIsAtTop from "../hooks/utils/useIsAtTop";
 import useClickOutside from "../hooks/utils/useClickOutside";
 import useTailwindMediaQuery from "../hooks/utils/useTailwindMediaQuery";
-import type { RouteHandle } from "../types/routerType";
 
 /**
  * The top navigation component

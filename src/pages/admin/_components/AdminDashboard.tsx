@@ -5,35 +5,51 @@ import StaggeredItem from "../../../components/StaggeredItem";
 import Button from "../../../components/ui/Button";
 import useAuth from "../../../hooks/useAuth";
 import type { TabsType } from "../../../types/adminTypes";
-import AnimatedTabs from "./AnimatedTabs";
+import AnimatedTabs from "./shared/AnimatedTabs";
 import AdminGuestList from "./AdminGuestList";
+import { useState } from "react";
+import AdminProgram from "./AdminProgram";
 
 const AdminDashboard = () => {
     const { logout, user } = useAuth();
+    
+    const [activeTab, setActiveTab] = useState<number>(0);
+    const [previousTab, setPreviousTab] = useState<number>(0);
+
+    const handleTabChange = (value: number) => {
+        setPreviousTab(activeTab);
+        setActiveTab(value);
+    }
 
     const tabs: TabsType[] = [
         {
             title: "Gæster",
-            icon: Users
+            icon: Users,
+            tabComponent: () => <AdminGuestList activeTab={activeTab} previousTab={previousTab} />
         },
         {
             title: "Program",
-            icon: Calendar
+            icon: Calendar,
+            tabComponent: () => <AdminProgram activeTab={activeTab} previousTab={previousTab} />
         },
         {
             title: "Lokationer",
-            icon: MapPin
+            icon: MapPin,
+            tabComponent: () => null
         },
         {
             title: "Ønskeliste",
-            icon: Gift
+            icon: Gift,
+            tabComponent: () => null
         }
     ]
+
+    const ActiveContent = tabs[activeTab].tabComponent;
 
     return (
         <PageTransition>
             <StaggeredContent>
-                <section className="relative min-h-screen flex flex-col py-30 overflow-hidden ">
+                <section className="relative min-h-screen flex flex-col py-15 overflow-hidden ">
                     <div className="w-4xl md:mx-auto">
                         <StaggeredItem>
                             <div className="flex justify-between">
@@ -65,9 +81,9 @@ const AdminDashboard = () => {
 
                         <StaggeredItem>
                             <div className="bg-background-muted rounded-lg border-primary-30 border p-5 mt-7 mb-5 xs:mx-auto mx-5 md:mx-0">
-                                <AnimatedTabs tabs={tabs} />
+                                <AnimatedTabs tabs={tabs} activeTab={activeTab} setActiveTab={handleTabChange} />
 
-                                <AdminGuestList />
+                                <ActiveContent />
                             </div>
                         </StaggeredItem>
                     </div>

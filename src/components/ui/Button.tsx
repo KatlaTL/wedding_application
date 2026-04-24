@@ -1,6 +1,7 @@
 import { LoaderIcon, type LucideProps } from "lucide-react";
 import type { ButtonHTMLAttributes } from "react";
 import type { IconType } from "react-icons/lib";
+import { twMerge } from "tailwind-merge";
 
 export type ButtonVariant = "primary" | "secondary" | "secondary-no-hover" | "destructive" | "tertiary" | "plain" | "tab" | "ghost";
 interface ButtoneProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -87,7 +88,7 @@ const Button: React.FC<ButtoneProps> = ({
 
     return (
         <button
-            className={`${baseStyle} ${variantStyle} ${sizeStyle} ${buttonIconStyle} ${className}`}
+            className={twMerge(`${baseStyle} ${variantStyle} ${sizeStyle} ${buttonIconStyle}`, className)}
             {...props}
         >
             {Icon &&

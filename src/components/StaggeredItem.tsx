@@ -1,10 +1,11 @@
 import type { PropsWithChildren } from "react";
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 
 type StaggeredItemType = {
     className?: string;
     delay?: number;
     duration?: number;
+    variants?: Variants
 }
 
 /**
@@ -14,27 +15,29 @@ type StaggeredItemType = {
  * @param duration - The duration of the transition in seconds. Default value is 0.6
  * @returns 
  */
-const StaggeredItem = ({ className = "", delay = 0, duration = 0.6, children }: PropsWithChildren<StaggeredItemType>) => {
+const StaggeredItem = ({ className = "", delay = 0, duration = 0.6, variants, children }: PropsWithChildren<StaggeredItemType>) => {
+    const animation: Variants = variants ? variants : {
+        hidden: {
+            opacity: 0,
+            y: 30,
+            scale: 0.95
+        },
+        visible: {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: {
+                duration,
+                delay,
+                ease: "easeInOut",
+            }
+        }
+    };
+
     return (
         <motion.div
             className={className}
-            variants={{
-                hidden: {
-                    opacity: 0,
-                    y: 30,
-                    scale: 0.95
-                },
-                visible: {
-                    opacity: 1,
-                    y: 0,
-                    scale: 1,
-                    transition: {
-                        duration,
-                        delay,
-                        ease: "easeInOut",
-                    }
-                }
-            }}
+            variants={animation}
         >
             {children}
         </motion.div>

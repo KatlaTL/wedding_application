@@ -1,7 +1,6 @@
 import { Lock } from "lucide-react";
 import HeadingWithIcon from "../../../components/HeadingWithIcon";
 import Section from "../../../components/Section"
-import Wrapper from "./Wrapper";
 import { useEffect, useState } from "react";
 import Button from "../../../components/ui/Button";
 import useInvitation from "../../../hooks/useInvitation";
@@ -11,6 +10,8 @@ import StaggeredContent from "../../../components/StaggeredContent";
 import StaggeredItem from "../../../components/StaggeredItem";
 import useBindGuestCode from "../../../hooks/useBindGuestCode";
 import { INVALID_GUEST_CODE } from "../../../constants/errorMessages";
+import FormWrapper from "../../../components/FormWrapper";
+import Input from "../../../components/ui/Input";
 
 /**
  * InvitationCodeEntry component.
@@ -76,18 +77,17 @@ const InvitationGuestCodeEntry = () => {
                             <div className="flex flex-col items-start text-left gap-3">
                                 <HeadingWithIcon icon={Lock} text="Få adgang til din invitation" />
 
-                                <Wrapper className="mb-2">
-                                    <p className="!text-color-text">Invitations kode</p>
-
-                                    <input
+                                <FormWrapper className="mb-1">
+                                    
+                                    <Input
                                         name="inviationCode"
                                         value={invitationCode}
+                                        label="Invitations kode"
                                         onChange={e => setInvitationCode(e.target.value)}
                                         placeholder="Skriv din personlig invitations kode her"
                                         required
-                                        className="rounded-md h-7 px-2 text-xs text-color-text placeholder-muted-foreground placeholder:text-sm border border-primary-30 focus:outline-primary"
                                     />
-                                </Wrapper>
+                                </FormWrapper>
 
                                 {error && <Error errorText={error} />}
 

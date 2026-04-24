@@ -1,104 +1,46 @@
-import { CheckIcon } from "@radix-ui/react-icons";
-import * as SelectPrimitive from "@radix-ui/react-select";
-import React from "react";
+import { ChevronDown } from "lucide-react";
+import type { SelectItemType } from "../../types/utilsTypes";
+import { SelectContent, SelectIcon, SelectItem, SelectRoot, SelectTrigger, SelectValue, SelectViewport } from "./SelectRadix"
+import type { SelectHTMLAttributes } from "react";
+import Icon from "./Icon";
 
-type SelectItemProps = React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>;
-
-/**
- * Simplifies the use of radix-ui/react-select \
- */
-const Select = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.Root>) => {
-    return <SelectPrimitive.Root {...props} />
+interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+    items: SelectItemType[];
+    label: string;
+    onValueChange: (value: string) => void;
 }
 
-/**
- * Simplifies the use of radix-ui/react-select \
- */
-const SelectTriger = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.Trigger>) => {
-    return <SelectPrimitive.Trigger {...props} />
-}
+const Select: React.FC<SelectProps> = ({ items, onValueChange, label, required }) => {
+    const labelText = required ? `${label} *` : label;
 
-/**
- * Simplifies the use of radix-ui/react-select \
- */
-const SelectValue = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.Value>) => {
-    return <SelectPrimitive.Value {...props} />
-}
-
-/**
- * Simplifies the use of radix-ui/react-select \
- */
-const SelectIcon = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.Icon>) => {
-    return <SelectPrimitive.Icon {...props} />
-}
-
-/**
- * Simplifies the use of radix-ui/react-select \
- */
-const SelectPortal = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.Portal>) => {
-    return <SelectPrimitive.Portal {...props} />
-}
-
-/**
- * Simplifies the use of radix-ui/react-select \
- */
-const SelectContent = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.Content>) => {
-    return <SelectPrimitive.Content {...props} />
-}
-
-/**
- * Simplifies the use of radix-ui/react-select \
- */
-const SelectViewport = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.Viewport>) => {
-    return <SelectPrimitive.Viewport {...props} />
-}
-
-/**
- * Simplifies the use of radix-ui/react-select \
- */
-const SelectScrollUpButton = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>) => {
-    return <SelectPrimitive.ScrollUpButton {...props} />
-}
-
-/**
- * Simplifies the use of radix-ui/react-select \
- */
-const SelectScrollDownButton = ({ ...props }: React.ComponentProps<typeof SelectPrimitive.ScrollDownButton>) => {
-    return <SelectPrimitive.ScrollDownButton {...props} />
-}
-
-/**
- * Simplifies the use of radix-ui/react-select \
- */
-const SelectItem = React.forwardRef<
-    React.ComponentRef<typeof SelectPrimitive.Item>,
-    SelectItemProps
->(({ children, className, ...props }, forwardedRef) => {
     return (
-        <SelectPrimitive.Item
-            className={`flex justify-between p-2 outline-none hover:bg-tertiary cursor-pointer ${className}`}
-            {...props}
-            ref={forwardedRef}
-        >
-            <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+        <div className="flex flex-col gap-1 mb-1">
+            <p className="!text-color-text">{labelText}</p>
 
-            <SelectPrimitive.ItemIndicator className="SelectItemIndicator inline-flex w-[25px] items-center justify-center">
-                <CheckIcon />
-            </SelectPrimitive.ItemIndicator>
+            <SelectRoot onValueChange={onValueChange} >
+                <SelectTrigger className="flex items-center justify-between w-full rounded-md bg-white leading-none h-7 px-2 text-[13px] text-left text-color-text placeholder-muted-foreground border border-primary-30 focus:outline-primary">
+                    <SelectValue placeholder="Select a fruit" />
 
-        </SelectPrimitive.Item>
-    );
-});
+                    <SelectIcon className="inline-flex">
+                        <ChevronDown className="w-4 h-4 text-color-text" />
+                    </SelectIcon>
+                </SelectTrigger>
 
-export {
-    Select,
-    SelectTriger,
-    SelectIcon,
-    SelectValue,
-    SelectPortal,
-    SelectContent,
-    SelectViewport,
-    SelectScrollUpButton,
-    SelectScrollDownButton,
-    SelectItem
+                <SelectContent className="bg-white rounded-md border border-primary-30 shadow-lg min-w-[var(--radix-select-trigger-width)]" position="popper">
+                    <SelectViewport>
+                        {items.map((item, index) => (
+                            <SelectItem value={item.iconKey} key={item.iconKey + index}>
+                                <div className="flex gap-2">
+                                    <Icon name={item.iconKey} className="w-3.5 h-3.5 inline" />
+                                    <span className="text-[13px] leading-none">{item.name}</span>
+                                </div>
+                            </SelectItem>
+                        ))}
+                    </SelectViewport>
+                </SelectContent>
+            </SelectRoot>
+        </div>
+    )
 }
+
+export default Select;

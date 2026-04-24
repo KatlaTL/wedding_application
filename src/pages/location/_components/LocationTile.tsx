@@ -2,7 +2,7 @@ import { Clock, MapPin } from "lucide-react"
 import Button from "../../../components/ui/Button"
 import type { LocationType } from "../../../types/locationTypes";
 import GoogleMap from "../../../components/ui/GoogleMap";
-import ClockText from "../../../components/ClockText";
+import IconText from "../../../components/IconText";
 
 /**
  * LocationTiles used in the Location component
@@ -31,17 +31,14 @@ const LocationTile: React.FC<LocationType> = ({
                 <div className="flex justify-between w-full">
                     <h3 className="text-primary pb-5">{title}</h3>
 
-                    <ClockText time={time} />
+                    <IconText icon={Clock} text={time} />
                 </div>
 
                 <div className="min-h-25">
                     <p className="pb-3">{description}</p>
                 </div>
 
-                <div className="flex items-start gap-1.5">
-                    <MapPin className="text-primary h-4 w-4 mt-0.5" />
-                    <p className="pb-3">{address}</p>
-                </div>
+                <IconText icon={MapPin} text={address} tailwindColor="text-text-color" className="mb-3"/>
 
                 {/* Add onclick */}
                 <Button size="small" icon={MapPin} onClick={handleClick}>Se på kortet</Button>
