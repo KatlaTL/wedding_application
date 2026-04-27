@@ -25,7 +25,7 @@ const AnimatedTabs = ({ tabs, activeTab, setActiveTab }: AnimatedTabsProps) => {
                     key={tab.title + index}
                     variant="tab"
                     size="small"
-                    className={"z-10"}
+                    className={`z-10 ${index === activeTab ? "bg-white" : ""}`}
                     icon={tab.icon}
                     onClick={() => setActiveTab(index)}
                 >
