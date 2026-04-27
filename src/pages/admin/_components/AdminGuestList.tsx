@@ -4,18 +4,59 @@ import Button from "../../../components/ui/Button";
 import type { Column } from "../../../components/ui/Table";
 import Table from "../../../components/ui/Table";
 import useAdmin from "../../../hooks/useAdmin";
-import type { AdminGuestType, AdminTabContentProps } from "../../../types/adminTypes";
+import type { AdminGuestModalType, AdminGuestType, AdminTabContentProps } from "../../../types/adminTypes";
 import Modal from "../../../components/Modal";
-import { useState } from "react";
+import { memo, useState } from "react";
 import InnerModal from "./shared/InnerModal";
 import FormWrapper from "../../../components/FormWrapper";
 import Input from "../../../components/ui/Input";
 import ActionButtons from "./shared/ActionButtons";
 import TabContentHeading from "./shared/TabContentHeading";
+import AttendingCheckbox from "./shared/AttendingCheckbox";
+import Error from "../../../components/Error";
+import { ALL_FIELDS_ARE_REQUIRED, SOMETHING_WENT_WRONG } from "../../../constants/errorMessages";
 
 const AdminGuestList = ({ activeTab, previousTab }: AdminTabContentProps) => {
-    const { guestList } = useAdmin();
+    const { guestList, addGuestMutation, deleteGuestMutation } = useAdmin();
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+    const [error, setError] = useState<string>("");
+
+    const initialGuestData: AdminGuestModalType = {
+        email: "",
+        firstName: "",
+        lastName: ""
+    }
+
+    const [guest, setGuest] = useState<AdminGuestModalType>(initialGuestData);
+
+    const updateGuest = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, target: keyof AdminGuestModalType) => {
+        setGuest(prev => ({
+            ...prev,
+            [target]: e.target.value
+        }))
+    }
+
+    const handleAddGuest = () => {
+        setError("");
+        addGuestMutation.mutate({ guest: { firstName: guest.firstName, lastName: guest.lastName, email: guest.email } }, {
+            onSuccess: () => {
+                setModalIsOpen(false);
+                setGuest(initialGuestData);
+            },
+            onError: (error) => {
+                if (error.message === "ALL_FIELDS_ARE_REQUIRED") {
+                    setError(ALL_FIELDS_ARE_REQUIRED);
+                } else {
+                    setError(SOMETHING_WENT_WRONG);
+                }
+            }
+        })
+    }
+
+    const onCloseModal = () => {
+        setModalIsOpen(false)
+        setError("");
+    }
 
     const guestListColumns: Column<AdminGuestType>[] = [
         { key: "name", label: "Navn", render: (row) => <span className="font-medium">{row.name}</span> },
@@ -31,11 +72,19 @@ const AdminGuestList = ({ activeTab, previousTab }: AdminTabContentProps) => {
             )
         },
         {
+            key: "isAttending", label: "Deltager", render: (row) => (
+                <div className="pl-2">
+                    <AttendingCheckbox isChecked={row.isAttending} guestCode={row.invitationCode} />
+                </div>
+            )
+        },
+        {
             key: "action", label: "Handlinger", textFloat: "right", render: (row) => (
                 <ActionButtons
                     row={row}
-                    onDelete={(row) => { }} //TO-DO add delete logic
-                    excludeEdit={false}
+                    onDelete={(row) => deleteGuestMutation.mutate({ guestCode: row.invitationCode })}
+                    excludeEdit={true}
+                    rowText={row.name}
                 />
             )
         }
@@ -44,7 +93,7 @@ const AdminGuestList = ({ activeTab, previousTab }: AdminTabContentProps) => {
 
     return (
         <>
-            <StaggeredItem variants={{
+            <StaggeredItem initial={activeTab === previousTab ? false : "hidden"} variants={{
                 hidden: {
                     opacity: 0,
                     x: activeTab > previousTab ? -10 : 10,
@@ -70,18 +119,24 @@ const AdminGuestList = ({ activeTab, previousTab }: AdminTabContentProps) => {
                 </div>
             </StaggeredItem>
 
-            <Modal isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)}>
+            <Modal isOpen={modalIsOpen} onClose={onCloseModal}>
                 <InnerModal title="Tilføj ny gæst">
-                    <FormWrapper className="mb-4">
-                        <Input label="Navn" name="guestName" value="" placeholder="John Smith" required={true} />
-                        <Input label="Email" name="guestEmail" value="" placeholder="john@example.com" required={true} />
+                    <FormWrapper className="mb-4 flex-row gap-2">
+                        <Input label="Fornavn" name="guestFirestName" value={guest.firstName} onChange={(e) => updateGuest(e, "firstName")} placeholder="John" required={true} />
+                        <Input label="Efternavn" name="guestLastName" value={guest.lastName} onChange={(e) => updateGuest(e, "lastName")} placeholder="Smith" required={true} />
                     </FormWrapper>
 
-                    <Button variant="secondary" size="small">Tilføj gæst</Button>
+                    <FormWrapper className="mb-4">
+                        <Input label="Email" name="guestEmail" value={guest.email} onChange={(e) => updateGuest(e, "email")} placeholder="john@example.com" required={true} />
+                    </FormWrapper>
+
+                    {error && <Error errorText={error} className="mb-3" />}
+
+                    <Button variant="secondary" size="small" onClick={handleAddGuest}>Tilføj gæst</Button>
                 </InnerModal>
             </Modal>
         </>
     )
 }
 
-export default AdminGuestList;
+export default memo(AdminGuestList);

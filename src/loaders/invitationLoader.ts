@@ -1,5 +1,5 @@
 import { redirect, type LoaderFunctionArgs } from "react-router-dom";
-import { fetchGuestList } from "../services/invitationService";
+import { fetchGuestList } from "../services/guestService";
 import { queryClient } from "../queryClient";
 
 /**

@@ -1,14 +1,19 @@
 import { Edit, Trash2 } from "lucide-react";
 import Button from "../../../../components/ui/Button";
+import ConfirmDialog from "../../../../components/ui/ConfirmDialog";
+import { useState } from "react";
 
 type ActionButtonsType<T> = {
   excludeEdit?: boolean;
   row: T;
   onEdit?: (row: T) => void;
   onDelete?: (row: T) => void;
+  rowText?: string;
 }
 
-const ActionButtons = <T,>({ row, onDelete, onEdit, excludeEdit = false }: ActionButtonsType<T>) => {
+const ActionButtons = <T,>({ row, onDelete, onEdit, excludeEdit = false, rowText }: ActionButtonsType<T>) => {
+
+  const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);
 
   return (
     <div className="flex flex-row mr-auto max-w-15">
@@ -30,8 +35,16 @@ const ActionButtons = <T,>({ row, onDelete, onEdit, excludeEdit = false }: Actio
         iconStyle="text-red-600"
         onClick={(e) => {
           e.stopPropagation();
-          onDelete?.(row)
-        }}/>
+          setDialogIsOpen(true);
+        }} />
+
+      <ConfirmDialog
+        open={dialogIsOpen}
+        onOpenChange={setDialogIsOpen}
+        onConfirm={() => onDelete?.(row)}
+        onCancel={() => setDialogIsOpen(false)}
+        contextText={rowText}
+      />
     </div>
   )
 };

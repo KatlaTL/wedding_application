@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { bindGuestCode, unbindGuest } from "../services/invitationService";
+import { bindGuestCode, unbindGuest } from "../services/guestService";
 import { queryClient } from "../queryClient";
 
 

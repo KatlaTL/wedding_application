@@ -3,12 +3,13 @@ import IconText from "../../../../components/IconText"
 import ActionButtons from "./ActionButtons";
 import type { ProgramType } from "../../../../types/programTypes";
 
-const AdminProgramTile: React.FC<ProgramType> = ({
+const AdminProgramTile: React.FC<ProgramType & { onEdit: () => void}> = ({
     title,
     description,
     location,
     time,
-    icon: Icon
+    icon: Icon,
+    onEdit
 }) => {
 
     return (
@@ -35,7 +36,7 @@ const AdminProgramTile: React.FC<ProgramType> = ({
                     <ActionButtons
                         row={"row"}
                         onDelete={(row) => { }} //TO-DO add delete logic
-                        excludeEdit={false}
+                        onEdit={onEdit}
                     />
                 </div>
 

@@ -1,11 +1,12 @@
 import type { PropsWithChildren } from "react";
-import { motion, type Variants } from 'framer-motion';
+import { motion, type TargetAndTransition, type VariantLabels, type Variants } from 'framer-motion';
 
 type StaggeredItemType = {
     className?: string;
     delay?: number;
     duration?: number;
     variants?: Variants
+    initial?: boolean | TargetAndTransition | VariantLabels | undefined;
 }
 
 /**
@@ -15,7 +16,7 @@ type StaggeredItemType = {
  * @param duration - The duration of the transition in seconds. Default value is 0.6
  * @returns 
  */
-const StaggeredItem = ({ className = "", delay = 0, duration = 0.6, variants, children }: PropsWithChildren<StaggeredItemType>) => {
+const StaggeredItem = ({ className = "", delay = 0, duration = 0.6, variants, initial, children }: PropsWithChildren<StaggeredItemType>) => {
     const animation: Variants = variants ? variants : {
         hidden: {
             opacity: 0,
@@ -38,6 +39,7 @@ const StaggeredItem = ({ className = "", delay = 0, duration = 0.6, variants, ch
         <motion.div
             className={className}
             variants={animation}
+            initial={initial}
         >
             {children}
         </motion.div>

@@ -202,7 +202,7 @@ const Invitation = () => {
 
                                     {error && <Error errorText={error} />}
 
-                                    <Button type="button" variant="secondary" isLoading={isLoading} disabled={disableButton()} onClick={handleRSVPSubmit}>Bekræft deltagelse</Button>
+                                    <Button type="button" variant="secondary" className="mt-2" isLoading={isLoading} disabled={disableButton()} onClick={handleRSVPSubmit}>Bekræft deltagelse</Button>
                                 </div>
                             </div>
                         </form>

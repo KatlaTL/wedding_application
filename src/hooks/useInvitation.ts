@@ -3,7 +3,7 @@ import { useInvitationContext } from "../context/InvitationContext";
 import { useNavigate } from "react-router-dom";
 import { GUEST, INVITATION_CODE, RSVP_IS_SUBMITTED } from "../constants/localstorageKeys";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { fetchGuestList, updateGuestRSVP } from "../services/invitationService";
+import { fetchGuestList, updateGuestRSVP } from "../services/guestService";
 import { useState } from "react";
 import { queryClient } from "../queryClient";
 
