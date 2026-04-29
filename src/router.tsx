@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
         element: <Layout />,
         HydrateFallback: () => <div>Loading…</div>, //TO-DO Make proper fallback component
         children: [
-            { path: "/", element: <Home />, handle: { label: "Home" } },
+            { path: "/", element: <Home /> },
             { path: "/program", element: <Program />, handle: { label: "Program" }, loader: programLoader },
             { path: "/location", element: <Location />, handle: { label: "Lokation" }, loader: locationLoader },
             { path: "/invitation/:guestCode?", element: <Invitation />, handle: { label: "Invitation", navPath: "/invitation" }, loader: invitationLoader },
