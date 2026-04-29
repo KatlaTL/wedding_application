@@ -27,7 +27,7 @@ const Table = <T,>({ columns, data }: TableProps<T>) => {
 
                 <tbody>
                     {data.map((row, rowIndex) => (
-                        <tr key={rowIndex} className="border-b border-[color:var(--color-primary-30)] last:border-b-0">
+                        <tr key={rowIndex} className="hover:bg-muted/50 border-b border-[color:var(--color-primary-30)] last:border-b-0">
                             {columns.map(col => (
                                 <td key={String(col.key)} className="p-2 text-color-text">
                                     {col.render ? col.render(row) : (

@@ -3,6 +3,7 @@ import { addGuest, deleteGuest, fetchAdminGuestList, updateGuestAttendance } fro
 import { queryClient } from "../queryClient";
 import type { GuestType } from "../types/invitationTypes";
 import { fillGuest } from "../utils/fillGuestObject";
+import type { AdminDietaryAndAllergiesType } from "../types/adminTypes";
 
 const useAdmin = () => {
     const { data: guestList = [], isLoading: guestListIsLoading, refetch: refetchGuestList } = useQuery({
@@ -22,17 +23,40 @@ const useAdmin = () => {
         onError: (err) => console.error(err)
     })
 
+    /**
+     * The add new guest mutation
+     */
     const addGuestMutation = useMutation({
         mutationFn: ({ guest }: { guest: GuestType }) => addGuest(fillGuest(guest)),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ["adminGuestList"] }),
         onError: (err) => console.error(err)
     })
 
+    /**
+     * The delete guest mutation
+     */
     const deleteGuestMutation = useMutation({
         mutationFn: ({ guestCode }: { guestCode: string }) => deleteGuest(guestCode),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ["adminGuestList"] }),
         onError: (err) => console.error(err)
     })
+
+    const dietaryOverview = guestList.reduce((acc: AdminDietaryAndAllergiesType, current) => {
+        if (current.dietary) {
+            acc[current.dietary]++;
+        }
+
+        if (current.allergies) {
+            acc.allergies = [...acc.allergies, { [current.name]: current.allergies }];
+        }
+
+        return acc;
+    }, {
+        Omnivore: 0,
+        Vegan: 0,
+        Vegetarian: 0,
+        allergies: []
+    });
 
     return {
         guestList,
@@ -40,7 +64,8 @@ const useAdmin = () => {
         refetchGuestList,
         addGuestMutation,
         updateGuestAttendanceMutation,
-        deleteGuestMutation
+        deleteGuestMutation,
+        dietaryOverview
     }
 }
 

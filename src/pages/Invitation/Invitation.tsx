@@ -194,7 +194,7 @@ const Invitation = () => {
                                                     onChange={e => setAllergies(e.target.value)}
                                                     placeholder="Fortæl os gerne, hvis du har allergier eller særlige kostbehov"
                                                     rows={3}
-                                                    className="rounded-lg px-2 pt-1 resize-none text-xs text-color-text placeholder-muted-foreground placeholder:text-sm border border-primary-30 focus:outline-primary"
+                                                    className="rounded-lg px-2 pt-1 resize-none text-sm text-color-text placeholder-muted-foreground placeholder:text-sm border border-primary-30 focus:outline-primary"
                                                 />
                                             </FormWrapper>
                                         </>

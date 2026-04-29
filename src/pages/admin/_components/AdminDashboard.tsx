@@ -50,7 +50,7 @@ const AdminDashboard = () => {
         <PageTransition>
             <StaggeredContent>
                 <section className="relative min-h-screen flex flex-col py-15 overflow-hidden ">
-                    <div className="w-4xl md:mx-auto">
+                    <div className="w-4xl md:w-5xl lg:max-w-6xl md:mx-auto">
                         <StaggeredItem>
                             <div className="flex justify-between">
                                 <div className="flex gap-3">
@@ -80,7 +80,7 @@ const AdminDashboard = () => {
                         </StaggeredItem>
 
                         <StaggeredItem>
-                            <div className="bg-background-muted rounded-lg border-primary-30 border p-5 mt-7 mb-5 xs:mx-auto mx-5 md:mx-0">
+                            <div className="bg-background-muted rounded-lg border-primary-30 border p-5 mt-7 mb-5 xs:mx-auto mx-5 md:mx-0 transition-all duration-300">
                                 <AnimatedTabs tabs={tabs} activeTab={activeTab} setActiveTab={handleTabChange} />
 
                                 <ActiveContent />

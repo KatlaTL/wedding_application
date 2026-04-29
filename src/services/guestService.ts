@@ -87,7 +87,9 @@ export const fetchAdminGuestList = async (): Promise<AdminGuestListType> => {
             name: parsed.data.firstName + " " + parsed.data.lastName,
             email: parsed.data.email,
             invitationCode: doc.id,
-            isAttending: parsed.data.isAttending
+            isAttending: parsed.data.isAttending,
+            dietary: parsed.data.dietary,
+            allergies: parsed.data.allergies
         } as AdminGuestType;
     }).filter((item): item is AdminGuestType => item !== null);
 }

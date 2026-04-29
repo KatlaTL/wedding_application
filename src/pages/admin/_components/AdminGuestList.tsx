@@ -15,9 +15,12 @@ import TabContentHeading from "./shared/TabContentHeading";
 import AttendingCheckbox from "./shared/AttendingCheckbox";
 import Error from "../../../components/Error";
 import { ALL_FIELDS_ARE_REQUIRED, SOMETHING_WENT_WRONG } from "../../../constants/errorMessages";
+import BorderedBox from "./shared/BorderedBox";
+import Loader from "../../../components/ui/Loader";
+import DietaryOverviewOptions from "./shared/DietaryOverviewOptions";
 
 const AdminGuestList = ({ activeTab, previousTab }: AdminTabContentProps) => {
-    const { guestList, addGuestMutation, deleteGuestMutation } = useAdmin();
+    const { guestList, guestListIsLoading, addGuestMutation, deleteGuestMutation, dietaryOverview } = useAdmin();
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
 
@@ -57,6 +60,13 @@ const AdminGuestList = ({ activeTab, previousTab }: AdminTabContentProps) => {
         setModalIsOpen(false)
         setError("");
     }
+
+    const totalParticipants = guestList.reduce((acc, current) => {
+        if (current.isAttending) {
+            return ++acc;
+        }
+        return acc;
+    }, 0)
 
     const guestListColumns: Column<AdminGuestType>[] = [
         { key: "name", label: "Navn", render: (row) => <span className="font-medium">{row.name}</span> },
@@ -112,11 +122,43 @@ const AdminGuestList = ({ activeTab, previousTab }: AdminTabContentProps) => {
             }}>
                 <TabContentHeading title="Gæsteliste" description="Administrer dine gæster og invitationskoder" ctaText="Tilføj gæst" onClick={() => setModalIsOpen(true)} />
 
-                <div className="bg-background-muted rounded-lg border-primary-30 border p-5 mb-5 xs:mx-auto mx-5 md:mx-0">
-                    <h4 className="text-base">Antal gæster: {guestList.length} </h4>
+                <BorderedBox>
+                    <h4 className="text-base text-color-text font-medium">Gæsternes kostpræferencer</h4>
 
-                    <Table columns={guestListColumns} data={guestList} />
-                </div>
+                    <div className="flex justify-around border-b border-[color:var(--color-primary-30)] py-5">
+                        <DietaryOverviewOptions dietaryOverview={dietaryOverview} option="Vegan" />
+                        <DietaryOverviewOptions dietaryOverview={dietaryOverview} option="Vegetarian" />
+                        <DietaryOverviewOptions dietaryOverview={dietaryOverview} option="Omnivore" />
+                    </div>
+
+                    <div className="mt-3">
+                        <h4 className="text-sm text-color-text font-medium mb-2">Allergier og særlige hensyn:</h4>
+
+                        {dietaryOverview.allergies.map(item => {
+                            const name = Object.keys(item)[0];
+                            const allergy = item[name];
+
+                            return (
+                                <div key={name} className="bg-muted/50 rounded p-2 mb-1">
+                                    <p className="text-sm text-color-text">{name}: <span className="text-muted-foreground">{allergy}</span></p>
+                                </div>
+                            )
+                        })}
+                    </div>
+                </BorderedBox>
+
+                <BorderedBox>
+                    <div className="flex justify-between">
+                        <h4 className="text-base text-color-text font-medium">Antal gæster: {guestList.length} </h4>
+                        <h4 className="text-base text-color-text font-medium">Antal deltager: {totalParticipants} </h4>
+                    </div>
+
+                    {guestListIsLoading ? (
+                        <Loader />
+                    ) : (
+                        <Table columns={guestListColumns} data={guestList} />
+                    )}
+                </BorderedBox>
             </StaggeredItem>
 
             <Modal isOpen={modalIsOpen} onClose={onCloseModal}>
