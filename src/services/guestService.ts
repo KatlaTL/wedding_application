@@ -84,7 +84,9 @@ export const fetchAdminGuestList = async (): Promise<AdminGuestListType> => {
         }
 
         return {
-            name: parsed.data.firstName + " " + parsed.data.lastName,
+            fullName: parsed.data.firstName + " " + parsed.data.lastName,
+            firstName: parsed.data.firstName,
+            lastName: parsed.data.lastName,
             email: parsed.data.email,
             invitationCode: doc.id,
             isAttending: parsed.data.isAttending,
@@ -133,6 +135,19 @@ export const addGuest = async (guest: GuestType): Promise<string> => {
     }
 
     throw new Error("Failed to generate unique guest code after retries");
+}
+
+export const updateGuest = async (guest: GuestType, guestCode: string) => {
+    if (!guest || guest.email === "" || guest.firstName === "" || guest.lastName === "") throw new Error("ALL_FIELDS_ARE_REQUIRED");
+
+    const guestDocRef = doc(guestListRef, guestCode);
+
+    const cleaned = Object.fromEntries(Object.entries(guest).filter(([_, value]) => value !== undefined));
+
+    return await updateDoc(guestDocRef, {
+        ...cleaned,
+        updatedAt: serverTimestamp()
+    });
 }
 
 export const deleteGuest = async (guestCode: string) => {

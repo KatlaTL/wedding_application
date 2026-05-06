@@ -4,7 +4,7 @@ import Button from "../../../components/ui/Button";
 import type { Column } from "../../../components/ui/Table";
 import Table from "../../../components/ui/Table";
 import useAdmin from "../../../hooks/useAdmin";
-import type { AdminGuestModalType, AdminGuestType, AdminTabContentProps } from "../../../types/adminTypes";
+import { isAdminGuestModalKey, type AdminGuestModalType, type AdminGuestType, type AdminTabContentProps } from "../../../types/adminTypes";
 import Modal from "../../../components/Modal";
 import { memo, useState } from "react";
 import InnerModal from "./shared/InnerModal";
@@ -18,47 +18,90 @@ import { ALL_FIELDS_ARE_REQUIRED, SOMETHING_WENT_WRONG } from "../../../constant
 import BorderedBox from "./shared/BorderedBox";
 import Loader from "../../../components/ui/Loader";
 import DietaryOverviewOptions from "./shared/DietaryOverviewOptions";
+import DietaryOptions from "../../../components/DietaryOptions";
+import type { DietaryType } from "../../../types/invitationTypes";
 
 const AdminGuestList = ({ activeTab, previousTab }: AdminTabContentProps) => {
-    const { guestList, guestListIsLoading, addGuestMutation, deleteGuestMutation, dietaryOverview } = useAdmin();
+    const { guestList, guestListIsLoading, addGuestMutation, deleteGuestMutation, dietaryOverview, updateGuestMutation } = useAdmin();
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+    const [editMode, setEditMode] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
 
     const initialGuestData: AdminGuestModalType = {
         email: "",
         firstName: "",
-        lastName: ""
+        lastName: "",
+        allergies: "",
+        dietary: undefined,
+        invitationCode: ""
     }
 
     const [guest, setGuest] = useState<AdminGuestModalType>(initialGuestData);
 
-    const updateGuest = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, target: keyof AdminGuestModalType) => {
+    const updateGuest = <K extends keyof AdminGuestModalType>(value: AdminGuestModalType[K], target: keyof AdminGuestModalType) => {
         setGuest(prev => ({
             ...prev,
-            [target]: e.target.value
+            [target]: value
         }))
+    }
+
+    const mutateOptions = {
+        onSuccess: () => {
+            setModalIsOpen(false);
+            setGuest(initialGuestData);
+        },
+        onError: (error: unknown) => {
+            const err = error as Error;
+
+            if (err.message === "ALL_FIELDS_ARE_REQUIRED") {
+                setError(ALL_FIELDS_ARE_REQUIRED);
+            } else {
+                setError(SOMETHING_WENT_WRONG);
+            }
+        }
     }
 
     const handleAddGuest = () => {
         setError("");
-        addGuestMutation.mutate({ guest: { firstName: guest.firstName, lastName: guest.lastName, email: guest.email } }, {
-            onSuccess: () => {
-                setModalIsOpen(false);
-                setGuest(initialGuestData);
+        addGuestMutation.mutate({
+            guest: {
+                firstName: guest.firstName,
+                lastName: guest.lastName,
+                email: guest.email
+            }
+        }, mutateOptions)
+    }
+
+    const handleUpdateGuest = () => {
+        setError("");
+        updateGuestMutation.mutate({
+            guest: {
+                firstName: guest.firstName,
+                lastName: guest.lastName,
+                email: guest.email,
+                dietary: guest.dietary,
+                allergies: guest.allergies
             },
-            onError: (error) => {
-                if (error.message === "ALL_FIELDS_ARE_REQUIRED") {
-                    setError(ALL_FIELDS_ARE_REQUIRED);
-                } else {
-                    setError(SOMETHING_WENT_WRONG);
-                }
+            guestCode: guest.invitationCode
+        }, mutateOptions)
+    }
+
+    const editGuest = (guest: AdminGuestType) => {
+        (Object.entries(guest) as [keyof AdminGuestType, AdminGuestType[keyof AdminGuestType]][]).forEach(([key, value]) => {
+            if (isAdminGuestModalKey(key) && value !== undefined) {
+                updateGuest(value as string, key);
             }
         })
+
+        setModalIsOpen(true);
+        setEditMode(true);
     }
 
     const onCloseModal = () => {
         setModalIsOpen(false)
+        setEditMode(false);
         setError("");
+        setGuest(initialGuestData);
     }
 
     const totalParticipants = guestList.reduce((acc, current) => {
@@ -68,8 +111,14 @@ const AdminGuestList = ({ activeTab, previousTab }: AdminTabContentProps) => {
         return acc;
     }, 0)
 
+    const modalTitle = editMode ? "Opdater gæst" : "Tilføj ny gæst";
+
+    const modalCtaText = editMode ? "Opdater gæst" : "Tilføj gæst";
+
+    const handleModalCta = editMode ? handleUpdateGuest : handleAddGuest;
+
     const guestListColumns: Column<AdminGuestType>[] = [
-        { key: "name", label: "Navn", render: (row) => <span className="font-medium">{row.name}</span> },
+        { key: "fullName", label: "Navn", render: (row) => <span className="font-medium">{row.fullName}</span> },
         { key: "email", label: "Email" },
         {
             key: "invitationCode", label: "Invitations kode", render: (row) => (
@@ -93,8 +142,8 @@ const AdminGuestList = ({ activeTab, previousTab }: AdminTabContentProps) => {
                 <ActionButtons
                     row={row}
                     onDelete={(row) => deleteGuestMutation.mutate({ guestCode: row.invitationCode })}
-                    excludeEdit={true}
-                    rowText={row.name}
+                    onEdit={(row) => editGuest(row)}
+                    rowText={row.fullName}
                 />
             )
         }
@@ -134,12 +183,12 @@ const AdminGuestList = ({ activeTab, previousTab }: AdminTabContentProps) => {
                     <div className="mt-3">
                         <h4 className="text-sm text-color-text font-medium mb-2">Allergier og særlige hensyn:</h4>
 
-                        {dietaryOverview.allergies.map(item => {
+                        {dietaryOverview.allergies.map((item, index) => {
                             const name = Object.keys(item)[0];
                             const allergy = item[name];
 
                             return (
-                                <div key={name} className="bg-muted/50 rounded p-2 mb-1">
+                                <div key={name + index} className="bg-muted/50 rounded p-2 mb-1">
                                     <p className="text-sm text-color-text">{name}: <span className="text-muted-foreground">{allergy}</span></p>
                                 </div>
                             )
@@ -149,8 +198,8 @@ const AdminGuestList = ({ activeTab, previousTab }: AdminTabContentProps) => {
 
                 <BorderedBox>
                     <div className="flex justify-between">
-                        <h4 className="text-base text-color-text font-medium">Antal gæster: {guestList.length} </h4>
-                        <h4 className="text-base text-color-text font-medium">Antal deltager: {totalParticipants} </h4>
+                        <h4 className="text-base text-color-text font-medium">Inviterede: {guestList.length} </h4>
+                        <h4 className="text-base text-color-text font-medium">Deltager: {totalParticipants} </h4>
                     </div>
 
                     {guestListIsLoading ? (
@@ -162,19 +211,38 @@ const AdminGuestList = ({ activeTab, previousTab }: AdminTabContentProps) => {
             </StaggeredItem>
 
             <Modal isOpen={modalIsOpen} onClose={onCloseModal}>
-                <InnerModal title="Tilføj ny gæst">
+                <InnerModal title={modalTitle}>
                     <FormWrapper className="mb-4 flex-row gap-2">
-                        <Input label="Fornavn" name="guestFirestName" value={guest.firstName} onChange={(e) => updateGuest(e, "firstName")} placeholder="John" required={true} />
-                        <Input label="Efternavn" name="guestLastName" value={guest.lastName} onChange={(e) => updateGuest(e, "lastName")} placeholder="Smith" required={true} />
+                        <Input label="Fornavn" name="guestFirestName" value={guest.firstName} onChange={(e) => updateGuest(e.target.value, "firstName")} placeholder="John" required={true} />
+                        <Input label="Efternavn" name="guestLastName" value={guest.lastName} onChange={(e) => updateGuest(e.target.value, "lastName")} placeholder="Smith" required={true} />
                     </FormWrapper>
 
                     <FormWrapper className="mb-4">
-                        <Input label="Email" name="guestEmail" value={guest.email} onChange={(e) => updateGuest(e, "email")} placeholder="john@example.com" required={true} />
+                        <Input label="Email" name="guestEmail" value={guest.email} onChange={(e) => updateGuest(e.target.value, "email")} placeholder="john@example.com" required={true} />
                     </FormWrapper>
+
+                    {editMode && (
+                        <>
+                            <DietaryOptions dietary={guest.dietary} setDietary={(value: DietaryType) => updateGuest(value, "dietary")} className="mb-4" />
+
+                            <FormWrapper className="mb-4">
+                                <p className="!text-color-text">Kostrestriktioner eller allergier?</p>
+
+                                <textarea
+                                    name="dietary"
+                                    value={guest.allergies ?? ""}
+                                    onChange={e => updateGuest(e.target.value, "allergies")}
+                                    placeholder="Allergier eller særlige kostbehov"
+                                    rows={3}
+                                    className="rounded-lg px-2 pt-1 resize-none text-sm text-color-text placeholder-muted-foreground placeholder:text-sm border border-primary-30 focus:outline-primary"
+                                />
+                            </FormWrapper>
+                        </>
+                    )}
 
                     {error && <Error errorText={error} className="mb-3" />}
 
-                    <Button variant="secondary" size="small" onClick={handleAddGuest}>Tilføj gæst</Button>
+                    <Button variant="secondary" size="small" onClick={handleModalCta}>{modalCtaText}</Button>
                 </InnerModal>
             </Modal>
         </>

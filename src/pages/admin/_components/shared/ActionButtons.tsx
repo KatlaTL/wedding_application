@@ -20,7 +20,7 @@ const ActionButtons = <T,>({ row, onDelete, onEdit, excludeEdit = false, rowText
       {!excludeEdit && (
         <Button
           variant="ghost"
-          className="text-primary"
+          className="active:bg-tertiary"
           icon={Edit}
           onClick={(e) => {
             e.stopPropagation();
@@ -30,7 +30,7 @@ const ActionButtons = <T,>({ row, onDelete, onEdit, excludeEdit = false, rowText
 
       <Button
         variant="ghost"
-        className="text-destructive"
+        className="text-destructive active:bg-destructive/35"
         icon={Trash2}
         iconStyle="text-red-600"
         onClick={(e) => {

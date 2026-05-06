@@ -10,7 +10,9 @@ export type TabsType = {
 }
 
 export type AdminGuestType = {
-    name: string;
+    fullName: string;
+    firstName: string;
+    lastName: string;
     email: string;
     invitationCode: string;
     isAttending: boolean;
@@ -33,10 +35,28 @@ export type AdminEventType = {
     icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref">> | undefined;
 }
 
+const adminGuestModalKeys = [
+    "firstName",
+    "lastName",
+    "email",
+    "invitationCode",
+    "dietary",
+    "allergies",
+] as const;
+
+export type AdminGuestModalKey = typeof adminGuestModalKeys[number];
+
+export const isAdminGuestModalKey = (key: PropertyKey): key is AdminGuestModalKey => {
+    return adminGuestModalKeys.includes(key as AdminGuestModalKey);
+}
+
 export type AdminGuestModalType = {
     firstName: string;
     lastName: string;
     email: string;
+    invitationCode: string;
+    dietary: DietaryType | undefined;
+    allergies: string;
 }
 
 export type AdminDietaryAndAllergiesType =

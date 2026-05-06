@@ -1,17 +1,14 @@
 import { Car, CheckCircle, Mail, RotateCcw, Users, XCircle } from "lucide-react";
 import Section from "../../components/Section"
-import { CheckIcon } from "@radix-ui/react-icons";
 import Button, { type ButtonVariant } from "../../components/ui/Button";
 import HeadingWithIcon from "../../components/HeadingWithIcon";
 import ButtonGroup from "./_components/ButtonGroup";
 import { useState } from "react";
-import type { CheckedState } from "@radix-ui/react-checkbox";
 import InvitationGuestCodeEntry from "./_components/InvitationGuestCodeEntry";
 import { useNavigate, useParams } from "react-router-dom";
 import useInvitation from "../../hooks/useInvitation";
 import RSVPSubmitted from "./_components/RSVPSubmitted";
 import type { DietaryType } from "../../types/invitationTypes";
-import { DietaryLabels } from "../../constants/dietaryLabels";
 import Error from "../../components/Error";
 import Modal from "../../components/Modal";
 import invitationImage from "../../assets/images/invitation.jpeg";
@@ -21,7 +18,7 @@ import StaggeredItem from "../../components/StaggeredItem";
 import useBindGuestCode from "../../hooks/useBindGuestCode";
 import { SOMETHING_WENT_WRONG } from "../../constants/errorMessages";
 import FormWrapper from "../../components/FormWrapper";
-import { Checkbox, CheckboxIndicator } from "../../components/ui/CheckboxRadix";
+import DietaryOptions from "../../components/DietaryOptions";
 
 /**
  * Invitation page component. \
@@ -42,14 +39,6 @@ const Invitation = () => {
     const { guestCode } = useParams();
     const { guestList, saveRSVP, updateRSVPMutation, isSubmitted, clearGuest, setGuestListQueryEnabled } = useInvitation();
     const { unBindGuestCodeMutation } = useBindGuestCode();
-
-    const dietaryOptions: DietaryType[] = ["Vegetarian", "Vegan", "Omnivore"];
-
-    const handleCheckedChange = (checked: CheckedState, value: DietaryType) => {
-        if (checked) {
-            setDietary(value);
-        }
-    }
 
     const handleNewCodeClick = () => {
         unBindGuestCodeMutation.mutate({}, {
@@ -163,27 +152,7 @@ const Invitation = () => {
                                             </FormWrapper>
 
 
-                                            <FormWrapper className="bg-muted rounded-lg p-2 !flex-row text-xs text-color-text">
-                                                <div className="flex gap-5">
-                                                    {dietaryOptions.map((value, index) =>
-                                                        <div className="flex gap-1 text-sm" key={value + index}>
-                                                            <Checkbox
-                                                                className="flex size-5 items-center justify-center bg-background rounded border-primary outline-none"
-                                                                onCheckedChange={(checked) => handleCheckedChange(checked, value)}
-                                                                checked={dietary === value}
-                                                                id={value}
-                                                            >
-                                                                <CheckboxIndicator>
-                                                                    <CheckIcon className="size-5 bg-primary text-background-muted rounded" />
-                                                                </CheckboxIndicator>
-                                                            </Checkbox>
-                                                            <label htmlFor={value}>
-                                                                {DietaryLabels[value]}
-                                                            </label>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </FormWrapper>
+                                            <DietaryOptions dietary={dietary} setDietary={setDietary} />
 
                                             <FormWrapper className="mb-2">
                                                 <p className="!text-color-text">Har du kostrestriktioner eller allergier?</p>

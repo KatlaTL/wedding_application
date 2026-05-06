@@ -9,10 +9,14 @@ import AnimatedTabs from "./shared/AnimatedTabs";
 import AdminGuestList from "./AdminGuestList";
 import { useState } from "react";
 import AdminProgram from "./AdminProgram";
+import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
+    const navigate = useNavigate();
     const { logout, user } = useAuth();
-    
+
+    const handleBackClick = () => navigate(`/`);
+
     const [activeTab, setActiveTab] = useState<number>(0);
     const [previousTab, setPreviousTab] = useState<number>(0);
 
@@ -86,6 +90,10 @@ const AdminDashboard = () => {
                                 <ActiveContent />
                             </div>
                         </StaggeredItem>
+
+                        <div className="w-50 mt-5 mx-auto">
+                            <Button variant="primary" size="small" className="!border-none" onClick={handleBackClick}>Tilbage til forsiden</Button>
+                        </div>
                     </div>
                 </section>
             </StaggeredContent>

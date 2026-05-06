@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { addGuest, deleteGuest, fetchAdminGuestList, updateGuestAttendance } from "../services/guestService"
+import { addGuest, deleteGuest, fetchAdminGuestList, updateGuest, updateGuestAttendance } from "../services/guestService"
 import { queryClient } from "../queryClient";
 import type { GuestType } from "../types/invitationTypes";
 import { fillGuest } from "../utils/fillGuestObject";
@@ -18,6 +18,18 @@ const useAdmin = () => {
         mutationFn: ({ isAttending, guestCode }: { isAttending: boolean, guestCode: string }) => {
             if (!guestCode) throw new Error("Guest code is required");
             return updateGuestAttendance(guestCode, isAttending);
+        },
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ["adminGuestList"] }),
+        onError: (err) => console.error(err)
+    })
+
+    /**
+     * The update guest mutation 
+     */
+    const updateGuestMutation = useMutation({
+        mutationFn: ({ guest, guestCode }: { guest: GuestType, guestCode: string }) => {
+            if (!guestCode) throw new Error("Guest code is required");
+            return updateGuest(guest, guestCode);
         },
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ["adminGuestList"] }),
         onError: (err) => console.error(err)
@@ -47,7 +59,7 @@ const useAdmin = () => {
         }
 
         if (current.allergies) {
-            acc.allergies = [...acc.allergies, { [current.name]: current.allergies }];
+            acc.allergies = [...acc.allergies, { [current.fullName]: current.allergies }];
         }
 
         return acc;
@@ -65,7 +77,8 @@ const useAdmin = () => {
         addGuestMutation,
         updateGuestAttendanceMutation,
         deleteGuestMutation,
-        dietaryOverview
+        dietaryOverview,
+        updateGuestMutation
     }
 }
 
